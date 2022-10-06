@@ -1,7 +1,10 @@
 import React, {useEffect, useState} from 'react';
 
+// Constantes for local storage
 const LS_CHILD = "child";
 const LS_CHILDREN = "children";
+
+export default ChildForm;
 
 function ChildForm() {
     const [children, setChildren] = useState([]);
@@ -11,24 +14,15 @@ function ChildForm() {
         lastname: "",
         dateOfBirth: ""
     });
-    const [networkColor, setNetworkColor] = useState("red");
+    const [networkColor, setNetworkColor] = useState("green");
     const [isOnline, setNetwork] = useState(window.navigator.onLine);
 
-    const setOnline = () => {
-        setNetwork(true);
-        setNetworkColor("green")
-    };
-    const setOffline = () => {
-        setNetwork(false);
-        setNetworkColor("red")
-    };
-
-    // Register the event listeners
+    // Register the event listeners of navigator statut (online)
     useEffect(() => {
         window.addEventListener('offline', setOffline);
         window.addEventListener('online', setOnline);
 
-        // cleanup if we unmount
+        // Cleanup if we unmount
         return () => {
             window.removeEventListener('offline', setOffline);
             window.removeEventListener('online', setOnline);
@@ -41,7 +35,6 @@ function ChildForm() {
         if (storageChildren) {
             setChildren(storageChildren);
         }
-        //getTest();
     }, []);
 
     // Update local storage each time children gets updated
@@ -49,6 +42,40 @@ function ChildForm() {
         localStorage.setItem(LS_CHILDREN, JSON.stringify(children));
     }, [children]);
 
+    // Handle submition of the form
+    function handleSubmit(e) {
+        e.preventDefault(); // prevents browser refresh
+        setChild({...child, id: Math.round(Date.now() / 1000).toString() })
+        localStorage.setItem(LS_CHILD, JSON.stringify(child));
+        addChild(child);
+        setChild({
+            id: Math.round(Date.now() / 1000).toString(),
+            firstname: "",
+            lastname: "",
+            dateOfBirth: ""
+        });
+    }
+
+    // Add child in array of children if not already in
+    function addChild(child) {
+        const exist = children.some(c => (c.id === child.id ));
+        if (exist===false && !children.includes(child)){
+            setChildren([...children, child]);
+        }
+    }
+
+    // For check connection
+    const setOnline = () => {
+        setNetwork(true);
+        setNetworkColor("green");
+        synchronise();
+    };
+    const setOffline = () => {
+        setNetwork(false);
+        setNetworkColor("red");
+    };
+
+    // Handle change in form
     function handleChangeFirstname(e) {
         setChild({...child, firstname: e.target.value })
     }
@@ -59,32 +86,13 @@ function ChildForm() {
         setChild({...child, dateOfBirth: e.target.value })
     }
 
-    function addChild(child) {
-            const exist = children.some(c => (c.id === child.id ));
-            if (exist===false && !children.includes(child)){
-                setChildren([...children, child]);
-            }
-    }
-
-    function handleSubmit(e) {
-        setChild({...child, id: Math.round(Date.now() / 1000).toString() })
-        localStorage.setItem(LS_CHILD, JSON.stringify(child));
-        addChild(child);
-
-        e.preventDefault(); // prevents browser refresh
-        setChild({
-            id: Math.round(Date.now() / 1000).toString(),
-            firstname: "",
-            lastname: "",
-            dateOfBirth: ""
-        });
-    }
 
     function synchronise() {
         //TODO
-        console.log("synchronise")
+        console.log("synchronise");
     }
 
+    // Array of children visible in page
     function DataToSynchronise() {
         const getHeadings = () => {
             return Object.keys(children[0]);
@@ -95,8 +103,8 @@ function ChildForm() {
         return <div/>;
     }
 
-    return ( <div>
-
+    return (
+        <div>
             <form onSubmit={handleSubmit}>
                 <div id='inputs'>
                     <label>
@@ -120,12 +128,8 @@ function ChildForm() {
             </svg>
             <DataToSynchronise></DataToSynchronise>
     </div>
-
     );
 }
-
-export default ChildForm;
-
 
 
 function Table({theadData, tbodyData}) {
@@ -142,7 +146,7 @@ function Table({theadData, tbodyData}) {
             {tbodyData.map((row, index) => {
                 return <tr key={index}>
                     {theadData.map((key, index) => {
-                        return <td key={row[key]}>{row[key]}</td>
+                        return <td key={row[0]}>{row[key]}</td>
                     })}
                 </tr>;
             })}
