@@ -4,30 +4,6 @@ import './App.css';
 import ChildForm from "./components/ChildForm";
 
 function App() {
-/* const [isOnline, setNetwork] = useState(window.navigator.onLine);
-
- /seEffect(() => {
-   updateNetwork();
- }, []);
-
- const updateNetwork = () => {
-   setNetwork(window.navigator.onLine);
-   console.log(isOnline);
-   if (isOnline){
-     setNetworkColor("green")
-   } else {
-     setNetworkColor("red")
-   }
- };
-
- useEffect(() => {
-   window.addEventListener("offline", updateNetwork);
-   window.addEventListener("online", updateNetwork);
-   return () => {
-     window.removeEventListener("offline", updateNetwork);
-     window.removeEventListener("online", updateNetwork);
-   };
- });*/
 
  return (
    <div className="App">

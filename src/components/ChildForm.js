@@ -1,26 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import firebase from "firebase/compat/app";
-import "firebase/compat/auth";
-import {
-    collection,
-    getDocs,
-    getFirestore,
-    query,
-} from "firebase/firestore";
 
 const LS_CHILD = "child";
 const LS_CHILDREN = "children";
-const firebaseConfig = {
-    apiKey: "AIzaSyDjFinschyWco3_1oaoSc68aMHPa9hwCfY",
-    authDomain: "fitnesscheck-4820e.firebaseapp.com",
-    databaseURL: "https://fitnesscheck-4820e-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "fitnesscheck-4820e",
-    storageBucket: "fitnesscheck-4820e.appspot.com",
-    messagingSenderId: "234255121985",
-    appId: "1:234255121985:web:7f891cba7d8633bf9410c0",
-    measurementId: "G-7MJ39EHPTL"
-};
-
 
 function ChildForm() {
     const [children, setChildren] = useState([]);
@@ -31,17 +12,40 @@ function ChildForm() {
         dateOfBirth: ""
     });
     const [networkColor, setNetworkColor] = useState("red");
+    const [isOnline, setNetwork] = useState(window.navigator.onLine);
 
+    const setOnline = () => {
+        setNetwork(true);
+        setNetworkColor("green")
+    };
+    const setOffline = () => {
+        setNetwork(false);
+        setNetworkColor("red")
+    };
+
+    // Register the event listeners
+    useEffect(() => {
+        window.addEventListener('offline', setOffline);
+        window.addEventListener('online', setOnline);
+
+        // cleanup if we unmount
+        return () => {
+            window.removeEventListener('offline', setOffline);
+            window.removeEventListener('online', setOnline);
+        }
+    }, []);
+
+    // Initialize array of children il local storage (TODO: check)
     useEffect(() => {
         const storageChildren = JSON.parse(localStorage.getItem(LS_CHILDREN));
         if (storageChildren) {
             setChildren(storageChildren);
         }
-        getTest();
+        //getTest();
     }, []);
 
+    // Update local storage each time children gets updated
     useEffect(() => {
-        // fires when todos array gets updated
         localStorage.setItem(LS_CHILDREN, JSON.stringify(children));
     }, [children]);
 
@@ -62,23 +66,6 @@ function ChildForm() {
             }
     }
 
-    async function getTest(){
-        setNetworkColor("red")
-        const firebaseApp = firebase.initializeApp(firebaseConfig);
-        const db = getFirestore();
-        let formCollection = await getDocs(query(collection(db, "test")));
-        let formArray = formCollection.docs.map(doc => ({
-            ...doc.data(),
-            id: doc.id,
-            formRef: doc.ref
-        }))
-        if (formArray.length>0){
-            setNetworkColor("green")
-            synchronise()
-            setChildren([]);
-        }
-    }
-
     function handleSubmit(e) {
         setChild({...child, id: Math.round(Date.now() / 1000).toString() })
         localStorage.setItem(LS_CHILD, JSON.stringify(child));
@@ -91,13 +78,11 @@ function ChildForm() {
             lastname: "",
             dateOfBirth: ""
         });
-
-        getTest();
     }
 
     function synchronise() {
         //TODO
-        console.log("synchornise")
+        console.log("synchronise")
     }
 
     function DataToSynchronise() {
