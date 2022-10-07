@@ -8,12 +8,6 @@
       "type": "image/x-icon"
     },
     {
-      "src": "maskable_icon.png",
-      "sizes": "80x80",
-      "type": "image/x-icon",
-      "purpose": "maskable"
-    },
-    {
       "src": "logo192.png",
       "type": "image/png",
       "sizes": "192x192"
