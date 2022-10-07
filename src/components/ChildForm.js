@@ -14,14 +14,13 @@ function ChildForm() {
         lastname: "",
         dateOfBirth: ""
     });
-    const [networkColor, setNetworkColor] = useState("green");
+    const [networkColor, setNetworkColor] = useState("red");
     const [isOnline, setNetwork] = useState(window.navigator.onLine);
 
     // Register the event listeners of navigator statut (online)
     useEffect(() => {
         window.addEventListener('offline', setOffline);
         window.addEventListener('online', setOnline);
-
         // Cleanup if we unmount
         return () => {
             window.removeEventListener('offline', setOffline);
@@ -99,14 +98,15 @@ function ChildForm() {
             return Object.keys(children[0]);
         }
         if (children.length > 0) {
-            return <Table theadData={getHeadings()} tbodyData={children}/>
-        }
+            return <div>
+                <p>Data to sync : </p>
+                <Table theadData={getHeadings()} tbodyData={children}/>
+            </div> }
         return <div/>;
     }
 
     return (
         <div>
-            <p>Form</p>
             <form onSubmit={handleSubmit}>
                 <div id='inputs'>
                     <label>
