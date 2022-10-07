@@ -89,6 +89,7 @@ function ChildForm() {
 
     function synchronise() {
         //TODO
+        setChildren([]);
         console.log("synchronise");
     }
 

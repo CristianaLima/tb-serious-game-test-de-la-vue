@@ -46,6 +46,19 @@ registerRoute(
   createHandlerBoundToURL(process.env.PUBLIC_URL + '/index.html')
 );
 
+registerRoute(
+    // Add in any other file extensions or routing criteria as needed.
+    ({ url }) => url.pathname.endsWith('.html'), // Customize this strategy as needed, e.g., by changing to CacheFirst.
+    new StaleWhileRevalidate({
+        cacheName: 'cachehtml',
+        plugins: [
+            // Ensure that once this runtime cache reaches a maximum size the
+            // least-recently used images are removed.
+            new ExpirationPlugin({ maxEntries: 50 }),
+        ],
+    })
+);
+
 // An example runtime caching route for requests that aren't handled by the
 // precache, in this case same-origin .png requests like those from in public/
 registerRoute(
@@ -69,7 +82,6 @@ self.addEventListener('message', (event) => {
   }
 });
 
-// Any other custom service worker logic can go here.
 const CACHE_NAME = "pages";
 const urlsToCache = [ 'index.html'];
 
