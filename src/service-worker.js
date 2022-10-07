@@ -19,7 +19,9 @@ clientsClaim();
 // Their URLs are injected into the manifest variable below.
 // This variable must be present somewhere in your service worker file,
 // even if you decide not to use precaching. See https://cra.link/PWA
+
 precacheAndRoute(self.__WB_MANIFEST);
+//precacheAndRoute(self.manifest.json);
 
 // Set up App Shell-style routing, so that all navigation requests
 // are fulfilled with your index.html shell. Learn more at
@@ -61,56 +63,10 @@ registerRoute(
   })
 );
 
-registerRoute(
-    // Add in any other file extensions or routing criteria as needed.
-    ({ url }) => url.origin === self.location.origin && url.pathname.endsWith('.json'), // Customize this strategy as needed, e.g., by changing to CacheFirst.
-    new StaleWhileRevalidate({
-        cacheName: 'json',
-        plugins: [
-            // Ensure that once this runtime cache reaches a maximum size the
-            // least-recently used images are removed.
-            new ExpirationPlugin({ maxEntries: 50 }),
-        ],
-    })
-);
-
 // This allows the web app to trigger skipWaiting via
 // registration.waiting.postMessage({type: 'SKIP_WAITING'})
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }
-});
-
-
-const CACHE_NAME = "version-3";
-const urlsToCache = [ 'index.html'];
-
-// Install SW
-self.addEventListener('install', (event) => {
-    event.waitUntil(
-        caches.open(CACHE_NAME)
-            .then((cache) => {
-                console.log('Opened cache');
-
-                return cache.addAll(urlsToCache);
-            })
-    )
-});
-
-// Activate the SW
-self.addEventListener('activate', (event) => {
-    const cacheWhitelist = [];
-    cacheWhitelist.push(CACHE_NAME);
-
-    event.waitUntil(
-        caches.keys().then((cacheNames) => Promise.all(
-            cacheNames.map((cacheName) => {
-                if(!cacheWhitelist.includes(cacheName)) {
-                    return caches.delete(cacheName);
-                }
-            })
-        ))
-
-    )
 });
