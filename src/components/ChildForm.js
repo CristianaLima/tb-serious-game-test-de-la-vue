@@ -67,11 +67,13 @@ function ChildForm() {
     const setOnline = () => {
         setNetwork(true);
         setNetworkColor("green");
+        console.log("setOnline");
         synchronise();
     };
     const setOffline = () => {
         setNetwork(false);
         setNetworkColor("red");
+        console.log("setOffline");
     };
 
     // Handle change in form
