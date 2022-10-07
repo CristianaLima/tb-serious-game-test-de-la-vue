@@ -106,6 +106,7 @@ function ChildForm() {
 
     return (
         <div>
+            <p>Form</p>
             <form onSubmit={handleSubmit}>
                 <div id='inputs'>
                     <label>
