@@ -7,7 +7,7 @@
 // You can also remove this file if you'd prefer not to use a
 // service worker, and the Workbox build step will be skipped.
 
-/*import { clientsClaim } from 'workbox-core';
+import { clientsClaim } from 'workbox-core';
 import { ExpirationPlugin } from 'workbox-expiration';
 import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
@@ -68,9 +68,9 @@ self.addEventListener('message', (event) => {
     self.skipWaiting();
   }
 });
-*/
 
-const CACHE_NAME = "version-2";
+
+const CACHE_NAME = "version-3";
 const urlsToCache = [ 'index.html'];
 
 const self = this;
@@ -83,17 +83,6 @@ self.addEventListener('install', (event) => {
                 console.log('Opened cache');
 
                 return cache.addAll(urlsToCache);
-            })
-    )
-});
-
-// Listen for requests
-self.addEventListener('fetch', (event) => {
-    event.respondWith(
-        caches.match(event.request)
-            .then(() => {
-                return fetch(event.request)
-                    .catch(() => caches.match('offline.html'))
             })
     )
 });
