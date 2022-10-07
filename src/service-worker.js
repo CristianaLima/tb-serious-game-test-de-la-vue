@@ -73,8 +73,6 @@ self.addEventListener('message', (event) => {
 const CACHE_NAME = "version-3";
 const urlsToCache = [ 'index.html'];
 
-const self = this;
-
 // Install SW
 self.addEventListener('install', (event) => {
     event.waitUntil(
