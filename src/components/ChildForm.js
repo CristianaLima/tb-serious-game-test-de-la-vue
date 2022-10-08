@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import {addStudent} from "../config/InitFirebase";
 
 // Constantes for local storage
 const LS_CHILD = "child";
@@ -6,11 +7,12 @@ const LS_CHILDREN = "children";
 
 export default ChildForm;
 
+//TODO: rename child in student
 function ChildForm() {
     const [children, setChildren] = useState([]);
     const [child, setChild] = useState({
         id: Math.round(Date.now() / 1000).toString(),
-        fullname: "",
+        fullName: "",
         class: "",
         dob: ""
     });
@@ -78,18 +80,18 @@ function ChildForm() {
 
     // Handle change in form
     function handleChangeFullName(e) {
-        setChild({...child, fullname: e.target.value })
+        setChild({...child, fullName: e.target.value })
     }
     function handleChangeClass(e) {
         setChild({...child, class: e.target.value })
     }
     function handleChangeDateOfBirth(e) {
-        setChild({...child, dateOfBirth: e.target.value })
+        setChild({...child, dob: e.target.value })
     }
 
 
     function synchronise() {
-        //TODO
+        addStudent();
         setChildren([]);
         console.log("synchronise");
     }
@@ -112,7 +114,7 @@ function ChildForm() {
             <form onSubmit={handleSubmit}>
                 <div id='inputs'>
                     <label>
-                        Fullname
+                        fullName
                         <input type="text" value={child.fullName} onChange={handleChangeFullName} />
                     </label>
                     <label>
