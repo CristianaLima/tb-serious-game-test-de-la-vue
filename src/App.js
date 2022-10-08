@@ -2,8 +2,20 @@ import React, {useEffect, useState} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import ChildForm from "./components/ChildForm";
+import {addStudent} from "./config/InitFirebase";
 
 function App() {
+
+
+    //Add Student
+    async function handleSubmitAddStudent(e){
+        e.preventDefault();
+        const newStudent = {
+            fullName: e.fullName,
+        };
+        console.log(e.value);
+        await addStudent(newStudent)
+    }
 
  return (
    <div className="App">
@@ -21,7 +33,12 @@ function App() {
        >
          Learn React
        </a>
-       <ChildForm/>
+         <ChildForm/>
+         <form onSubmit={handleSubmitAddStudent}>
+             <label> Test connection </label> <br/>
+             <input type = "text"/>
+             <button type="submit"> save </button>
+         </form>
      </header>
    </div>
  );
