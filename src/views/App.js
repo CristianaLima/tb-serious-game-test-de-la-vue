@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import logo from '../ressources/logos/logo.svg';
+import logo from '../../ressources/logos/logo.svg';
 import '../css/App.css';
 import ChildForm from "../components/ChildForm";
 
