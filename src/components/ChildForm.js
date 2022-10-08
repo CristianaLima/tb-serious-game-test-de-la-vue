@@ -10,9 +10,9 @@ function ChildForm() {
     const [children, setChildren] = useState([]);
     const [child, setChild] = useState({
         id: Math.round(Date.now() / 1000).toString(),
-        firstname: "",
-        lastname: "",
-        dateOfBirth: ""
+        fullname: "",
+        class: "",
+        dob: ""
     });
     const [networkColor, setNetworkColor] = useState("red");
     const [isOnline, setNetwork] = useState(window.navigator.onLine);
@@ -77,11 +77,11 @@ function ChildForm() {
     };
 
     // Handle change in form
-    function handleChangeFirstname(e) {
-        setChild({...child, firstname: e.target.value })
+    function handleChangeFullName(e) {
+        setChild({...child, fullname: e.target.value })
     }
-    function handleChangeLastname(e) {
-        setChild({...child, lastname: e.target.value })
+    function handleChangeClass(e) {
+        setChild({...child, class: e.target.value })
     }
     function handleChangeDateOfBirth(e) {
         setChild({...child, dateOfBirth: e.target.value })
@@ -112,16 +112,16 @@ function ChildForm() {
             <form onSubmit={handleSubmit}>
                 <div id='inputs'>
                     <label>
-                        Firstname
-                        <input type="text" value={child.firstname} onChange={handleChangeFirstname} />
+                        Fullname
+                        <input type="text" value={child.fullName} onChange={handleChangeFullName} />
                     </label>
                     <label>
-                        Lastname
-                        <input type="text" value={child.lastname} onChange={handleChangeLastname} />
+                        Class
+                        <input type="text" value={child.class} onChange={handleChangeClass} />
                     </label>
                     <label>
                         Date of birth
-                        <input type="date" value={child.dateOfBirth} onChange={handleChangeDateOfBirth} />
+                        <input type="date" value={child.dob} onChange={handleChangeDateOfBirth} />
                     </label>
                     <input type="submit" value="Submit" />
                 </div>
