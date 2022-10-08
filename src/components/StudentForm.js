@@ -1,16 +1,16 @@
 import React, {useEffect, useState} from 'react';
-import {addStudent} from "../config/InitFirebase";
+import {addStudentFirebase} from "../config/InitFirebase";
 
 // Constantes for local storage
-const LS_CHILD = "child";
-const LS_CHILDREN = "children";
+const LS_STUDENT = "student";
+const LS_STUDENTS = "students";
 
-export default ChildForm;
+export default StudentForm;
 
-//TODO: rename child in student
-function ChildForm() {
-    const [children, setChildren] = useState([]);
-    const [child, setChild] = useState({
+
+function StudentForm() {
+    const [students, setStudents] = useState([]);
+    const [student, setStudent] = useState({
         id: Math.round(Date.now() / 1000).toString(),
         fullName: "",
         class: "",
@@ -30,26 +30,27 @@ function ChildForm() {
         }
     }, []);
 
-    // Initialize array of children il local storage (TODO: check)
+    // Initialize array of student il local storage (TODO: check)
     useEffect(() => {
-        const storageChildren = JSON.parse(localStorage.getItem(LS_CHILDREN));
-        if (storageChildren) {
-            setChildren(storageChildren);
+        const storageStudents = JSON.parse(localStorage.getItem(LS_STUDENTS));
+        if (storageStudents) {
+            setStudents(storageStudents);
         }
     }, []);
 
-    // Update local storage each time children gets updated
+    // Update local storage each time students gets updated
     useEffect(() => {
-        localStorage.setItem(LS_CHILDREN, JSON.stringify(children));
-    }, [children]);
+        localStorage.setItem(LS_STUDENTS, JSON.stringify(students));
+    }, [students]);
 
     // Handle submition of the form
     function handleSubmit(e) {
         e.preventDefault(); // prevents browser refresh
-        setChild({...child, id: Math.round(Date.now() / 1000).toString() })
-        localStorage.setItem(LS_CHILD, JSON.stringify(child));
-        addChild(child);
-        setChild({
+        setStudent({...student, id: Math.round(Date.now() / 1000).toString() })
+        localStorage.setItem(LS_STUDENT, JSON.stringify(student));
+        addStudentToArray(student)
+        addStudentFirebase(student).then(console.log(student));
+        setStudent({
             id: Math.round(Date.now() / 1000).toString(),
             firstname: "",
             lastname: "",
@@ -57,11 +58,11 @@ function ChildForm() {
         });
     }
 
-    // Add child in array of children if not already in
-    function addChild(child) {
-        const exist = children.some(c => (c.id === child.id ));
-        if (exist===false && !children.includes(child)){
-            setChildren([...children, child]);
+    // Add student in array of students if not already in
+    function addStudentToArray(student) {
+        const exist = students.some(c => (c.id === student.id ));
+        if (exist===false && !students.includes(student)){
+            setStudents([...students, student]);
         }
     }
 
@@ -80,31 +81,31 @@ function ChildForm() {
 
     // Handle change in form
     function handleChangeFullName(e) {
-        setChild({...child, fullName: e.target.value })
+        setStudent({...student, fullName: e.target.value })
     }
     function handleChangeClass(e) {
-        setChild({...child, class: e.target.value })
+        setStudent({...student, class: e.target.value })
     }
     function handleChangeDateOfBirth(e) {
-        setChild({...child, dob: e.target.value })
+        setStudent({...student, dob: e.target.value })
     }
 
 
     function synchronise() {
-        addStudent();
-        setChildren([]);
-        console.log("synchronise");
+        console.log(student.fullName);
+        //addStudent(student).then(r => console.log("synchronise"));
+        setStudents([]);
     }
 
-    // Array of children visible in page
+    // Array of students visible in page
     function DataToSynchronise() {
         const getHeadings = () => {
-            return Object.keys(children[0]);
+            return Object.keys(students[0]);
         }
-        if (children.length > 0) {
+        if (students.length > 0) {
             return <div>
                 <p>Data to sync : </p>
-                <Table theadData={getHeadings()} tbodyData={children}/>
+                <Table theadData={getHeadings()} tbodyData={students}/>
             </div> }
         return <div/>;
     }
@@ -115,15 +116,15 @@ function ChildForm() {
                 <div id='inputs'>
                     <label>
                         fullName
-                        <input type="text" value={child.fullName} onChange={handleChangeFullName} />
+                        <input type="text" value={student.fullName} onChange={handleChangeFullName} />
                     </label>
                     <label>
                         Class
-                        <input type="text" value={child.class} onChange={handleChangeClass} />
+                        <input type="text" value={student.class} onChange={handleChangeClass} />
                     </label>
                     <label>
                         Date of birth
-                        <input type="date" value={child.dob} onChange={handleChangeDateOfBirth} />
+                        <input type="date" value={student.dob} onChange={handleChangeDateOfBirth} />
                     </label>
                     <input type="submit" value="Submit" />
                 </div>
@@ -134,7 +135,7 @@ function ChildForm() {
                 <circle cx="20" cy="20" r="10" fill={networkColor} />
             </svg>
 
-            <DataToSynchronise></DataToSynchronise>
+            <DataToSynchronise/>
     </div>
     );
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import '../css/App.css';
 import logo from '../logos/logo.svg'
-import ChildForm from "../components/ChildForm";
+import StudentForm from "../components/StudentForm";
 
 function App() {
 
@@ -21,7 +21,7 @@ function App() {
        >
          Learn React
        </a>
-       <ChildForm/>
+       <StudentForm/>
      </header>
    </div>
  );
