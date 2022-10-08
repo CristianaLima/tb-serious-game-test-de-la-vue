@@ -1,29 +1,22 @@
-import React, {useEffect, useState} from 'react';
-import logo from '../logos/logo.svg';
+import React from 'react';
 import '../css/App.css';
-import ChildForm from "../components/ChildForm";
+import {Route, Routes} from "react-router-dom";
+import {AcuityTestScreen} from "./AcuityTestScreen";
+import {AcuityTestController} from "./AcuityTestController";
+import {Home} from "./Home";
 
 function App() {
 
  return (
-   <div className="App">
-     <header className="App-header">
+     <div className="App">
+         <Routes>
+             <Route path="/" element={<Home />}/>
+             <Route path="/acuityTestController" element={<AcuityTestController />}/>
+             <Route path="/acuityTestScreen" element={<AcuityTestScreen />}/>
+         </Routes>
+     </div>
 
-       <img src={logo} className="App-logo" alt="logo" />
-       <p>
-         Edit <code>src/App.js</code> and save to reload.
-       </p>
-       <a
-         className="App-link"
-         href="https://reactjs.org"
-         target="_blank"
-         rel="noopener noreferrer"
-       >
-         Learn React
-       </a>
-       <ChildForm/>
-     </header>
-   </div>
+
  );
 }
 
