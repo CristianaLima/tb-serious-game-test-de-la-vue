@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import logo from '../logos/logo.svg';
-import '../css/App.css';
-import ChildForm from "../components/ChildForm";
+import logo from './logo.svg';
+import './App.css';
+import ChildForm from "./components/ChildForm";
 
 function App() {
 
