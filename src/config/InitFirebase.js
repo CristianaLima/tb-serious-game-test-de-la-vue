@@ -11,19 +11,20 @@ const firebaseConfig = {
 };
 export const firebaseApp = firebase.initializeApp(firebaseConfig);
 export const firestore = getFirestore();
-const studentRef =  firestore.collection('students');
 
 //Add Student
 export async function addStudentFirebase(e){
     //TODO: for Océane
-    //await addDoc(collection(firestore, "students"), e);
+    await addDoc(collection(firestore, "students"), e);
+
+    /*const studentRef =  firestore.collection('students');
 
     studentRef
         .doc()
         .set(e)
         .catch((err) => {
             console.error(err);
-        });
+        });*/
 }
 
 
