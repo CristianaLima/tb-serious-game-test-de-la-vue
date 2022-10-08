@@ -1,5 +1,4 @@
-import React, {useEffect, useState} from 'react';
-import logo from '../logos/logo.svg';
+import React from 'react';
 import '../css/App.css';
 import {Route, Routes} from "react-router-dom";
 import {AcuityTestScreen} from "./AcuityTestScreen";
