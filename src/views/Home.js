@@ -1,7 +1,7 @@
 import React from "react";
 import logo from "../logos/logo.svg";
-import ChildForm from "../components/ChildForm";
 import {NavBar} from "../components/NavBar";
+import StudentForm from "../components/StudentForm";
 
 export function Home(){
     return(
@@ -22,7 +22,7 @@ export function Home(){
                 >
                     Learn React
                 </a>
-                <ChildForm/>
+                <StudentForm/>
             </header>
         </div>
             )
