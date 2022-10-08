@@ -125,10 +125,13 @@ function ChildForm() {
                     </label>
                     <input type="submit" value="Submit" />
                 </div>
+
             </form>
+
             <svg height="30" width="30">
                 <circle cx="20" cy="20" r="10" fill={networkColor} />
             </svg>
+
             <DataToSynchronise></DataToSynchronise>
     </div>
     );
