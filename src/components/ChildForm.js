@@ -127,7 +127,7 @@ function ChildForm() {
                 </div>
 
             </form>
-            
+
             <DataToSynchronise></DataToSynchronise>
     </div>
     );
