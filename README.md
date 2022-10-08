@@ -36,7 +36,8 @@ All the information about how to use the application can be found in the user gu
 
 ### Data storage
 The storage of data was done with [Firebase](https://firebase.google.com/).
-
+### Data modeling
+The modeling of our Data base was modeling like the following link: [Data Modeling](./public/ressources/docs/DataModel.png)
 ### Deployment
 
-This section has moved here: [https://magical-klepon-7470b6.netlify.app/]( https://singular-zabaione-9bb51b.netlify.app/)
+This section has moved here: [https://magical-klepon-7470b6.netlify.app/](https://magical-klepon-7470b6.netlify.app/)

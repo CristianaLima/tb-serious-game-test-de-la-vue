@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import {addStudent} from "../config/InitFirebase";
 
 // Constantes for local storage
 const LS_CHILD = "child";
@@ -6,13 +7,14 @@ const LS_CHILDREN = "children";
 
 export default ChildForm;
 
+//TODO: rename child in student
 function ChildForm() {
     const [children, setChildren] = useState([]);
     const [child, setChild] = useState({
         id: Math.round(Date.now() / 1000).toString(),
-        firstname: "",
-        lastname: "",
-        dateOfBirth: ""
+        fullName: "",
+        class: "",
+        dob: ""
     });
     const [networkColor, setNetworkColor] = useState("red");
     const [isOnline, setNetwork] = useState(window.navigator.onLine);
@@ -77,19 +79,19 @@ function ChildForm() {
     };
 
     // Handle change in form
-    function handleChangeFirstname(e) {
-        setChild({...child, firstname: e.target.value })
+    function handleChangeFullName(e) {
+        setChild({...child, fullName: e.target.value })
     }
-    function handleChangeLastname(e) {
-        setChild({...child, lastname: e.target.value })
+    function handleChangeClass(e) {
+        setChild({...child, class: e.target.value })
     }
     function handleChangeDateOfBirth(e) {
-        setChild({...child, dateOfBirth: e.target.value })
+        setChild({...child, dob: e.target.value })
     }
 
 
     function synchronise() {
-        //TODO
+        addStudent();
         setChildren([]);
         console.log("synchronise");
     }
@@ -112,16 +114,16 @@ function ChildForm() {
             <form onSubmit={handleSubmit}>
                 <div id='inputs'>
                     <label>
-                        Firstname
-                        <input type="text" value={child.firstname} onChange={handleChangeFirstname} />
+                        fullName
+                        <input type="text" value={child.fullName} onChange={handleChangeFullName} />
                     </label>
                     <label>
-                        Lastname
-                        <input type="text" value={child.lastname} onChange={handleChangeLastname} />
+                        Class
+                        <input type="text" value={child.class} onChange={handleChangeClass} />
                     </label>
                     <label>
                         Date of birth
-                        <input type="date" value={child.dateOfBirth} onChange={handleChangeDateOfBirth} />
+                        <input type="date" value={child.dob} onChange={handleChangeDateOfBirth} />
                     </label>
                     <input type="submit" value="Submit" />
                 </div>
