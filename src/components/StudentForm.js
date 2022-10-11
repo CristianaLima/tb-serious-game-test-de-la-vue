@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {addStudentFirebase} from "../config/InitFirebase";
+import {addStudent, addStudentFirebase} from "../config/InitFirebase";
 
 // Constantes for local storage
 const LS_STUDENT = "student";
@@ -48,7 +48,7 @@ function StudentForm() {
         setStudent({...student, id: Math.round(Date.now() / 1000).toString() })
         localStorage.setItem(LS_STUDENT, JSON.stringify(student));
         addStudentToArray(student);
-        addStudentFirebase(student).then(r => console.log("send to firebase"));
+        addStudent(student).then(r => console.log("send to firebase"));
         /*setStudent({
             id: Math.round(Date.now() / 1000).toString(),
             firstname: "",

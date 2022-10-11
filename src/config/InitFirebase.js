@@ -1,6 +1,6 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore"
-import {addDoc,collection, getFirestore} from "firebase/firestore"; // Firestore
+import {addDoc,collection, getFirestore} from "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -12,20 +12,25 @@ const firebaseConfig = {
 export const firebaseApp = firebase.initializeApp(firebaseConfig);
 export const firestore = getFirestore();
 
+const db = getFirestore(firebaseApp);
+const studentsDbRef = collection(db, "students")
+const schoolsDbRef = collection(db, "schools")
+const testsDbRef = collection(db, "tests")
+const therapistsDbRef = collection(db, "therapists")
+
 //Add Student
-export async function addStudentFirebase(e){
-    //TODO: for Océane
-    await addDoc(collection(firestore, "students"), e);
+export async function addStudent(e){
 
-    /*const studentRef =  firestore.collection('students');
+    await addDoc(studentsDbRef, e)
+        .then(docRef => {
+        console.log("Document has been added successfully")
 
-    studentRef
-        .doc()
-        .set(e)
-        .catch((err) => {
-            console.error(err);
-        });*/
+    })
+        .catch(error => {
+            console.log(error);
+        })
 }
+
 
 
 
