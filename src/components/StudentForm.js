@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {addStudent, addStudentFirebase} from "../config/InitFirebase";
+import {addStudent, getStudentById, } from "../config/InitFirebase";
 
 // Constantes for local storage
 const LS_STUDENT = "student";
@@ -40,6 +40,7 @@ function StudentForm() {
     // Update local storage each time students gets updated
     useEffect(() => {
         localStorage.setItem(LS_STUDENTS, JSON.stringify(students));
+
     }, [students]);
 
     // Handle submition of the form
@@ -49,6 +50,7 @@ function StudentForm() {
         localStorage.setItem(LS_STUDENT, JSON.stringify(student));
         addStudentToArray(student);
         addStudent(student).then(r => console.log("send to firebase"));
+
         /*setStudent({
             id: Math.round(Date.now() / 1000).toString(),
             firstname: "",
@@ -163,8 +165,15 @@ function Table({theadData, tbodyData}) {
                     {theadData.map((key, index) => {
                         return <td key={index}>{row[key]}</td>
                     })}
+                    <button
+                        onClick={() => {
+                            getStudentById().then(r => "test");
+                        }}>
+                        getData
+                    </button>
                 </tr>;
             })}
+
             </tbody>
         </table>
     );
