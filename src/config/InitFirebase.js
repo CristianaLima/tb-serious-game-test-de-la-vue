@@ -1,6 +1,6 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore"
-import {addDoc, doc, getDoc,collection, getFirestore} from "firebase/firestore";
+import {addDoc, doc, getDoc, collection, getFirestore, query, getDocs } from "firebase/firestore";
 import {useId} from "react";
 
 const firebaseConfig = {
@@ -22,6 +22,11 @@ const schoolsDbRef = collection(db, "schools")
 const testsDbRef = collection(db, "tests")
 const therapistsDbRef = collection(db, "therapists")
 
+
+//Add Student //TODO: how to catch error but return the student asked ?
+export async function simpleAddStudent(e){
+    return await addDoc(studentsDbRef, e);
+}
 //Add Student
 export async function addStudent(e){
 
@@ -33,6 +38,22 @@ export async function addStudent(e){
         .catch(error => {
             console.log(error);
         })
+}
+//Get Students //TODO: only example for Oce
+export async function getAllStudents(){
+    const q = query(studentsDbRef);
+    let students = [];
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        //console.log(doc.id, " => ", doc.data());
+        const student = doc.data();
+        const studentwidthID = {...student, id: doc.id}
+        students.push(studentwidthID);
+    });
+    console.log("end");
+
+    return students;
 }
 
 export async function addTest(e){
@@ -72,15 +93,17 @@ export async function addTherapists(e){
 }
 
 //Update Student
-export async function getStudentById(e){
+export async function getStudentById(id){
 
     try {
         //todo : trouver une solution pour ne pas mettre en dure le path mais avoir le path de l'objet qu'on passe
-        const docRef = doc(db, "students", "82vVMOkmOeUoQec6hRiC");
+        const docRef = doc(db, "students", id);
+        //const docRef = doc(db, "students", "82vVMOkmOeUoQec6hRiC");
         //const docRef = doc(db, "students", e.id);
         const docSnap = await getDoc(docRef);
         if(docSnap.exists()) {
-            console.log("Document data: ", docSnap.data());
+            //console.log("Document data: ", docSnap.data());
+            return docSnap.data();
         } else {
             console.log("Document does not exist")
         }
