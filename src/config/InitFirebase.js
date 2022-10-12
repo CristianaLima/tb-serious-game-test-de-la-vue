@@ -41,17 +41,18 @@ export async function addStudent(e){
 }
 //Get Students //TODO: only example for Oce
 export async function getAllStudents(){
+    //const q = query(schoolsDbRef); //TODO: for example
     const q = query(studentsDbRef);
     let students = [];
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
         //console.log(doc.id, " => ", doc.data());
+        //console.log(doc.ref);
         const student = doc.data();
         const studentwidthID = {...student, id: doc.id}
         students.push(studentwidthID);
     });
-    console.log("end");
 
     return students;
 }
@@ -92,9 +93,8 @@ export async function addTherapists(e){
         })
 }
 
-//Update Student
+//Get Student
 export async function getStudentById(id){
-
     try {
         //todo : trouver une solution pour ne pas mettre en dure le path mais avoir le path de l'objet qu'on passe
         const docRef = doc(db, "students", id);
