@@ -5,7 +5,8 @@ import {getAllSchools, getAllStudents, getAllTests} from "../config/InitFirebase
 import {LS_SCHOOLS, LS_STUDENTS, LS_TESTS} from "./App";
 
 export function Home(){
-        useEffect(() => {
+
+    useEffect(() => {
         async function fetchData() {
             getAllSchools().then(s => localStorage.setItem(LS_SCHOOLS, JSON.stringify(s)));
             getAllStudents().then(s => localStorage.setItem(LS_STUDENTS, JSON.stringify(s)));

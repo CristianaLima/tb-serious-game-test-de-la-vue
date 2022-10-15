@@ -22,8 +22,6 @@ function App() {
              <Route path="/acuityTestScreen" element={<AcuityTestScreen />}/>
          </Routes>
      </div>
-
-
  );
 }
 

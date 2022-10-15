@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {addStudent, getSchoolById, getStudentById} from "../config/InitFirebase";
-import {LS_STUDENTS, LS_STUDENT, LS_SCHOOLS, LS_NEW_STUDENTS} from "../views/App";
+import {addStudent, getSchoolById} from "../config/InitFirebase";
+import {LS_STUDENT, LS_SCHOOLS, LS_NEW_STUDENTS} from "../views/App";
 
 export default StudentForm;
 
 function StudentForm() {
     const [newStudents, setNewStudents] = useState([]);
-    const [students] = useState(JSON.parse(localStorage.getItem(LS_STUDENTS)));
     const [schools] = useState(JSON.parse(localStorage.getItem(LS_SCHOOLS)));
     const [student, setStudent] = useState({
         id: "", //Math.round(Date.now() / 1000).toString(),
@@ -122,29 +121,17 @@ function StudentForm() {
     }*/
 
     // Array of students visible in page
-    function DataToSynchronise() {
+    /*function DataToSynchronise() {
         const getHeadings = () => {
             return Object.keys(newStudents[0]);
         }
         if (newStudents.length > 0) {
             return <div>
                 <p>DATA SEND TO FIRESTORE IN THIS SESSION </p>
-                <Table theadData={getHeadings()} tbodyData={newStudents}/>
+                <StudentsTable listOfStudents={newStudents}/>
             </div> }
         return <div/>;
-    }
-
-    function DataFromFirebase() {
-        const getHeadings = () => {
-            return Object.keys(students[0]);
-        }
-        if (students.length > 0) {
-            return <div>
-                <p>DATA IN FIRESTORE</p>
-                <Table theadData={getHeadings()} tbodyData={students}/>
-            </div> }
-        return <div/>;
-    }
+    }*/
 
     return (
         <div>
@@ -169,11 +156,10 @@ function StudentForm() {
                         <label htmlFor="dob">Date of birth</label>
                         <input required id="dob" type="date"  className="form-control" value={student.dob} onChange={handleChangeDateOfBirth} />
                     </div>
-                    <button type="submit" className="btn btn-primary">Submit</button>
+                    <button type="submit" className="btn btn-primary">Let's play</button>
                 </form>
 
-                <DataToSynchronise/>
-                <DataFromFirebase/>
+
     </div>
     );
 }
@@ -181,31 +167,7 @@ function StudentForm() {
 <svg height="30" width="30">
     <circle cx="20" cy="20" r="10" fill={networkColor} />
 </svg>
+                <DataToSynchronise/>
 */
 
-function Table({theadData, tbodyData}) {
-    return (
-        <table className="table">
-            <thead>
-            <tr>
-                {theadData.map(heading => {
-                    return <th key={heading}>{heading}</th>
-                })}
-            </tr>
-            </thead>
-            <tbody>
-            {tbodyData.map((row, index) => {
-                return <tr key={index}>
-                    {theadData.map((key, index) => {
-                        return <td key={index}>{row[key]}</td>
-                    })}
-                    <td><button className="btn btn-outline-primary"  onClick={() => {
-                        getStudentById(row["id"]).then(r => console.log(r));
-                    }}>getStudentById (print in console)</button></td>
-                </tr>;
-            })}
 
-            </tbody>
-        </table>
-    );
-}
