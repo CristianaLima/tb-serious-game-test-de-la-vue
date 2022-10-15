@@ -1,26 +1,25 @@
 import React, {useEffect, useState} from 'react';
-import {addStudent, getAllStudents, getStudentById, simpleAddStudent,} from "../config/InitFirebase";
+import {addStudent, getSchoolById, getStudentById} from "../config/InitFirebase";
 import {LS_STUDENTS, LS_STUDENT, LS_SCHOOLS, LS_NEW_STUDENTS} from "../views/App";
 
 export default StudentForm;
 
 function StudentForm() {
-    const [students, setStudents] = useState([]);
-    const [studentsFromFirebase, setStudentsFromFirebase] = useState([]);
-    const [schools, setSchools] = useState([]);
+    const [newStudents, setNewStudents] = useState([]);
+    const [students] = useState(JSON.parse(localStorage.getItem(LS_STUDENTS)));
+    const [schools] = useState(JSON.parse(localStorage.getItem(LS_SCHOOLS)));
     const [student, setStudent] = useState({
         id: "", //Math.round(Date.now() / 1000).toString(),
         fullName: "",
         class: "",
-        dob: ""
+        dob: "",
+        idSchool: ""
     });
-    const [networkColor, setNetworkColor] = useState("red");
-    const [isOnline, setNetwork] = useState(window.navigator.onLine);
+    //const [networkColor, setNetworkColor] = useState("red");
+    //const [isOnline, setNetwork] = useState(window.navigator.onLine);
 
     useEffect( () => {
-        setStudentsFromFirebase(JSON.parse(localStorage.getItem(LS_STUDENTS)));
-        setSchools(JSON.parse(localStorage.getItem(LS_SCHOOLS)));
-
+        setStudent({...student, idSchool: schools[0].id})
     }, []);
 
     // Register the event listeners of navigator statut (online)
@@ -38,14 +37,14 @@ function StudentForm() {
    useEffect(() => {
         const storageStudents = JSON.parse(localStorage.getItem(LS_NEW_STUDENTS));
         if (storageStudents) {
-            setStudents(storageStudents);
+            setNewStudents(storageStudents);
         }
     }, []);
 
     // Update local storage each time students gets updated
     /*useEffect(() => {
-            localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify(students));
-    }, [students]);*/
+            localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify(newStudents));
+    }, [newStudents]);*/
 
     // Update local storage each time students gets updated
     useEffect(() => {
@@ -56,17 +55,23 @@ function StudentForm() {
     function handleSubmit(e) {
         e.preventDefault(); // prevents browser refresh
         //setStudent({...student, id: Math.round(Date.now() / 1000).toString() })
-        let studentToPush = {
-            fullName: student.fullName,
-            class: student.class,
-            dob: student.dob
+        if (student.dob!==""){
+            getSchoolById(student.idSchool).then(s => {
+                let studentToPush = {
+                    fullName: student.fullName,
+                    class: student.class,
+                    dob: student.dob,
+                    idSchool: s.ref
+                };
+                addStudent(studentToPush).then((r)=>{
+                    setStudent({...student, id: r.id })
+                });
+            })
+
+            addStudentToArray(student);
+            localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify(newStudents)); // TODO: why always one late ?
         }
-        simpleAddStudent(studentToPush).then((r)=>{
-            setStudent({...student, id: r.id })
-        });
-        addStudentToArray(student);
-        localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify(students)); // TODO: why always one late ?
-        console.log(students)
+
     }
 
     // Add student in array of students if not already in
@@ -75,7 +80,7 @@ function StudentForm() {
         if (exist===false && !students.includes(student)){
             setStudents([...students, student]);
         }*/
-        setStudents([...students, student]);
+        setNewStudents([...newStudents, student]);
     }
 
     // For check connection
@@ -92,6 +97,9 @@ function StudentForm() {
     };*/
 
     // Handle change in form
+    function handleChangeSchool(e) {
+        setStudent({...student, idSchool: e.target.value })
+    }
     function handleChangeFullName(e) {
         setStudent({...student, fullName: e.target.value })
     }
@@ -104,39 +112,39 @@ function StudentForm() {
 
     /*function synchronise() {
         console.log("synchronise");
-        console.log(students);
+        console.log(newStudents);
         const storageStudents = JSON.parse(localStorage.getItem(LS_NEW_STUDENTS));
         if (storageStudents) {
-            setStudents(storageStudents);
+            setNewStudents(storageStudents);
         }
-        for (let i = 0; i < students.length; i++) {
-            console.log(students[i].fullName)
+        for (let i = 0; i < newStudents.length; i++) {
+            console.log(newStudents[i].fullName)
             //addStudentFirebase(s).then(r => console.log("synchronise"));
         }
-        //setStudents([]);
+        //setNewStudents([]);
     }*/
 
     // Array of students visible in page
     function DataToSynchronise() {
         const getHeadings = () => {
-            return Object.keys(students[0]);
+            return Object.keys(newStudents[0]);
         }
-        if (students.length > 0) {
+        if (newStudents.length > 0) {
             return <div>
                 <p>DATA SEND TO FIRESTORE IN THIS SESSION </p>
-                <Table theadData={getHeadings()} tbodyData={students}/>
+                <Table theadData={getHeadings()} tbodyData={newStudents}/>
             </div> }
         return <div/>;
     }
 
     function DataFromFirebase() {
         const getHeadings = () => {
-            return Object.keys(studentsFromFirebase[0]);
+            return Object.keys(students[0]);
         }
-        if (studentsFromFirebase.length > 0) {
+        if (students.length > 0) {
             return <div>
                 <p>DATA IN FIRESTORE</p>
-                <Table theadData={getHeadings()} tbodyData={studentsFromFirebase}/>
+                <Table theadData={getHeadings()} tbodyData={students}/>
             </div> }
         return <div/>;
     }
@@ -146,9 +154,9 @@ function StudentForm() {
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="school">School</label>
-                        <select className="form-control" id="school">
+                        <select className="form-control" id="school" onChange={handleChangeSchool}>
                             {schools.map((school) => (
-                                <option value={school.id}>{school.name}</option>
+                                <option key={school.id} value={school.id}>{school.name}</option>
                             ))}
                         </select>
                     </div>
@@ -194,12 +202,9 @@ function Table({theadData, tbodyData}) {
                     {theadData.map((key, index) => {
                         return <td key={index}>{row[key]}</td>
                     })}
-                    <button
-                        onClick={() => {
-                            getStudentById(row["id"]).then(r => console.log(r));
-                        }}>
-                        getData
-                    </button>
+                    <td><button className="btn btn-outline-primary"  onClick={() => {
+                        getStudentById(row["id"]).then(r => console.log(r));
+                    }}>getStudentById (print in console)</button></td>
                 </tr>;
             })}
 
