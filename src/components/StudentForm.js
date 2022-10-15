@@ -126,7 +126,7 @@ function StudentForm() {
         }
         if (students.length > 0) {
             return <div>
-                <h3>DATA SEND TO FIRESTORE IN THIS SESSION </h3>
+                <p>DATA SEND TO FIRESTORE IN THIS SESSION </p>
                 <Table theadData={getHeadings()} tbodyData={students}/>
             </div> }
         return <div/>;
@@ -138,7 +138,7 @@ function StudentForm() {
         }
         if (studentsFromFirebase.length > 0) {
             return <div>
-                <h3>DATA IN FIRESTORE</h3>
+                <p>DATA IN FIRESTORE</p>
                 <Table theadData={getHeadings()} tbodyData={studentsFromFirebase}/>
             </div> }
         return <div/>;
@@ -146,39 +146,47 @@ function StudentForm() {
 
     return (
         <div>
-            <form onSubmit={handleSubmit}>
-                <div id='inputs'>
-                    <label>
-                        fullName
-                        <input id="fullName" type="text" value={student.fullName} onChange={handleChangeFullName} />
-                    </label>
-                    <label>
-                        Class
-                        <input id="class" type="text" value={student.class} onChange={handleChangeClass} />
-                    </label>
-                    <label>
-                        Date of birth
-                        <input id="dob" type="date" value={student.dob} onChange={handleChangeDateOfBirth} />
-                    </label>
-                    <input type="submit" value="Submit" />
-                </div>
+                <h3>NEW TEST: STUDENT INFO</h3>
+                <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="school">School</label>
+                        <select className="form-control" id="school">
+                            <option>TODO</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="fullName">Full name</label>
+                        <input id="fullName" type="text"  className="form-control" value={student.fullName} onChange={handleChangeFullName} />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="class">Class</label>
+                        <input id="class" type="text"  className="form-control" value={student.class} onChange={handleChangeClass} />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="dob">Date of birth</label>
+                        <input id="dob" type="date"  className="form-control" value={student.dob} onChange={handleChangeDateOfBirth} />
+                    </div>
+                    <button type="submit" className="btn btn-primary">Submit</button>
+                </form>
 
-            </form>
-
-            <svg height="30" width="30">
-                <circle cx="20" cy="20" r="10" fill={networkColor} />
-            </svg>
-
-            <DataToSynchronise/>
-            <DataFromFirebase/>
+                <DataToSynchronise/>
+                <DataFromFirebase/>
     </div>
     );
 }
-
+/*
+<svg height="30" width="30">
+    <circle cx="20" cy="20" r="10" fill={networkColor} />
+</svg>
+*/
 
 function Table({theadData, tbodyData}) {
     return (
-        <table>
+        <table className="table">
             <thead>
             <tr>
                 {theadData.map(heading => {

@@ -15,8 +15,8 @@ export const firestore = getFirestore();
 
 const db = getFirestore(firebaseApp);
 
-const studentsDbRef = collection(db, "students")
-
+//TODO: change after date management
+const studentsDbRef = collection(db, "studentsTest") //collection(db, "students")
 
 const schoolsDbRef = collection(db, "schools")
 const testsDbRef = collection(db, "tests")
