@@ -55,7 +55,6 @@ function StudentForm() {
     function handleSubmit(e) {
         e.preventDefault(); // prevents browser refresh
         //setStudent({...student, id: Math.round(Date.now() / 1000).toString() })
-        if (student.dob!==""){
             getSchoolById(student.idSchool).then(s => {
                 let studentToPush = {
                     fullName: student.fullName,
@@ -70,8 +69,6 @@ function StudentForm() {
 
             addStudentToArray(student);
             localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify(newStudents)); // TODO: why always one late ?
-        }
-
     }
 
     // Add student in array of students if not already in
@@ -162,15 +159,15 @@ function StudentForm() {
                     </div>
                     <div className="form-group">
                         <label htmlFor="fullName">Full name</label>
-                        <input id="fullName" type="text"  className="form-control" value={student.fullName} onChange={handleChangeFullName} />
+                        <input required id="fullName" type="text"  className="form-control" value={student.fullName} onChange={handleChangeFullName} />
                     </div>
                     <div className="form-group">
                         <label htmlFor="class">Class</label>
-                        <input id="class" type="text"  className="form-control" value={student.class} onChange={handleChangeClass} />
+                        <input required id="class" type="text"  className="form-control" value={student.class} onChange={handleChangeClass} />
                     </div>
                     <div className="form-group">
                         <label htmlFor="dob">Date of birth</label>
-                        <input id="dob" type="date"  className="form-control" value={student.dob} onChange={handleChangeDateOfBirth} />
+                        <input required id="dob" type="date"  className="form-control" value={student.dob} onChange={handleChangeDateOfBirth} />
                     </div>
                     <button type="submit" className="btn btn-primary">Submit</button>
                 </form>
