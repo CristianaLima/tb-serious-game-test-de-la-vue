@@ -8,16 +8,13 @@ export function NavBar(){
     const [language, setLanguage] = useState("en");
 
     useEffect(() => {
-        const language = sessionStorage.getItem("language");
-
-        sessionStorage.setItem("language", language);
-
+        localStorage.setItem("language", language);
     }, [language]);
    return (
        <div>
            <Navbar color={"light"}>
                <NavbarBrand href = "/">
-                   VAST
+                   Esco Visual Acuity (VA) Screening App
                </NavbarBrand>
                <UncontrolledButtonDropdown>
                    <DropdownToggle caret>Language</DropdownToggle>
