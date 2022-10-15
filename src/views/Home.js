@@ -1,29 +1,21 @@
 import React from "react";
-import logo from "../logos/logo.svg";
 import {NavBar} from "../components/NavBar";
-import StudentForm from "../components/StudentForm";
+import {NavLink} from "reactstrap";
 
 export function Home(){
     return(
 
         <div className="Home">
             <NavBar></NavBar>
-            <header className="App-header">
-
-                <img src={logo} className="App-logo" alt="logo" />
-                <p>
-                    Edit <code>src/App.js</code> and save to reload.
-                </p>
-                <a
-                    className="App-link"
-                    href="https://reactjs.org"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Learn React
-                </a>
-                <StudentForm/>
-            </header>
+            <div className="d-flex align-items-center justify-content-center" style={{ height: "300px" }}>
+                <button type="button" className="btn btn-primary btn-lg  m-5">Results</button>
+                <button type="button" className="btn btn-success btn-lg m-5"  >
+                    <NavLink href = "acuityTestScreen">
+                    New Test
+                    </NavLink>
+                </button>
+                <button type="button" className="btn btn-danger btn-lg m-5">Exit</button>
+            </div>
         </div>
             )
 }
