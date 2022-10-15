@@ -1,15 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {addStudent, getAllStudents, getStudentById, simpleAddStudent,} from "../config/InitFirebase";
-
-// Constantes for local storage
-const LS_STUDENT = "student";
-const LS_STUDENTS = "students";
+import {LS_STUDENTS, LS_STUDENT, LS_SCHOOLS, LS_NEW_STUDENTS} from "../views/App";
 
 export default StudentForm;
 
 function StudentForm() {
     const [students, setStudents] = useState([]);
     const [studentsFromFirebase, setStudentsFromFirebase] = useState([]);
+    const [schools, setSchools] = useState([]);
     const [student, setStudent] = useState({
         id: "", //Math.round(Date.now() / 1000).toString(),
         fullName: "",
@@ -20,10 +18,9 @@ function StudentForm() {
     const [isOnline, setNetwork] = useState(window.navigator.onLine);
 
     useEffect( () => {
-        async function fetchData() {
-            getAllStudents().then(s => setStudentsFromFirebase(s));
-        }
-        fetchData();
+        setStudentsFromFirebase(JSON.parse(localStorage.getItem(LS_STUDENTS)));
+        setSchools(JSON.parse(localStorage.getItem(LS_SCHOOLS)));
+
     }, []);
 
     // Register the event listeners of navigator statut (online)
@@ -39,7 +36,7 @@ function StudentForm() {
 
     // Initialize array of student il local storage (TODO: check)
    useEffect(() => {
-        const storageStudents = JSON.parse(localStorage.getItem(LS_STUDENTS));
+        const storageStudents = JSON.parse(localStorage.getItem(LS_NEW_STUDENTS));
         if (storageStudents) {
             setStudents(storageStudents);
         }
@@ -47,7 +44,7 @@ function StudentForm() {
 
     // Update local storage each time students gets updated
     /*useEffect(() => {
-            localStorage.setItem(LS_STUDENTS, JSON.stringify(students));
+            localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify(students));
     }, [students]);*/
 
     // Update local storage each time students gets updated
@@ -68,7 +65,7 @@ function StudentForm() {
             setStudent({...student, id: r.id })
         });
         addStudentToArray(student);
-        localStorage.setItem(LS_STUDENTS, JSON.stringify(students)); // TODO: why always one late ?
+        localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify(students)); // TODO: why always one late ?
         console.log(students)
     }
 
@@ -108,7 +105,7 @@ function StudentForm() {
     /*function synchronise() {
         console.log("synchronise");
         console.log(students);
-        const storageStudents = JSON.parse(localStorage.getItem(LS_STUDENTS));
+        const storageStudents = JSON.parse(localStorage.getItem(LS_NEW_STUDENTS));
         if (storageStudents) {
             setStudents(storageStudents);
         }
@@ -146,16 +143,13 @@ function StudentForm() {
 
     return (
         <div>
-                <h3>NEW TEST: STUDENT INFO</h3>
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="school">School</label>
                         <select className="form-control" id="school">
-                            <option>TODO</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
+                            {schools.map((school) => (
+                                <option value={school.id}>{school.name}</option>
+                            ))}
                         </select>
                     </div>
                     <div className="form-group">

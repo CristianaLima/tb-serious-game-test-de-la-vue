@@ -7,7 +7,8 @@ export function AcuityTestScreen(){
         <div>
             <NavBar></NavBar>
             <div className="px-3 m-auto w-75 my-2 text-center">
-                <h1>Test screen</h1>
+                <h1>NEW TEST: STUDENT INFO</h1>
+                <button type="button" className="btn btn-primary">Select student from school roster</button>
                 <StudentForm></StudentForm>
             </div>
 

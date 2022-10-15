@@ -1,7 +1,6 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore"
 import {addDoc, doc, getDoc, collection, getFirestore, query, getDocs } from "firebase/firestore";
-import {useId} from "react";
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -39,6 +38,21 @@ export async function addStudent(e){
             console.log(error);
         })
 }
+
+//Get all schools
+export async function getAllSchools(){
+    const docsSnap = await getDocs(schoolsDbRef);
+    let schools = [];
+    docsSnap.forEach(doc => {
+            const school = doc.data();
+            const schoolWithId = {...school, id: doc.id}
+            schools.push(schoolWithId);
+            console.log(schools)
+        }
+    );
+    return schools;
+}
+
 //Get Students //TODO: only example for Oce
 export async function getAllStudents(){
     //const q = query(schoolsDbRef); //TODO: for example
