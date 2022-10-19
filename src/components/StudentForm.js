@@ -56,6 +56,7 @@ function StudentForm() {
     function handleSubmit(e) {
         e.preventDefault(); // prevents browser refresh
         //setStudent({...student, id: Math.round(Date.now() / 1000).toString() })
+        //TODO: call school ref in lcoal storage
             getSchoolById(student.idSchool).then(s => {
                 let studentToPush = {
                     fullName: student.fullName,
@@ -65,14 +66,12 @@ function StudentForm() {
                 };
                 addStudent(studentToPush).then((r)=>{
                     setStudent({...student, id: r.id })
+                    addStudentToArray(student);
+                    localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify(newStudents)); // TODO: why always one late ?
+                    window.open('/acuityTestScreen', '_self')
+                    window.open('/acuityTestController', '_blank');
                 });
             })
-
-            addStudentToArray(student);
-            localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify(newStudents)); // TODO: why always one late ?
-
-        window.open('/acuityTestScreen', '_self')
-        window.open('/acuityTestController', '_blank');
     }
 
     // Add student in array of students if not already in
