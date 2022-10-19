@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {addStudent, getSchoolById} from "../config/InitFirebase";
 import {LS_STUDENT, LS_SCHOOLS, LS_NEW_STUDENTS} from "../views/App";
+import {useNavigate} from "react-router-dom";
 
 export default StudentForm;
 
@@ -14,6 +15,7 @@ function StudentForm() {
         dob: "",
         idSchool: ""
     });
+    const navigate = useNavigate();
     //const [networkColor, setNetworkColor] = useState("red");
     //const [isOnline, setNetwork] = useState(window.navigator.onLine);
 
@@ -68,6 +70,9 @@ function StudentForm() {
 
             addStudentToArray(student);
             localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify(newStudents)); // TODO: why always one late ?
+
+        window.open('/acuityTestScreen', '_self')
+        window.open('/acuityTestController', '_blank');
     }
 
     // Add student in array of students if not already in
