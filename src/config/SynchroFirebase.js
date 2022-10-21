@@ -44,26 +44,26 @@ export async function synchroniseStudent(newStudents){
     if (newStudents != null){
         for (let i = 0; i < newStudents.length; i++) {
             // Transform idSchool value form just id to ref
-            let school = schools.find((s) => {
+            /*let school = schools.find((s) => {
                 return s.id === newStudents[i].idSchool
             })
-            //let schoolref = await getSchoolWithRefById(newStudents[i].idSchool)
-            console.log(school)
-            console.log(school.ref)
-            getSchoolWithRefById(newStudents[i].idSchool).then(s => console.log(s.ref));
-            // Reconstruct student to delete value "localId"
-            let studentFb = {
-                fullName: newStudents[i].fullName,
-                class: newStudents[i].class,
-                dob: newStudents[i].dob,
-                idSchool: newStudents[i].idSchool
-            }
-            // Add new student to Firebase and get the ref
-            /*addStudent(studentFb).then(
-                r => {newStudents[i]={...newStudents[i], id : r.id, ref: r };
-                    console.log(newStudents[i])
+            // school.ref is interpreted like a map in firebase...
+            */
+            getSchoolWithRefById(newStudents[i].idSchool).then(s => {
+                // Reconstruct student to delete value "localId"
+                let studentToPush = {
+                    fullName: newStudents[i].fullName,
+                    class: newStudents[i].class,
+                    dob: newStudents[i].dob,
+                    idSchool: s.ref
+                };
+                // Add new student to Firebase and get the ref
+                addStudent(studentToPush).then(r => {
+                    newStudents[i]={...newStudents[i], id : r.id, ref: r };
+                    console.log(newStudents[i].id + " added to firebase")
                     //TODO: error no clear local storage
-                });*/
+                    });
+            })
         }
     }
 
@@ -74,6 +74,7 @@ export async function synchroniseTest(newStudents){
     const therapist = JSON.parse(localStorage.getItem(LS_CURRENT_THERAPIST));
 
     // Synchronise test done
+    //TODO: test when test page --> see working school ref in synchroniseStudent
     if (newTests != null){
         for (let i = 0; i < newTests.length; i++) {
             if (newTests[i].idStudent !== ""){
@@ -83,7 +84,7 @@ export async function synchroniseTest(newStudents){
                     let student = studentFb.ref
                     newTests[i].refStudent = student.ref
                 } else {
-                    console.log("Student not found") //todo: catch error ? create student ?
+                    console.log("Student not found") //todo: catch error ?
                 }
             } else {
                 // Get the student's ref from Firebase with the LOCALIDSTUDENT

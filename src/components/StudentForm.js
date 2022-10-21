@@ -93,33 +93,6 @@ function StudentForm() {
         setStudent({...student, dob: e.target.value })
     }
 
-    /*function synchronise() {
-        console.log("synchronise");
-        console.log(newStudents);
-        const storageStudents = JSON.parse(localStorage.getItem(LS_NEW_STUDENTS));
-        if (storageStudents) {
-            setNewStudents(storageStudents);
-        }
-        for (let i = 0; i < newStudents.length; i++) {
-            console.log(newStudents[i].fullName)
-            //addStudentFirebase(s).then(r => console.log("synchronise"));
-        }
-        //setNewStudents([]);
-    }*/
-
-    // Array of students visible in page
-    /*function DataToSynchronise() {
-        const getHeadings = () => {
-            return Object.keys(newStudents[0]);
-        }
-        if (newStudents.length > 0) {
-            return <div>
-                <p>DATA SEND TO FIRESTORE IN THIS SESSION </p>
-                <StudentsTable listOfStudents={newStudents}/>
-            </div> }
-        return <div/>;
-    }*/
-
     return (
         <div>
                 <form onSubmit={handleSubmit}>

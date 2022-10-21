@@ -37,7 +37,7 @@ export async function getAllSchools(){
     const docsSnap = await getDocs(schoolsDbRef);
     let schoolsWithRef = [];
     docsSnap.forEach(doc => {
-            const schoolWithRef = {id: doc.id, data: doc.data(), ref: doc}
+            const schoolWithRef = {id: doc.id, data: doc.data(), ref: doc.ref}
             schoolsWithRef.push(schoolWithRef);
         }
     );
@@ -108,7 +108,7 @@ export async function getStudentWithRefById(id){
     const docRef = doc(studentsDbRef, id);
     const docSnap = await getDoc(docRef);
     if(docSnap.exists()) {
-        return {data: docSnap.data(), id: docSnap.id, ref: docSnap};
+        return {data: docSnap.data(), id: docSnap.id, ref: docSnap.ref};
     } else {
         return false
     }
@@ -118,7 +118,7 @@ export async function getTherapistWithRefById(id){
     const docRef = doc(therapistDbRef, id);
     const docSnap = await getDoc(docRef);
     if(docSnap.exists()) {
-        return {data: docSnap.data(), id: docSnap.id, ref: docSnap};
+        return {data: docSnap.data(), id: docSnap.id, ref: docSnap.ref};
     } else {
         return false
     }
@@ -128,12 +128,11 @@ export async function getSchoolWithRefById(id){
     const docRef = doc(schoolsDbRef, id);
     const docSnap = await getDoc(docRef);
     if(docSnap.exists()) {
-        return {data: docSnap.data(), id: docSnap.id, ref: docSnap};
+        return {data: docSnap.data(), id: docSnap.id, ref: docSnap.ref};
     } else {
         return false
     }
 }
-
 
 export async function getSchoolById(id){
     const docRef = doc(schoolsDbRef, id);
