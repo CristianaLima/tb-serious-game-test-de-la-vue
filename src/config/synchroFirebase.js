@@ -9,8 +9,11 @@ import {
 import {addStudent, addTest, getAllSchools, getAllStudents, getAllTests, getStudentById} from "./InitFirebase";
 
 export async function synchronise(){
-    await synchroniseStudent();
-    await synchroniseTest();
+    //Get value in local storage
+    const newStudents = JSON.parse(localStorage.getItem(LS_NEW_STUDENTS));
+
+    await synchroniseStudent(newStudents);
+    await synchroniseTest(newStudents);
 
     // Refresh data
     await stockDataInLocalStorage();
@@ -26,9 +29,8 @@ export async function stockDataInLocalStorage() {
     getAllTests().then(s => localStorage.setItem(LS_VISUALSTESTS, JSON.stringify(s)));
 }
 
-export async function synchroniseStudent(){
+export async function synchroniseStudent(newStudents){
     //Get value in local storage
-    const newStudents = JSON.parse(localStorage.getItem(LS_NEW_STUDENTS));
     const schools = JSON.parse(localStorage.getItem(LS_SCHOOLS));
 
     // Synchronise added student
@@ -53,7 +55,7 @@ export async function synchroniseStudent(){
     }
 
 }
-export async function synchroniseTest(){
+export async function synchroniseTest(newStudents){
     //Get value in local storage
     const newTests = JSON.parse(localStorage.getItem(LS_NEW_VISUALSTESTS));
     const therapist = JSON.parse(localStorage.getItem(LS_CURRENT_THERAPIST));
