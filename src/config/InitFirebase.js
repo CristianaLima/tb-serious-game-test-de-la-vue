@@ -16,6 +16,7 @@ export const firestore = getFirestore();
 const db = getFirestore(firebaseApp);
 
 const studentsDbRef = collection(db, "students")
+const therapistDbRef = collection(db, "therapists")
 const schoolsDbRef = collection(db, "schools")
 const testsDbRef = collection(db, "tests")
 
@@ -112,6 +113,27 @@ export async function getStudentWithRefById(id){
         return false
     }
 }
+
+export async function getTherapistWithRefById(id){
+    const docRef = doc(therapistDbRef, id);
+    const docSnap = await getDoc(docRef);
+    if(docSnap.exists()) {
+        return {data: docSnap.data(), id: docSnap.id, ref: docSnap};
+    } else {
+        return false
+    }
+}
+
+export async function getSchoolWithRefById(id){
+    const docRef = doc(schoolsDbRef, id);
+    const docSnap = await getDoc(docRef);
+    if(docSnap.exists()) {
+        return {data: docSnap.data(), id: docSnap.id, ref: docSnap};
+    } else {
+        return false
+    }
+}
+
 
 export async function getSchoolById(id){
     const docRef = doc(schoolsDbRef, id);

@@ -3,7 +3,7 @@ import {
     Nav, Navbar, NavbarBrand, NavItem, NavLink, DropdownMenu,
     DropdownItem, ButtonDropdown, DropdownToggle, UncontrolledButtonDropdown, Button
 } from "reactstrap";
-import {synchronise} from "../config/synchroFirebase";
+import {synchronise} from "../config/SynchroFirebase";
 
 export function NavBar(){
     const [language, setLanguage] = useState("en");

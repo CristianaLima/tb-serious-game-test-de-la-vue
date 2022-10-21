@@ -1,14 +1,15 @@
 import React, {useEffect} from "react";
 import {NavBar} from "../components/NavBar";
 import {useNavigate} from "react-router-dom";
-import {stockDataInLocalStorage} from "../config/synchroFirebase";
+import {stockDataInLocalStorage} from "../config/SynchroFirebase";
+import {getTherapistWithRefById} from "../config/InitFirebase";
+import {LS_CURRENT_THERAPIST} from "./App";
 
 export function Home(){
     const navigate = useNavigate();
 
     useEffect(() => {
-        //TODO: ask Océane for method
-        //getTherapistById("X6ITtB97ZhCqf4Uw3yhH").then(t => localStorage.setItem(LS_CURRENT_THERAPIST, JSON.stringify(t)));
+        getTherapistWithRefById("X6ITtB97ZhCqf4Uw3yhH").then(t => localStorage.setItem(LS_CURRENT_THERAPIST, JSON.stringify(t)));
 
         stockDataInLocalStorage();
     }, []);
