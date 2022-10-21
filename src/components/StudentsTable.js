@@ -34,8 +34,8 @@ export function StudentsTable({theadData, tbodyData}) {
                     })}
                     <td><button className="btn btn-outline-primary"
                                 onClick={() => {
-                                    getStudentById(row["id"]).then(r => setStudent(
-                                        {fullName: r.fullName, dob: r.dob, class: r.class, idSchool: r.idSchool }))
+                                    /*getStudentById(row["id"]).then(r => setStudent(
+                                        {fullName: r.fullName, dob: r.dob, class: r.class, idSchool: r.idSchool }))*/
                                 }}>
                         Select this student TODO</button></td>
                 </tr>;

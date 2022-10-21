@@ -1,27 +1,24 @@
 import React, {useEffect, useState} from 'react';
-import {addStudent, getSchoolById} from "../config/InitFirebase";
 import {LS_STUDENT, LS_SCHOOLS, LS_NEW_STUDENTS} from "../views/App";
 import {useNavigate} from "react-router-dom";
 
 export default StudentForm;
 
 function StudentForm() {
-    const [newStudents, setNewStudents] = useState([]);
+    const [newStudents, setNewStudents] = useState(() => {
+        return JSON.parse(localStorage.getItem(LS_NEW_STUDENTS)) || []
+    });
     const [schools] = useState(JSON.parse(localStorage.getItem(LS_SCHOOLS)));
     const [student, setStudent] = useState({
-        id: "", //Math.round(Date.now() / 1000).toString(),
+        localId: Math.round(Date.now() / 1000).toString(),
         fullName: "",
         class: "",
         dob: "",
-        idSchool: ""
+        idSchool: schools[0].id
     });
     const navigate = useNavigate();
     //const [networkColor, setNetworkColor] = useState("red");
     //const [isOnline, setNetwork] = useState(window.navigator.onLine);
-
-    useEffect( () => {
-        setStudent({...student, idSchool: schools[0].id})
-    }, []);
 
     // Register the event listeners of navigator statut (online)
     /*useEffect(() => {
@@ -34,53 +31,45 @@ function StudentForm() {
         }
     }, []);*/
 
-    // Initialize array of student il local storage (TODO: check)
-   useEffect(() => {
-        const storageStudents = JSON.parse(localStorage.getItem(LS_NEW_STUDENTS));
-        if (storageStudents) {
-            setNewStudents(storageStudents);
-        }
-    }, []);
 
     // Update local storage each time students gets updated
-    /*useEffect(() => {
+    useEffect(() => {
             localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify(newStudents));
-    }, [newStudents]);*/
+    }, [newStudents]);
 
     // Update local storage each time students gets updated
     useEffect(() => {
         localStorage.setItem(LS_STUDENT, JSON.stringify(student));
-    }, [student]);
+        }, [student]);
 
     // Handle submition of the form
     function handleSubmit(e) {
         e.preventDefault(); // prevents browser refresh
-        //setStudent({...student, id: Math.round(Date.now() / 1000).toString() })
-        //TODO: call school ref in lcoal storage
-            getSchoolById(student.idSchool).then(s => {
-                let studentToPush = {
-                    fullName: student.fullName,
-                    class: student.class,
-                    dob: student.dob,
-                    idSchool: s.ref
-                };
-                addStudent(studentToPush).then((r)=>{
-                    setStudent({...student, id: r.id })
-                    addStudentToArray(student);
-                    localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify(newStudents)); // TODO: why always one late ?
-                    window.open('/acuityTestScreen', '_self')
-                    window.open('/acuityTestController', '_blank');
-                });
-            })
+        addStudentToArray(student)
+        //TODO: wait end addStudentToArray
+        //window.open('/acuityTestScreen', '_self')
+        //window.open('/acuityTestController', '_blank');
+        //for test :
+
     }
 
     // Add student in array of students if not already in
     function addStudentToArray(student) {
-        /*const exist = students.some(c => (c.id === student.id ));
-        if (exist===false && !students.includes(student)){
-            setStudents([...students, student]);
-        }*/
-        setNewStudents([...newStudents, student]);
+        const exist = newStudents.some(c => (c.localId === student.localId ));
+        if (exist===false && !newStudents.includes(student)){
+            console.log(student)
+            setNewStudents([...newStudents, student]);
+            localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify(newStudents));
+            setStudent({
+                localId: Math.round(Date.now() / 1000).toString(),
+                fullName: "",
+                class: "",
+                dob: "",
+                idSchool: schools[0].id})
+        }
+        console.log(newStudents)
+        //setNewStudents([...newStudents, student]);
+
     }
 
     // For check connection
@@ -143,8 +132,8 @@ function StudentForm() {
                     <div className="form-group">
                         <label htmlFor="school">School</label>
                         <select className="form-control" id="school" onChange={handleChangeSchool}>
-                            {schools.map((school) => (
-                                <option key={school.id} value={school.id}>{school.name}</option>
+                            {schools.map((s) => (
+                                <option key={s.id} value={s.id}>{s.data.name}</option>
                             ))}
                         </select>
                     </div>

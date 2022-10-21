@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {
     Nav, Navbar, NavbarBrand, NavItem, NavLink, DropdownMenu,
-    DropdownItem, ButtonDropdown, DropdownToggle, UncontrolledButtonDropdown
+    DropdownItem, ButtonDropdown, DropdownToggle, UncontrolledButtonDropdown, Button
 } from "reactstrap";
+import {synchronise} from "../config/InitFirebase";
 
 export function NavBar(){
     const [language, setLanguage] = useState("en");
@@ -16,6 +17,7 @@ export function NavBar(){
                <NavbarBrand href = "/">
                    Esco Visual Acuity (VA) Screening App
                </NavbarBrand>
+               <Button onClick={()=>synchronise()}>Synchronise</Button>
                <UncontrolledButtonDropdown>
                    <DropdownToggle caret>Language</DropdownToggle>
                    <DropdownMenu>
