@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {LS_STUDENT, LS_SCHOOLS, LS_NEW_STUDENTS} from "../views/App";
-import {useNavigate} from "react-router-dom";
 
 export default StudentForm;
 
@@ -16,7 +15,7 @@ function StudentForm() {
         dob: "",
         idSchool: schools[0].id
     });
-    const navigate = useNavigate();
+
     //const [networkColor, setNetworkColor] = useState("red");
     //const [isOnline, setNetwork] = useState(window.navigator.onLine);
 
@@ -49,27 +48,22 @@ function StudentForm() {
         //TODO: wait end addStudentToArray
         //window.open('/acuityTestScreen', '_self')
         //window.open('/acuityTestController', '_blank');
-        //for test :
-
     }
 
     // Add student in array of students if not already in
     function addStudentToArray(student) {
         const exist = newStudents.some(c => (c.localId === student.localId ));
         if (exist===false && !newStudents.includes(student)){
-            console.log(student)
             setNewStudents([...newStudents, student]);
-            localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify(newStudents));
+            //localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify(newStudents));
             setStudent({
                 localId: Math.round(Date.now() / 1000).toString(),
                 fullName: "",
                 class: "",
                 dob: "",
-                idSchool: schools[0].id})
+                idSchool: student.idSchool //TODO: reset select option two
+            })
         }
-        console.log(newStudents)
-        //setNewStudents([...newStudents, student]);
-
     }
 
     // For check connection

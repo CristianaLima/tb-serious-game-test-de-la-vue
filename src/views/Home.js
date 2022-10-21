@@ -1,19 +1,16 @@
 import React, {useEffect} from "react";
 import {NavBar} from "../components/NavBar";
-import {LS_SCHOOLS, LS_STUDENTS, LS_TESTS} from "./App";
 import {useNavigate} from "react-router-dom";
-import {getAllSchoolsFb, getAllStudentsFb, getAllTestsFb} from "../config/InitFirebase";
+import {stockDataInLocalStorage} from "../config/synchroFirebase";
 
 export function Home(){
     const navigate = useNavigate();
 
     useEffect(() => {
-        async function fetchData() {
-            getAllSchoolsFb().then(s => localStorage.setItem(LS_SCHOOLS, JSON.stringify(s)));
-            getAllStudentsFb().then(s => localStorage.setItem(LS_STUDENTS, JSON.stringify(s)));
-            getAllTestsFb().then(s => localStorage.setItem(LS_TESTS, JSON.stringify(s)));
-        }
-        fetchData();
+        //TODO: ask Océane for method
+        //getTherapistById("X6ITtB97ZhCqf4Uw3yhH").then(t => localStorage.setItem(LS_CURRENT_THERAPIST, JSON.stringify(t)));
+
+        stockDataInLocalStorage();
     }, []);
 
     return(

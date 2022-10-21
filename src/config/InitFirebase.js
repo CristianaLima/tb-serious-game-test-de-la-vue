@@ -2,7 +2,6 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/firestore"
 import {addDoc, doc, getDoc, collection, getFirestore, getDocs} from "firebase/firestore";
 import Moment from "moment";
-import {LS_NEW_STUDENTS, LS_SCHOOLS, LS_STUDENTS, LS_TESTS} from "../views/App";
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -19,42 +18,6 @@ const db = getFirestore(firebaseApp);
 const studentsDbRef = collection(db, "students")
 const schoolsDbRef = collection(db, "schools")
 const testsDbRef = collection(db, "tests")
-
-export async function synchronise(){
-    //Student
-    const newStudents = JSON.parse(localStorage.getItem(LS_NEW_STUDENTS));
-    const schools = JSON.parse(localStorage.getItem(LS_SCHOOLS));
-    for (let i = 0; i < newStudents.length; i++) {
-        // Transform idSchool value form just id to ref
-        let schoolRef = schools.find((s) => {
-            return s.id === newStudents[i].idSchool
-        }).ref
-        // Reconstruct student to delete value "localId"
-        var studentFb = {
-            fullName: newStudents[i].fullName,
-            class: newStudents[i].class,
-            dob: newStudents[i].dob,
-            idSchool: schoolRef
-        }
-        addStudentFb(studentFb).then(
-            r => {studentFb={...studentFb, id : r.id };
-            console.log(studentFb)
-        });
-
-    }
-
-    //Test
-    const tests = JSON.parse(localStorage.getItem(LS_TESTS));
-    for (let i = 0; i < tests.length; i++) {
-
-    }
-
-    // Refresh data
-    getAllSchoolsFb().then(s => localStorage.setItem(LS_SCHOOLS, JSON.stringify(s)));
-    getAllStudentsFb().then(s => localStorage.setItem(LS_STUDENTS, JSON.stringify(s)));
-    getAllTestsFb().then(s => localStorage.setItem(LS_TESTS, JSON.stringify(s)));
-    localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify([]));
-}
 
 function dateConverter(timeToChange) {
     let date;
