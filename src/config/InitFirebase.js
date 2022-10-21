@@ -26,13 +26,13 @@ function dateConverter(timeToChange) {
 }
 
 //Add Student
-export async function addStudentFb(e){
+export async function addStudent(e){
     e.dob = dateConverter(e.dob);
     return await addDoc(studentsDbRef, e);
 }
 
 //Get all schools
-export async function getAllSchoolsFb(){
+export async function getAllSchools(){
     const docsSnap = await getDocs(schoolsDbRef);
     let schoolsWithRef = [];
     docsSnap.forEach(doc => {
@@ -44,7 +44,7 @@ export async function getAllSchoolsFb(){
 }
 
 //Get all students
-export async function getAllStudentsFb(){
+export async function getAllStudents(){
     const docsSnap = await getDocs(studentsDbRef);
     let students = [];
     docsSnap.forEach(doc => {
@@ -64,7 +64,7 @@ export async function getAllStudentsFb(){
 }
 
 //Get all tests
-export async function getAllTestsFb(){
+export async function getAllTests(){
     const docsSnap = await getDocs(testsDbRef);
     let tests = [];
     docsSnap.forEach(doc => {
@@ -76,12 +76,12 @@ export async function getAllTestsFb(){
     return tests;
 }
 
-export async function addTestFb(e){
+export async function addTest(e){
     e.dateTest = dateConverter(e.dateTest);
     return await addDoc(testsDbRef, e);
 }
 
-export async function getTestsByIdFb(id){
+export async function getTestsById(id){
     const docRef = doc(testsDbRef, id);
     const docSnap = await getDoc(docRef);
     if(docSnap.exists()) {
@@ -92,7 +92,7 @@ export async function getTestsByIdFb(id){
     }
 }
 
-export async function getStudentByIdFb(id){
+export async function getStudentById(id){
         const docRef = doc(studentsDbRef, id);
         const docSnap = await getDoc(docRef);
         if(docSnap.exists()) {
@@ -103,7 +103,17 @@ export async function getStudentByIdFb(id){
         }
 }
 
-export async function getSchoolByIdFb(id){
+export async function getStudentWithRefById(id){
+    const docRef = doc(studentsDbRef, id);
+    const docSnap = await getDoc(docRef);
+    if(docSnap.exists()) {
+        return {data: docSnap.data(), id: docSnap.id, ref: docSnap};
+    } else {
+        return false
+    }
+}
+
+export async function getSchoolById(id){
     const docRef = doc(schoolsDbRef, id);
     const docSnap = await getDoc(docRef);
     if(docSnap.exists()) {
