@@ -45,9 +45,8 @@ function StudentForm() {
     function handleSubmit(e) {
         e.preventDefault(); // prevents browser refresh
         addStudentToArray(student)
-        //TODO: wait end addStudentToArray
-        //window.open('/acuityTestScreen', '_self')
-        //window.open('/acuityTestController', '_blank');
+        window.open('/acuityTestScreen', '_self')
+        window.open('/acuityTestController', '_blank');
     }
 
     // Add student in array of students if not already in
