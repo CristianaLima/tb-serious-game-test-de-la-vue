@@ -14,7 +14,7 @@ export function NavBar(){
        <div>
            <Navbar color={"light"}>
                <NavbarBrand href = "/">
-                   Esco Visual Acuity (VA) Screening App
+                   Visual Acuity (VA) Screening App
                </NavbarBrand>
                <UncontrolledButtonDropdown>
                    <DropdownToggle caret>Language</DropdownToggle>
