@@ -16,7 +16,7 @@ import {
 } from "./InitFirebase";
 
 export async function synchronise(){
-    //Get value in local storage
+        //Get value in local storage
     const newStudents = JSON.parse(localStorage.getItem(LS_NEW_STUDENTS));
 
     await synchroniseStudent(newStudents);
