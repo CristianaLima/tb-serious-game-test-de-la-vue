@@ -2,16 +2,20 @@ import React, {useEffect} from "react";
 import {NavBar} from "../components/NavBar";
 import {useNavigate} from "react-router-dom";
 import {stockDataInLocalStorage} from "../config/SynchroFirebase";
-import {getTherapistWithRefById} from "../config/InitFirebase";
+import {getTherapistById} from "../config/InitFirebase";
 import {LS_CURRENT_THERAPIST} from "./App";
+import {Button, Modal, ModalBody, ModalFooter, ModalHeader, Toast, ToastBody, ToastHeader} from "reactstrap";
+import {useState} from "react";
 
 export function Home(){
+    const [modal, setModal] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
-        getTherapistWithRefById("X6ITtB97ZhCqf4Uw3yhH").then(t => localStorage.setItem(LS_CURRENT_THERAPIST, JSON.stringify(t)));
+        getTherapistById("X6ITtB97ZhCqf4Uw3yhH").then(t => localStorage.setItem(LS_CURRENT_THERAPIST, JSON.stringify(t)));
 
-        stockDataInLocalStorage();
+        stockDataInLocalStorage().then(r => console.log("Data load"))
+
     }, []);
 
     return(

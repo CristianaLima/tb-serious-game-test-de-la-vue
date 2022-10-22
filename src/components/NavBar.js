@@ -37,13 +37,11 @@ export function NavBar(){
     function tryConnection(){
         let condition = navigator.onLine ? 'online' : 'offline';
         if (condition === 'online') {
-            console.log('ONLINE');
             fetch('https://www.google.com/', { // Check for internet connectivity
                 mode: 'no-cors',
             })
                 .then(() => {
-                    console.log("synchro")
-                    toggleToast();
+                    synchronise().then(r => toggleToast())
                 }).catch(() => {
                 toggleModal()
             }  )
@@ -69,17 +67,6 @@ export function NavBar(){
                        <DropdownItem onClick={()=>setLanguage("po")}>Portugais</DropdownItem>
                    </DropdownMenu>
                </UncontrolledButtonDropdown>
-
-               {/*<Nav navbar>*/}
-               {/*    <NavItem>*/}
-               {/*        <NavLink href = "acuityTestScreen">*/}
-               {/*            Test Screen*/}
-               {/*        </NavLink>*/}
-               {/*        <NavLink href = "acuityTestController" target={"_blank"}>*/}
-               {/*            Controller Screen*/}
-               {/*        </NavLink>*/}
-               {/*    </NavItem>*/}
-               {/*</Nav>*/}
            </Navbar>
            <Modal isOpen={modal} toggle={toggleModal}>
                <ModalHeader toggle={toggleModal}>

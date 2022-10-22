@@ -11,13 +11,13 @@ import {
     addTest,
     getAllSchools,
     getAllStudents,
-    getAllTests, getSchoolWithRefById,
-    getStudentWithRefById
+    getAllTests, getSchoolById,
+    getStudentById
 } from "./InitFirebase";
 
 export async function synchronise(){
-        //Get value in local storage
-    const newStudents = JSON.parse(localStorage.getItem(LS_NEW_STUDENTS));
+    //Get value in local storage
+    let newStudents = JSON.parse(localStorage.getItem(LS_NEW_STUDENTS));
 
     await synchroniseStudent(newStudents);
     await synchroniseTest(newStudents);
@@ -26,7 +26,14 @@ export async function synchronise(){
     await stockDataInLocalStorage();
 
     // Clear local storage from pushed data
-    localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify([]));
+    //TODO: check that all element has a id from firebase before deletes
+
+    for (let i = newStudents.length-1; i > -1; i--) {
+        if (newStudents[i].id !== ""){
+            newStudents = newStudents.filter((item, j) => j !== i)
+        }
+    }
+    localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify(newStudents));
     localStorage.setItem(LS_NEW_VISUALSTESTS, JSON.stringify([]));
 }
 
@@ -34,36 +41,26 @@ export async function stockDataInLocalStorage() {
     getAllSchools().then(s => localStorage.setItem(LS_SCHOOLS, JSON.stringify(s)));
     getAllStudents().then(s => localStorage.setItem(LS_STUDENTS, JSON.stringify(s)));
     getAllTests().then(s => localStorage.setItem(LS_VISUALSTESTS, JSON.stringify(s)));
+    //TODO: if empty, error handling
 }
 
 export async function synchroniseStudent(newStudents){
-    //Get value in local storage
-    const schools = JSON.parse(localStorage.getItem(LS_SCHOOLS));
-
     // Synchronise added student
     if (newStudents != null){
         for (let i = 0; i < newStudents.length; i++) {
-            // Transform idSchool value form just id to ref
-            /*let school = schools.find((s) => {
-                return s.id === newStudents[i].idSchool
-            })
-            // school.ref is interpreted like a map in firebase...
-            */
-            getSchoolWithRefById(newStudents[i].idSchool).then(s => {
                 // Reconstruct student to delete value "localId"
                 let studentToPush = {
                     fullName: newStudents[i].fullName,
                     class: newStudents[i].class,
                     dob: newStudents[i].dob,
-                    idSchool: s.ref
+                    idSchool: newStudents[i].idSchool
                 };
-                // Add new student to Firebase and get the ref
+                // Add new student to Firebase and set the id
                 addStudent(studentToPush).then(r => {
-                    newStudents[i]={...newStudents[i], id : r.id, ref: r };
-                    console.log(newStudents[i].id + " added to firebase")
-                    //TODO: error no clear local storage
+                    newStudents[i]={...newStudents[i], id : r.id};
+                    console.log("Student " + newStudents[i].id + " added to Firebase")
                     });
-            })
+
         }
     }
 
@@ -77,20 +74,11 @@ export async function synchroniseTest(newStudents){
     //TODO: test when test page --> see working school ref in synchroniseStudent
     if (newTests != null){
         for (let i = 0; i < newTests.length; i++) {
-            if (newTests[i].idStudent !== ""){
-                // Get the student's ref from Firebase with the IDSTUDENT
-                const studentFb = getStudentWithRefById(newTests[i].idStudent)
-                if (studentFb !== false){
-                    let student = studentFb.ref
-                    newTests[i].refStudent = student.ref
-                } else {
-                    console.log("Student not found") //todo: catch error ?
-                }
-            } else {
-                // Get the student's ref from Firebase with the LOCALIDSTUDENT
-                newTests[i].refStudent = newStudents.find((s) => {
-                    return s.ref === newTests[i].localIdStudent
-                }).ref
+            if (newTests[i].idStudent == ""){
+                // Set the student's id from Firebase with the LOCALIDSTUDENT
+                newTests[i].idStudent = newStudents.find((s) => {
+                    return s.localIdStudent === newTests[i].localIdStudent
+                }).id
             }
 
             // Reconstruct student to delete value "localId"
@@ -101,14 +89,13 @@ export async function synchroniseTest(newStudents){
                 vaRe: newTests[i].vaRe,
                 dateTest: newTests[i].dateTest,
                 rounds: newTests[i].rounds,
-                idStudent: newTests[i].refStudent,
-                idTherapist: therapist.ref
+                idStudent: newTests[i].idStudent,
+                idTherapist: therapist.id
             }
             // Add new test to Firebase
             addTest(testFb).then(
-                r => {newTests[i]={...newTests[i], id : r.id, ref: r };
-                    console.log(newTests[i])
-                    //TODO: error no clear local storage
+                r => {newTests[i]={...newTests[i], id : r.id};
+                    console.log("Test " + newTests[i].id + " added to Firebase")
                 });
         }
     }

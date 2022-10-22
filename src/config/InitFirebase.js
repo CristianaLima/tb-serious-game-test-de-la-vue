@@ -30,18 +30,20 @@ function dateConverter(timeToChange) {
 export async function addStudent(e){
     e.dob = dateConverter(e.dob);
     return await addDoc(studentsDbRef, e);
+    //TODO: error handling
 }
 
 //Get all schools
 export async function getAllSchools(){
-    const docsSnap = await getDocs(schoolsDbRef);
-    let schoolsWithRef = [];
-    docsSnap.forEach(doc => {
-            const schoolWithRef = {id: doc.id, data: doc.data(), ref: doc.ref}
-            schoolsWithRef.push(schoolWithRef);
-        }
-    );
-    return schoolsWithRef;
+        const docsSnap = await getDocs(schoolsDbRef);
+        let schools = [];
+        docsSnap.forEach(doc => {
+                const school = { data: doc.data(), id: doc.id}
+                schools.push(school);
+            }
+        );
+        return schools;
+    //TODO: error handling
 }
 
 //Get all students
@@ -52,16 +54,17 @@ export async function getAllStudents(){
             const student = doc.data();
             Moment.locale('en'); //TODO: link to quentin code
             const dob = student.dob.toDate();
-            const schoolWithId = {
-                id: doc.id,
+            const studentDate = {
                 fullName: student.fullName,
                 dob: Moment(dob).format('d MMMM yyyy'),
                 class: student.class
                 };
-            students.push(schoolWithId);
+            const studentWithId = { data: studentDate, id: doc.id}
+            students.push(studentWithId);
         }
     );
     return students;
+    //TODO: error handling
 }
 
 //Get all tests
@@ -69,24 +72,25 @@ export async function getAllTests(){
     const docsSnap = await getDocs(testsDbRef);
     let tests = [];
     docsSnap.forEach(doc => {
-            const test = doc.data();
-            const testWithId = {...test, id: doc.id};
+            const testWithId = {data: doc.data(), id: doc.id};
             tests.push(testWithId);
         }
     );
     return tests;
+    //TODO: error handling
 }
 
 export async function addTest(e){
     e.dateTest = dateConverter(e.dateTest);
     return await addDoc(testsDbRef, e);
+    //TODO: error handlling
 }
 
 export async function getTestsById(id){
     const docRef = doc(testsDbRef, id);
     const docSnap = await getDoc(docRef);
     if(docSnap.exists()) {
-        return docSnap.data();
+        return {data: docSnap.data(), id: docSnap.id};
     } else {
         console.log("Document does not exist")
         //TODO : pop-up ou page qui dit que ça n'existe pas
@@ -97,40 +101,21 @@ export async function getStudentById(id){
         const docRef = doc(studentsDbRef, id);
         const docSnap = await getDoc(docRef);
         if(docSnap.exists()) {
-            return docSnap.data();
+            return {data: docSnap.data(), id: docSnap.id};
         } else {
             console.log("Document does not exist")
             //TODO : pop-up ou page qui dit que ça n'existe pas
         }
 }
 
-export async function getStudentWithRefById(id){
-    const docRef = doc(studentsDbRef, id);
-    const docSnap = await getDoc(docRef);
-    if(docSnap.exists()) {
-        return {data: docSnap.data(), id: docSnap.id, ref: docSnap.ref};
-    } else {
-        return false
-    }
-}
-
-export async function getTherapistWithRefById(id){
+export async function getTherapistById(id){
     const docRef = doc(therapistDbRef, id);
     const docSnap = await getDoc(docRef);
     if(docSnap.exists()) {
-        return {data: docSnap.data(), id: docSnap.id, ref: docSnap.ref};
+        return {data: docSnap.data(), id: docSnap.id};
     } else {
-        return false
-    }
-}
-
-export async function getSchoolWithRefById(id){
-    const docRef = doc(schoolsDbRef, id);
-    const docSnap = await getDoc(docRef);
-    if(docSnap.exists()) {
-        return {data: docSnap.data(), id: docSnap.id, ref: docSnap.ref};
-    } else {
-        return false
+        console.log("Document does not exist")
+        //TODO : pop-up ou page qui dit que ça n'existe pas
     }
 }
 
@@ -138,7 +123,7 @@ export async function getSchoolById(id){
     const docRef = doc(schoolsDbRef, id);
     const docSnap = await getDoc(docRef);
     if(docSnap.exists()) {
-        return docSnap;
+        return {data: docSnap.data(), id: docSnap.id};
     } else {
         console.log("Document does not exist")
         //TODO : pop-up ou page qui dit que ça n'existe pas
