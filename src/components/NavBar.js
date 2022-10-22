@@ -25,16 +25,16 @@ export function NavBar(){
                    </DropdownMenu>
                </UncontrolledButtonDropdown>
 
-               {/*<Nav navbar>*/}
-               {/*    <NavItem>*/}
-               {/*        <NavLink href = "acuityTestScreen">*/}
-               {/*            Test Screen*/}
-               {/*        </NavLink>*/}
-               {/*        <NavLink href = "acuityTestController" target={"_blank"}>*/}
-               {/*            Controller Screen*/}
-               {/*        </NavLink>*/}
-               {/*    </NavItem>*/}
-               {/*</Nav>*/}
+               <Nav navbar>
+                   <NavItem>
+                       <NavLink href = "acuityTestScreen">
+                           Test Screen
+                       </NavLink>
+                       {/*<NavLink href = "acuityTestController" target={"_blank"}>*/}
+                       {/*    Controller Screen*/}
+                       {/*</NavLink>*/}
+                   </NavItem>
+               </Nav>
            </Navbar>
 
        </div>
