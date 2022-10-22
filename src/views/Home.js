@@ -1,19 +1,21 @@
 import React, {useEffect} from "react";
 import {NavBar} from "../components/NavBar";
-import {getAllSchools, getAllStudents, getAllTests} from "../config/InitFirebase";
-import {LS_SCHOOLS, LS_STUDENTS, LS_TESTS} from "./App";
 import {useNavigate} from "react-router-dom";
+import {stockDataInLocalStorage} from "../config/SynchroFirebase";
+import {getTherapistById} from "../config/InitFirebase";
+import {LS_CURRENT_THERAPIST} from "./App";
+import {Button, Modal, ModalBody, ModalFooter, ModalHeader, Toast, ToastBody, ToastHeader} from "reactstrap";
+import {useState} from "react";
 
 export function Home(){
+    const [modal, setModal] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
-        async function fetchData() {
-            getAllSchools().then(s => localStorage.setItem(LS_SCHOOLS, JSON.stringify(s)));
-            getAllStudents().then(s => localStorage.setItem(LS_STUDENTS, JSON.stringify(s)));
-            getAllTests().then(s => localStorage.setItem(LS_TESTS, JSON.stringify(s)));
-        }
-        fetchData();
+        getTherapistById("X6ITtB97ZhCqf4Uw3yhH").then(t => localStorage.setItem(LS_CURRENT_THERAPIST, JSON.stringify(t)));
+
+        stockDataInLocalStorage().then(r => console.log("Data load"))
+
     }, []);
 
     return(
