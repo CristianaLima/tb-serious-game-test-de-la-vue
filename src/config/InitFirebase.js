@@ -38,7 +38,7 @@ export async function getAllSchools(){
         const docsSnap = await getDocs(schoolsDbRef);
         let schools = [];
         docsSnap.forEach(doc => {
-                const school = { data: doc.data(), id: doc.id}
+                const school = { ...doc.data(), id: doc.id}
                 schools.push(school);
             }
         );
@@ -59,7 +59,7 @@ export async function getAllStudents(){
                 dob: Moment(dob).format('d MMMM yyyy'),
                 class: student.class
                 };
-            const studentWithId = { data: studentDate, id: doc.id}
+            const studentWithId = { ...studentDate, id: doc.id}
             students.push(studentWithId);
         }
     );
@@ -72,7 +72,7 @@ export async function getAllTests(){
     const docsSnap = await getDocs(testsDbRef);
     let tests = [];
     docsSnap.forEach(doc => {
-            const testWithId = {data: doc.data(), id: doc.id};
+            const testWithId = {...doc.data(), id: doc.id};
             tests.push(testWithId);
         }
     );
@@ -90,7 +90,7 @@ export async function getTestsById(id){
     const docRef = doc(testsDbRef, id);
     const docSnap = await getDoc(docRef);
     if(docSnap.exists()) {
-        return {data: docSnap.data(), id: docSnap.id};
+        return {...docSnap.data(), id: docSnap.id};
     } else {
         console.log("Document does not exist")
         //TODO : pop-up ou page qui dit que ça n'existe pas
@@ -101,7 +101,7 @@ export async function getStudentById(id){
         const docRef = doc(studentsDbRef, id);
         const docSnap = await getDoc(docRef);
         if(docSnap.exists()) {
-            return {data: docSnap.data(), id: docSnap.id};
+            return {...docSnap.data(), id: docSnap.id};
         } else {
             console.log("Document does not exist")
             //TODO : pop-up ou page qui dit que ça n'existe pas
@@ -112,7 +112,7 @@ export async function getTherapistById(id){
     const docRef = doc(therapistDbRef, id);
     const docSnap = await getDoc(docRef);
     if(docSnap.exists()) {
-        return {data: docSnap.data(), id: docSnap.id};
+        return {...docSnap.data(), id: docSnap.id};
     } else {
         console.log("Document does not exist")
         //TODO : pop-up ou page qui dit que ça n'existe pas
@@ -123,7 +123,7 @@ export async function getSchoolById(id){
     const docRef = doc(schoolsDbRef, id);
     const docSnap = await getDoc(docRef);
     if(docSnap.exists()) {
-        return {data: docSnap.data(), id: docSnap.id};
+        return {...docSnap.data(), id: docSnap.id};
     } else {
         console.log("Document does not exist")
         //TODO : pop-up ou page qui dit que ça n'existe pas

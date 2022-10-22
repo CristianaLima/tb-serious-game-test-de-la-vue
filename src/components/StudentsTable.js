@@ -1,7 +1,4 @@
 import React from "react";
-import {useEffect} from "react";
-import {LS_STUDENT} from "../views/App";
-import {useState} from "react";
 
 export function StudentsTable({theadData, tbodyData}) {
     //TODO: complete for selection button

@@ -100,7 +100,7 @@ function StudentForm() {
                         <label htmlFor="school">School</label>
                         <select className="form-control" id="school" onChange={handleChangeSchool}>
                             {schools.map((s) => (
-                                <option key={s.id} value={s.id}>{s.data.name}</option>
+                                <option key={s.id} value={s.id}>{s.name}</option>
                             ))}
                         </select>
                     </div>
