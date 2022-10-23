@@ -1,20 +1,5 @@
-import React, {useState,useEffect} from 'react';
-import {NavBar} from "../components/NavBar";
+import {useState} from "react";
 
-
-
-
-export function AcuityTestScreen(){
-
-
-    return(
-        <div>
-            <NavBar/>
-            <h1>Test screen</h1>
-            <ImageSizing/>
-        </div>
-    )
-}
 const ImageSizing = () => {
     const [size, setSize] = useState(50);
     return (
