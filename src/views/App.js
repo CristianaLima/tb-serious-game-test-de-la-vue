@@ -10,9 +10,11 @@ import {StudentsListScreen} from "./StudentsListScreen";
 // Constants for local storage
 export const LS_SCHOOLS = "schools";
 export const LS_STUDENTS = "students";
-export const LS_TESTS = "visualTest";
+export const LS_VISUALSTESTS = "visualTest";
 export const LS_NEW_STUDENTS = "newStudents";
 export const LS_STUDENT = "student";
+export const LS_NEW_VISUALSTESTS = "newVisualTests";
+export const LS_CURRENT_THERAPIST = "currentTherapist";
 
 function App() {
 
