@@ -3,7 +3,7 @@ import {NavBar} from "../components/NavBar";
 import SizeImage from "../components/SizeImage";
 
 export function AcuityTestScreen(){
-const axe = 400
+const axe = -0.3
     return(
         <div>
             <NavBar/>

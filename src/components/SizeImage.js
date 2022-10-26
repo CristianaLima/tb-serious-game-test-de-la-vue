@@ -2,14 +2,15 @@ import React, {useState} from "react";
 
 
 export function SizeImage({ axe }){
+    axe = (axe+1)*100;
     const [size, setSize] = useState(axe);
     return (
         <div>
             <input
                 id="ranger"
                 type="range"
-                min="100"
-                max="800"
+                min="50"
+                max="250"
                 value={size}
                 onChange={e => {
                     const { value } = e.target;
