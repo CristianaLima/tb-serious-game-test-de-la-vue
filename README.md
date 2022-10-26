@@ -15,7 +15,7 @@ This project was created as a school project for the module 646-2 - 2022 - FIG /
 Development team
 - [Gwenaëlle Gustin](https://gitlab.com/gwenaelle.gustin)
 - [Océane Tapparel](https://gitlab.com/oceane.tapparel)
-- [Matthieu Hagenbouch](https://gitlab.com/matthieu.hagenbuch)
+- [Matthieu Hagenbuch](https://gitlab.com/matthieu.hagenbuch)
 - [Quentin Flament](https://gitlab.com/Qflament)
 
 ### Functionalities
