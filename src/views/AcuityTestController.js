@@ -1,57 +1,49 @@
 import React, {useState} from 'react';
-import c1 from '../assets/c1.png'
-import c2 from '../assets/c2.png'
-import c3 from '../assets/c3.png'
-import c4 from '../assets/c4.png'
+import c from '../assets/c_picture.png'
 import {Button, ButtonGroup} from "reactstrap";
 
 export function AcuityTestController(){
 
-    const Click_c1 = () => {
-        console.log("c1_click");
-    };
-    const Click_c2 = () => {
-        console.log("c2_click");
-    };
-    const Click_c3 = () => {
-        console.log("c3_click");
-    };
-    const Click_c4 = () => {
-        console.log("c4_click");
-    };
+    function c_selected (e) {
+        console.log(e)
+    }
 
     return (
         <>
         <ButtonGroup>
-            <Button class="btn btn-secondary" onClick={Click_c1} >
+            <Button className="btn btn-secondary" onClick={() => {c_selected("0")}}>
                 <img width="250"
-                    src={c1}
-                     class="img-thumbnail"
-                    alt="C right"
+                     style={{transform: "rotate(0deg)"}}
+                    src={c}
+                     className="img-thumbnail"
+                    alt="c 0°"
                 />
             </Button>
-            <Button class="btn btn-secondary" onClick={Click_c2}>
+            <Button className="btn btn-secondary" onClick={() => {c_selected("90")}}>
                 <img width="250"
-                    src={c2}
-                    class="img-thumbnail"
-                    alt="C bot"
+                     style={{transform: "rotate(90deg)"}}
+                    src={c}
+                     className="img-thumbnail"
+                    alt="c 90°"
                 />
             </Button>
         </ButtonGroup>
             <br/>
     <ButtonGroup>
-            <Button class="btn btn-secondary" onClick={Click_c3}>
+            <Button className="btn btn-secondary" onClick={() => {c_selected("180")}}>
                 <img width="250"
-                    src={c3}
-                    class="img-thumbnail"
-                    alt="C left"
+                     style={{transform: "rotate(180deg)"}}
+                    src={c}
+                     className="img-thumbnail"
+                    alt="c 180°"
                 />
             </Button >
-            <Button class="btn btn-secondary" onClick={Click_c4}>
+            <Button className="btn btn-secondary" onClick={() => {c_selected("270")}}>
                 <img width="250"
-                    src={c4}
-                    class="img-thumbnail"
-                    alt="C top"
+                     style={{transform: "rotate(270deg)"}}
+                    src={c}
+                    className="img-thumbnail"
+                    alt="c 270°"
                 />
             </Button>
         </ButtonGroup>
