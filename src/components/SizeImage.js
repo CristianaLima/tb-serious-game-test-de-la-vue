@@ -11,14 +11,19 @@ export function SizeImage({ axe }){
     function testValue() {
         console.log("before if testValue "+rotation);
         console.log(array[4]);
+
+        // do {
+        //     setRotation(randomAxe());
+        //     console.log("inside while "+rotation);
+        // }while (rotation === array[4])
         if(rotation === array[4]){
             setRotation(randomAxe());
             console.log("inside If "+rotation);
         }
-        console.log("after if testValue "+rotation);
+       // console.log("after if testValue "+rotation);
         array[4] = rotation;
         console.log(array);
-        console.log(array[4]);
+        // console.log(array[4]);
         return rotation;
     }
 
@@ -58,8 +63,11 @@ export function SizeImage({ axe }){
                     setSize(parseInt(value, 10));
                 }}
             />
-            <button onClick={()=>{setRotation(testValue)}}>
-                Tournez le C
+            <button onClick={()=>{setRotation(testValue())}}>
+                Tournez le C test value
+            </button>
+            <button onClick={()=>{setRotation(randomAxe())}}>
+                Tournez le C random
             </button>
             <div>
                 <img
