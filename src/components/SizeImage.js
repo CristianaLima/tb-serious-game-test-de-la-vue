@@ -19,9 +19,9 @@ export function SizeImage(){
                 if (tour < 8 ){
                     const newValue = JSON.parse(localStorage.getItem(LS_C_SELECTED))
                     console.log("C SELECTED: " +  newValue.axe + " tour:" +newValue.tour)
+                    console.log("actual axe: " + array[4])
                     tour = newValue.tour;
                     setRotation(testValue()) //Change rotation
-                    //setTour(newValue.tour)
                     //TODO: change size
                 }
             }
