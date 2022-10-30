@@ -6,14 +6,74 @@ export function SizeImage({ axe }){
     const [rotation, setRotation] = useState(0);
     const [array, setArray] = useState([0,0,0,0,0]);
     let rot=rotation;
-    const maxRep = 2;
+    const maxRep = 8;
+    let status = false;
+    let result=0;
 
     function testValue() {
         randomAxe();
-        while(rot === array[4]){
+        while(rot === array[4] || status === false) {
+            console.log("boucle in")
+        if (rot === array[4]){
             randomAxe();
         }
-        console.log(array)
+        else {
+            if (status === false) {
+                switch (rot) {
+                    case 0:
+                        if (array[0] < (maxRep / 4) && rot !== array[4]) {
+                            array[0] += 1;
+                            status = true;
+                        } else {
+                            randomAxe();
+                        }
+                        break;
+                    case 90:
+                        if (array[1] < (maxRep / 4) && rot !== array[4]) {
+                            array[1] += 1;
+                            status = true;
+                        } else {
+                            randomAxe();
+                        }
+                        break;
+                    case 180:
+                        if (array[2] < (maxRep / 4) && rot !== array[4]) {
+                            array[2] += 1;
+                            status = true;
+                        } else {
+                            randomAxe();
+                        }
+                        break;
+                    case 270:
+                        if (array[3] < (maxRep / 4) && rot !== array[4]) {
+                            array[3] += 1;
+                            status = true;
+                        } else {
+                            randomAxe();
+                        }
+                        break;
+                }
+            }
+        }
+        }
+
+        for (let i = 0; i < 4; i++) {
+            result = result+ array[i];
+        }
+        console.log("resultat: "+result);
+
+        if (result>=maxRep){
+            status = true;
+            return (
+                <div>Test Finish</div>
+            );
+        }else {
+            status = false;
+
+        }
+
+        console.log("tableau "+array);
+        console.log("array[4] "+array[4]);
         array[4] = rot;
         return rot;
     }
