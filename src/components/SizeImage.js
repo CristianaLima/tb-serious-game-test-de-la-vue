@@ -1,92 +1,93 @@
 import React, {useEffect, useState} from "react";
+import {LS_C_SELECTED,  MAXREP} from "../views/App";
 
 export function SizeImage(){
     const [testFinish, setTestFinish] = useState(false)
     const [size, setSize] = useState(100);
     const [rotation, setRotation] = useState(0);
-    const [array, setArray] = useState([0,0,0,0,0]);
+    const [array, setArray] = useState([0,0,0,0,-1]);
     let rot=rotation;
-    const maxRep = 8;
     let status = false;
-    let result=0;
+    let tour = 1;
 
     // Each time an answer is selected, next C appeared
     useEffect(() => {
+        setRotation(testValue())
+        localStorage.setItem(LS_C_SELECTED, JSON.stringify({tour: 1, axe:-1}))
         window.dispatchEvent(new Event("storage"));
         window.addEventListener("storage", e =>{
-                console.log("C SELECTED: " + e.newValue)
-                setRotation(testValue()) //Change rotation
-                //TODO: change size
+                if (tour < 8 ){
+                    const newValue = JSON.parse(localStorage.getItem(LS_C_SELECTED))
+                    console.log("C SELECTED: " +  newValue.axe + " tour:" +newValue.tour)
+                    tour = newValue.tour;
+                    setRotation(testValue()) //Change rotation
+                    //setTour(newValue.tour)
+                    //TODO: change size
+                }
             }
         );
     }, []);
 
     function testValue() {
+        if (testFinish === false) {
         randomAxe();
         while(rot === array[4] || status === false) {
             console.log("boucle in-----------------------------")
-        if (rot === array[4]){
-            randomAxe();
-        }
-        else {
-            if (status === false) {
-                switch (rot) {
-                    case 0:
-                        if (array[0] < (maxRep / 4) && rot !== array[4]) {
-                            array[0] += 1;
-                            status = true;
-                        } else {
+            if (rot === array[4]){
+                randomAxe();
+            }
+            else {
+                if (status === false) {
+                    switch (rot) {
+                        case 0:
+                            if (array[0] < (MAXREP / 4) && rot !== array[4]) {
+                                array[0] += 1;
+                                status = true;
+                             } else {
                             randomAxe();
+                            }
+                            break;
+                        case 90:
+                            if (array[1] < (MAXREP / 4) && rot !== array[4]) {
+                                array[1] += 1;
+                                status = true;
+                            } else {
+                                randomAxe();
+                            }
+                            break;
+                        case 180:
+                            if (array[2] < (MAXREP / 4) && rot !== array[4]) {
+                                array[2] += 1;
+                                status = true;
+                            } else {
+                                randomAxe();
+                            }
+                            break;
+                        case 270:
+                            if (array[3] < (MAXREP / 4) && rot !== array[4]) {
+                                array[3] += 1;
+                                status = true;
+                            } else {
+                                randomAxe();
+                            }
+                            break;
                         }
-                        break;
-                    case 90:
-                        if (array[1] < (maxRep / 4) && rot !== array[4]) {
-                            array[1] += 1;
-                            status = true;
-                        } else {
-                            randomAxe();
-                        }
-                        break;
-                    case 180:
-                        if (array[2] < (maxRep / 4) && rot !== array[4]) {
-                            array[2] += 1;
-                            status = true;
-                        } else {
-                            randomAxe();
-                        }
-                        break;
-                    case 270:
-                        if (array[3] < (maxRep / 4) && rot !== array[4]) {
-                            array[3] += 1;
-                            status = true;
-                        } else {
-                            randomAxe();
-                        }
-                        break;
+                    }
                 }
             }
-        }
-        }
-
-        for (let i = 0; i < 4; i++) {
-            result = result+ array[i];
-        }
-        console.log("resultat: "+result);
-
-        if (result>=maxRep){
+        if (tour>=MAXREP){
             status = true;
             setTestFinish(true)
-            localStorage.setItem("c_selected", -1);
             return
         }else {
             status = false;
-
         }
 
         console.log("tableau "+array);
         console.log("array[4] "+array[4]);
         array[4] = rot;
         return rot;
+        }
     }
 
     function randomAxe()  {
@@ -97,19 +98,19 @@ export function SizeImage(){
         switch (random){
             case 0 :
                 rot = 0
-                console.log("return "+rot)
+                //console.log("return "+rot)
                 return rot;
             case 1 :
                 rot = 90
-                console.log("return "+rot)
+                //console.log("return "+rot)
                 return rot;
             case 2 :
                 rot = 180
-                console.log("return "+rot)
+                //console.log("return "+rot)
                 return rot;
             case 3 :
                 rot = 270
-                console.log("return "+rot)
+                //console.log("return "+rot)
                 return rot;
 
         }

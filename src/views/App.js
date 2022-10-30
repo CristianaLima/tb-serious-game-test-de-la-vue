@@ -13,6 +13,8 @@ export const LS_NEW_STUDENTS = "newStudents";
 export const LS_STUDENT = "student";
 export const LS_NEW_VISUALSTESTS = "newVisualTests";
 export const LS_CURRENT_THERAPIST = "currentTherapist";
+export const LS_C_SELECTED = "Cselected";
+export const MAXREP = 8;
 
 function App() {
 

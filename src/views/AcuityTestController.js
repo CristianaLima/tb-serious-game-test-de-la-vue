@@ -1,29 +1,19 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Button, ButtonGroup} from "reactstrap";
 import c from "../assets/c_picture.png";
+import {LS_C_SELECTED, MAXREP} from "./App";
 
 export function AcuityTestController(){
-    const [testFinish, setTestFinish] = useState(false)
-
-    useEffect(() => {
-        window.addEventListener("storage", e =>{
-                console.log("C SELECTED: " + e.newValue)
-                if (e.newValue === "-1"){
-                    setTestFinish(true)
-                }
-            }
-        );
-    }, []);
-
+    const [tour, setTour] = useState(1)
 
     function c_selected (e) {
-        localStorage.setItem("c_selected", e);
+        localStorage.setItem(LS_C_SELECTED, JSON.stringify({tour: tour+1, axe:e}))
+        setTour(tour+1)
     }
-
 
     return (
         <>
-            {testFinish ? <div><p>Test finish</p></div> : <>
+            {tour === MAXREP ? <div><p>Test finish</p></div> : <>
                 <ButtonGroup>
                     <Button className="btn btn-secondary" onClick={() => {c_selected("0")}}>
                         <img width="250"
