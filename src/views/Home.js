@@ -1,11 +1,9 @@
 import React, {useEffect, useState} from "react";
 import {NavBar} from "../components/NavBar";
-import {useNavigate} from "react-router-dom";
 import {stockDataInLocalStorage} from "../config/SynchroFirebase";
 import {getTherapistById} from "../config/InitFirebase";
-import {LS_CURRENT_THERAPIST, LS_STUDENTS} from "./App";
+import {LS_CURRENT_THERAPIST} from "./App";
 import StudentForm from "../components/StudentForm";
-import {StudentsTable} from "../components/StudentsTable";
 import {StudentsList} from "../components/StudentList";
 
 export function Home(){
@@ -13,21 +11,21 @@ export function Home(){
 
     useEffect(() => {
         getTherapistById("X6ITtB97ZhCqf4Uw3yhH").then(t => localStorage.setItem(LS_CURRENT_THERAPIST, JSON.stringify(t)));
-        stockDataInLocalStorage().then(r => console.log("Data load"))
+        stockDataInLocalStorage().then(() => console.log("Data load"))
     }, []);
 
     return(
         <div className="Home">
+            <NavBar/>
             <>
-                {content==0 ? <div className="px-3 m-auto w-75 my-2 text-center">
-                        <NavBar/>
+                {content===0 ? <div className="px-3 m-auto w-75 my-2 text-center">
                         <button type="button" className="btn btn-primary btn-lg m-5">Results TODO</button>
                         <button type="button" className="btn btn-success btn-lg m-5"  onClick={() => {setContent(1)}}>
                             New Test
                         </button>
                     </div> :
                     <>
-                    {content==1 ?
+                    {content===1 ?
                         <div className="px-3 m-auto w-75 my-2 text-center">
                             <h1>NEW TEST: STUDENT INFO</h1>
                             <button type="button" className="btn btn-primary" onClick={() => {
@@ -38,7 +36,6 @@ export function Home(){
                             <StudentForm/>
                         </div>
                         : <>
-                            <NavBar/>
                             <StudentsList/>
                         <button type="button" className="btn btn-danger btn-lg m-5"
                                 onClick={() => {setContent(1)}}>
