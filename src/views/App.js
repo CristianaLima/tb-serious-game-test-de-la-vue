@@ -4,8 +4,6 @@ import {Route, Routes} from "react-router-dom";
 import {AcuityTestScreen} from "./AcuityTestScreen";
 import {AcuityTestController} from "./AcuityTestController";
 import {Home} from "./Home";
-import {StudentFormScreen} from "./StudentFormScreen";
-import {StudentsListScreen} from "./StudentsListScreen";
 
 // Constants for local storage
 export const LS_SCHOOLS = "schools";
@@ -22,8 +20,6 @@ function App() {
      <div className="App">
          <Routes>
              <Route path="/" element={<Home />}/>
-             <Route path="/studentFormScreen" element={<StudentFormScreen />}/>
-             <Route path="/studentsListScreen" element={<StudentsListScreen />}/>
              <Route path="/acuityTestController" element={<AcuityTestController />}/>
              <Route path="/acuityTestScreen" element={<AcuityTestScreen />}/>
          </Routes>

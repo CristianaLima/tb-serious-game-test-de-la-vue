@@ -1,14 +1,10 @@
 import React from 'react';
-import {NavBar} from "../components/NavBar";
-import StudentForm from "../components/StudentForm";
 import {useState} from "react";
-import {LS_STUDENTS} from "./App";
 import {StudentsTable} from "../components/StudentsTable";
-import {useNavigate} from "react-router-dom";
+import {LS_STUDENTS} from "../views/App";
 
-export function StudentsListScreen(){
+export function StudentsList(){
     const [students] = useState(JSON.parse(localStorage.getItem(LS_STUDENTS)));
-    const navigate = useNavigate();
 
     function StudentsFromFirebase() {
         if (students.length > 0) {
@@ -20,16 +16,8 @@ export function StudentsListScreen(){
     }
 
     return(
-        <div>
-            <NavBar/>
             <div className="px-3 m-auto w-75 my-2 text-center">
                 <StudentsFromFirebase/>
             </div>
-            <button type="button" className="btn btn-danger btn-lg m-5"
-                    onClick={() => {navigate("/studentFormScreen")}}>
-                GO BACK TO STUDENT INFO
-            </button>
-
-        </div>
     )
 }
