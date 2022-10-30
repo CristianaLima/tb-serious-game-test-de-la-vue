@@ -13,8 +13,6 @@ export function SizeImage({ axe }){
         while(rot === array[4]){
             randomAxe();
         }
-
-
         console.log(array)
         array[4] = rot;
         return rot;
