@@ -3,7 +3,7 @@ import {Button, ButtonGroup} from "reactstrap";
 import c from "../assets/c_picture.png";
 
 export function AcuityTestController(){
-    const [testFinsh, setTestFinish] = useState(false)
+    const [testFinish, setTestFinish] = useState(false)
 
     useEffect(() => {
         window.addEventListener("storage", e =>{
@@ -23,7 +23,7 @@ export function AcuityTestController(){
 
     return (
         <>
-            {testFinsh ? <div><p>Test finish</p></div> : <>
+            {testFinish ? <div><p>Test finish</p></div> : <>
                 <ButtonGroup>
                     <Button className="btn btn-secondary" onClick={() => {c_selected("0")}}>
                         <img width="250"
