@@ -7,7 +7,6 @@ import {
     NavLink,
     DropdownMenu,
     DropdownItem,
-    ButtonDropdown,
     DropdownToggle,
     UncontrolledButtonDropdown,
     Button,
@@ -41,7 +40,7 @@ export function NavBar(){
                 mode: 'no-cors',
             })
                 .then(() => {
-                    synchronise().then(r => toggleToast())
+                    synchronise().then(() => toggleToast())
                 }).catch(() => {
                 toggleModal()
             }  )
@@ -73,9 +72,9 @@ export function NavBar(){
                        <NavLink href = "acuityTestScreen">
                            Test Screen
                        </NavLink>
-                       {/*<NavLink href = "acuityTestController" target={"_blank"}>*/}
-                       {/*    Controller Screen*/}
-                       {/*</NavLink>*/}
+                       <NavLink href = "acuityTestController" target={"_blank"}>
+                           Controller Screen
+                       </NavLink>
                    </NavItem>
                </Nav>
 

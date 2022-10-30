@@ -1,14 +1,23 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 
-export function SizeImage({ axe }){
-    axe = (axe+1)*100;
-    const [size, setSize] = useState(axe);
+export function SizeImage(){
+    const [size, setSize] = useState(100);
     const [rotation, setRotation] = useState(0);
     const [array, setArray] = useState([0,0,0,0,0]);
     let rot=rotation;
     const maxRep = 8;
     let status = false;
     let result=0;
+
+    // Each time an answer is selected, next C appeared
+    useEffect(() => {
+        window.addEventListener("storage", e =>{
+                console.log("C SELECTED: " + e.newValue)
+                setRotation(testValue()) //Change rotation
+                //TODO: change size
+            }
+        );
+    }, []);
 
     function testValue() {
         randomAxe();
@@ -64,6 +73,7 @@ export function SizeImage({ axe }){
 
         if (result>=maxRep){
             status = true;
+            window.localStorage.setItem("c_selected", -1);
             return (
                 <div>Test Finish</div>
             );
