@@ -4,27 +4,20 @@ export function SizeImage({ axe }){
     axe = (axe+1)*100;
     const [size, setSize] = useState(axe);
     const [rotation, setRotation] = useState(0);
-    const [array, setArray] = useState([0,1,2,3,0]);
-
-
+    const [array, setArray] = useState([0,0,0,0,0]);
+    let rot=rotation;
+    const maxRep = 2;
 
     function testValue() {
-        console.log("before if testValue "+rotation);
-        console.log(array[4]);
-
-        // do {
-        //     setRotation(randomAxe());
-        //     console.log("inside while "+rotation);
-        // }while (rotation === array[4])
-        if(rotation === array[4]){
-            setRotation(randomAxe());
-            console.log("inside If "+rotation);
+        randomAxe();
+        while(rot === array[4]){
+            randomAxe();
         }
-       // console.log("after if testValue "+rotation);
-        array[4] = rotation;
-        console.log(array);
-        // console.log(array[4]);
-        return rotation;
+
+
+        console.log(array)
+        array[4] = rot;
+        return rot;
     }
 
     function randomAxe()  {
@@ -32,20 +25,23 @@ export function SizeImage({ axe }){
         const max = 4;
         let random = min + Math.random() * (max - min);
         random = parseInt(random);
-        console.log("before Switch Case"+random);
         switch (random){
             case 0 :
-                //setRotation(0)
-                return 0;
+                rot = 0
+                console.log("return "+rot)
+                return rot;
             case 1 :
-                //setRotation(90)
-                return 90;
+                rot = 90
+                console.log("return "+rot)
+                return rot;
             case 2 :
-                //setRotation(180)
-                return 180;
+                rot = 180
+                console.log("return "+rot)
+                return rot;
             case 3 :
-                //setRotation(270)
-                return 270;
+                rot = 270
+                console.log("return "+rot)
+                return rot;
 
         }
     }
@@ -64,10 +60,7 @@ export function SizeImage({ axe }){
                 }}
             />
             <button onClick={()=>{setRotation(testValue())}}>
-                Tournez le C test value
-            </button>
-            <button onClick={()=>{setRotation(randomAxe())}}>
-                Tournez le C random
+                Tournez le C
             </button>
             <div>
                 <img
@@ -78,7 +71,6 @@ export function SizeImage({ axe }){
                     style={{ width: `${size}px` ,transform: `rotate(${rotation}deg)`}}
                 />
                 <div>{rotation}</div>
-                <div>{array[4]}</div>
             </div>
         </div>
     );
