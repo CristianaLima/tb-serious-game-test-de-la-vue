@@ -4,11 +4,8 @@ import {useNavigate} from "react-router-dom";
 import {stockDataInLocalStorage} from "../config/SynchroFirebase";
 import {getTherapistById} from "../config/InitFirebase";
 import {LS_CURRENT_THERAPIST} from "./App";
-import {Button, Modal, ModalBody, ModalFooter, ModalHeader, Toast, ToastBody, ToastHeader} from "reactstrap";
-import {useState} from "react";
 
 export function Home(){
-    const [modal, setModal] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
