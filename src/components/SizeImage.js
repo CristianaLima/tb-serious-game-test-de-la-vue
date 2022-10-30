@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 
 export function SizeImage(){
+    const [testFinish, setTestFinish] = useState(false)
     const [size, setSize] = useState(100);
     const [rotation, setRotation] = useState(0);
     const [array, setArray] = useState([0,0,0,0,0]);
@@ -11,6 +12,7 @@ export function SizeImage(){
 
     // Each time an answer is selected, next C appeared
     useEffect(() => {
+        window.dispatchEvent(new Event("storage"));
         window.addEventListener("storage", e =>{
                 console.log("C SELECTED: " + e.newValue)
                 setRotation(testValue()) //Change rotation
@@ -22,7 +24,7 @@ export function SizeImage(){
     function testValue() {
         randomAxe();
         while(rot === array[4] || status === false) {
-            console.log("boucle in")
+            console.log("boucle in-----------------------------")
         if (rot === array[4]){
             randomAxe();
         }
@@ -73,10 +75,9 @@ export function SizeImage(){
 
         if (result>=maxRep){
             status = true;
-            window.localStorage.setItem("c_selected", -1);
-            return (
-                <div>Test Finish</div>
-            );
+            setTestFinish(true)
+            localStorage.setItem("c_selected", -1);
+            return
         }else {
             status = false;
 
@@ -127,9 +128,10 @@ export function SizeImage(){
                     setSize(parseInt(value, 10));
                 }}
             />
-            <button onClick={()=>{setRotation(testValue())}}>
-                Tournez le C
-            </button>
+            {testFinish===false ?
+                <button onClick={()=>{setRotation(testValue())}}>
+                    Tournez le C
+                </button> :  <div>Test Finish</div>}
             <div>
                 <img
                     id="image"
