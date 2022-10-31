@@ -9,6 +9,7 @@ export function SizeImage(){
     let rot=rotation;
     let status = false;
     let tour = 1;
+    let answer;
 
     // Each time an answer is selected, next C appeared
     useEffect(() => {
@@ -23,6 +24,14 @@ export function SizeImage(){
                     tour = newValue.tour;
                     setRotation(testValue()) //Change rotation
                     //TODO: change size
+                    //Test if the selected C is the correct one
+                    if(newValue.axe === array[4]){
+                        answer = 1;
+                    }else{
+                        answer = 0;
+                    }
+                    //Call update from algo
+
                 }
             }
         );
