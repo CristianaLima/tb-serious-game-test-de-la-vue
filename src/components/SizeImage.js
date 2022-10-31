@@ -10,6 +10,7 @@ export function SizeImage(){
     let status = false;
     let tour = 1;
     let answer;
+    const algo = new algoSimulation();
 
     // Each time an answer is selected, next C appeared
     useEffect(() => {
@@ -30,7 +31,8 @@ export function SizeImage(){
                     }else{
                         answer = 0;
                     }
-                    //Call update from algo
+                    //Call update from algo (param : answer, return new size)
+                    algo.update(answer); //TODO : define the return
 
                 }
             }
