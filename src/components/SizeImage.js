@@ -1,43 +1,82 @@
 import React, {useEffect, useState} from "react";
 import {LS_C_SELECTED,  MAXREP} from "../views/App";
+import {algoSimulation} from "../algo/algoSimulation";
 
 export function SizeImage(){
     const [testFinish, setTestFinish] = useState(false)
     const [size, setSize] = useState(100);
     const [rotation, setRotation] = useState(0);
     const [array, setArray] = useState([0,0,0,0,-1]);
+    const [orientationArray] = useState([]);
     let rot=rotation;
     let status = false;
     let tour = 1;
     let answer;
     const algo = new algoSimulation();
 
+
+
     // Each time an answer is selected, next C appeared
     useEffect(() => {
-        setRotation(testValue())
-        localStorage.setItem(LS_C_SELECTED, JSON.stringify({tour: 1, axe:-1}))
+        constructOrientationArray();
+        setRotation(orientationArray[0])
+        console.log("actual axe: " + orientationArray[0])
+        localStorage.setItem(LS_C_SELECTED, JSON.stringify({tour: 0, axe:-1}))
         window.dispatchEvent(new Event("storage"));
         window.addEventListener("storage", e =>{
-                if (tour < 8 ){
+                if (tour < MAXREP ){
                     const newValue = JSON.parse(localStorage.getItem(LS_C_SELECTED))
                     console.log("C SELECTED: " +  newValue.axe + " tour:" +newValue.tour)
-                    console.log("actual axe: " + array[4])
+                    //console.log("actual axe: " + array[4])
+                    console.log("actual axe: " + rotation)
                     tour = newValue.tour;
-                    setRotation(testValue()) //Change rotation
+                    setRotation(orientationArray[tour]) //Change rotation
+
+                    console.log("OrientationArray " + orientationArray[tour])
                     //TODO: change size
                     //Test if the selected C is the correct one
-                    if(newValue.axe === array[4]){
+                    if(newValue.axe == orientationArray[tour-1]){
                         answer = 1;
                     }else{
                         answer = 0;
                     }
+
+                    console.log("answer : " + answer)
                     //Call update from algo (param : answer, return new size)
-                    algo.update(answer); //TODO : define the return
+                    setSize(algo.update(answer));
+
+                    //setRotation(testValue()) //Change rotation
+                    //console.log("fucking tour" + tour);
+
+                    //console.log("rotation : " + rotation.toString())
+
+
 
                 }
             }
         );
     }, []);
+
+
+    function constructOrientationArray(){
+        orientationArray.push(randomAxe());
+
+        //TODO : Régulation
+
+        for (let i = 0; i < MAXREP-1; i++) {
+            let finiWhile = 0;
+            do{
+                let rand = randomAxe();
+                if(orientationArray[i] !== rand){
+                    orientationArray.push(rand);
+                    finiWhile = 1;
+                }
+            }while (finiWhile === 0);
+        }
+
+        console.log("tableau des enfers : " + orientationArray);
+    }
+
 
     function testValue() {
         if (testFinish === false) {
@@ -141,7 +180,7 @@ export function SizeImage(){
                 }}
             />
             {testFinish===false ?
-                <button onClick={()=>{setRotation(testValue())}}>
+                <button onClick={()=>{}}>
                     Tournez le C
                 </button> :  <div>Test Finish</div>}
             <div>

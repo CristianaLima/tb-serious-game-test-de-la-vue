@@ -4,7 +4,7 @@ import c from "../assets/c_picture.png";
 import {LS_C_SELECTED, MAXREP} from "./App";
 
 export function AcuityTestController(){
-    const [tour, setTour] = useState(1)
+    const [tour, setTour] = useState(0)
 
     function c_selected (e) {
         localStorage.setItem(LS_C_SELECTED, JSON.stringify({tour: tour+1, axe:e}))
