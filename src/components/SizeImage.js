@@ -3,7 +3,7 @@ import {LS_C_SELECTED,  MAXREP} from "../views/App";
 import {algoSimulation} from "../algo/algoSimulation";
 
 export function SizeImage(){
-    const [testFinish, setTestFinish] = useState(false)
+    const [testStatus, setTestStatus] = useState(0) //0 = not begins, 1 = begins, 2 = finish
     const [size, setSize] = useState(100);
     const [rotation, setRotation] = useState(0);
     const [array, setArray] = useState([0,0,0,0,-1]);
@@ -15,10 +15,9 @@ export function SizeImage(){
     let rot=rotation;
     let status = false;
     let tour = 1;
-    let answer;
+    //let answer;
+    const [answer, setAnswer] = useState(-1);
     const algo = new algoSimulation(MAXREP);
-
-
 
     // Each time an answer is selected, next C appeared
     useEffect(() => {
@@ -29,28 +28,31 @@ export function SizeImage(){
         window.dispatchEvent(new Event("storage"));
         window.addEventListener("storage", e =>{
                 if (tour < MAXREP-1 ){
+                    setTestStatus(1); // test begins
+
                     const newValue = JSON.parse(localStorage.getItem(LS_C_SELECTED))
-                    //console.log("C SELECTED: " +  newValue.axe + " tour:" +newValue.tour)
-                    //console.log("actual axe: " + rotation)
+
                     tour = newValue.tour;
                     setRotation(orientationArray[tour]) //Change rotation
 
                     //Test if the selected C is the correct one
                     if(newValue.axe == orientationArray[tour-1]){
-                        answer = 1;
+                        setAnswer(1)
+                        setSize(algo.update(1)*100);
                     }else{
-                        answer = 0;
+                        setAnswer(0)
+                        setSize(algo.update(0)*100);
                     }
 
-                    //Call update from algo (param : answer, return new size)
-                    setSize(algo.update(answer)*100);
                 }else{
                     console.log("Test finish, results is : " + algo.getResult())
                     setSize(0);
+                    setTestStatus(2);
                 }
             }
         );
     }, []);
+
 
     //Constructing an array with equal part of each angle. Then shuffle it until there isn't two identical values in a row
     function constructOrientationArray(){
@@ -110,7 +112,7 @@ export function SizeImage(){
 
 
     function testValue() {
-        if (testFinish === false) {
+        if (setTestStatus !== 2) {
         randomAxe();
         while(rot === array[4] || status === false) {
             console.log("boucle in-----------------------------")
@@ -158,7 +160,6 @@ export function SizeImage(){
             }
         if (tour>=MAXREP){
             status = true;
-            setTestFinish(true)
             return
         }else {
             status = false;
@@ -199,30 +200,21 @@ export function SizeImage(){
 
     return (
         <div>
-{/*            <input
-                id="ranger"
-                type="range"
-                min="50"
-                max="250"
-                value={size}
-                onChange={e => {
-                    const { value } = e.target;
-                    setSize(parseInt(value, 10));
-                }}
-            />
-            {testFinish===false ?
-                <button onClick={()=>{}}>
-                    Tournez le C
-                </button> :  <div>Test Finish</div>}*/}
+            {testStatus!==2 ?
+                <>
+                    <img
+                        id="image"
+                        className="carteImg"
+                        alt="Weiswampach Carte"
+                        src={"https://www.ocnishop.cz/wp-content/uploads/2019/11/59577_602600_landolt_c_plastic_letter.jpg"}
+                        style={{ width: `${size}px` ,transform: `rotate(${rotation}deg)`}}
+                    />
+                    {testStatus===0 ? "" : <div>last answer was {answer===1? "true" : "false"}</div>}
+
+                </>
+                :  <div>Test Finish</div>}
             <div>
-                <img
-                    id="image"
-                    className="carteImg"
-                    alt="Weiswampach Carte"
-                    src={"https://www.ocnishop.cz/wp-content/uploads/2019/11/59577_602600_landolt_c_plastic_letter.jpg"}
-                    style={{ width: `${size}px` ,transform: `rotate(${rotation}deg)`}}
-                />
-                <div>{rotation}</div>
+
             </div>
         </div>
     );
