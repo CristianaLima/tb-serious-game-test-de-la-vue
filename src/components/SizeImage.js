@@ -6,17 +6,12 @@ export function SizeImage(){
     const [testStatus, setTestStatus] = useState(0) //0 = not begins, 1 = begins, 2 = finish
     const [size, setSize] = useState(100);
     const [rotation, setRotation] = useState(0);
-    const [array, setArray] = useState([0,0,0,0,-1]);
-    //const [orientationArray, setOrientationArray] = useState([]);
-    //const [array2] = useState([]);
+    const [answer, setAnswer] = useState(-1);
 
     let orientationArray;
     let array2 = [];
-    let rot=rotation;
-    let status = false;
     let tour = 1;
-    //let answer;
-    const [answer, setAnswer] = useState(-1);
+
     const algo = new algoSimulation(MAXREP);
 
     // Each time an answer is selected, next C appeared
@@ -53,7 +48,6 @@ export function SizeImage(){
         );
     }, []);
 
-
     //Constructing an array with equal part of each angle. Then shuffle it until there isn't two identical values in a row
     function constructOrientationArray(){
 
@@ -84,118 +78,8 @@ export function SizeImage(){
                 }
             }
         }
-
         orientationArray = array2;
-        console.log("Shuffled array : " + orientationArray);
-
-
-    }
-
-    function exConstructOrientationArray(){
-        orientationArray.push(randomAxe());
-
-        //TODO : Régulation
-
-        for (let i = 0; i < MAXREP-1; i++) {
-            let finiWhile = 0;
-            do{
-                let rand = randomAxe();
-                if(orientationArray[i] !== rand){
-                    orientationArray.push(rand);
-                    finiWhile = 1;
-                }
-            }while (finiWhile === 0);
-        }
-
-        console.log("tableau des enfers : " + orientationArray);
-    }
-
-
-    function testValue() {
-        if (setTestStatus !== 2) {
-        randomAxe();
-        while(rot === array[4] || status === false) {
-            console.log("boucle in-----------------------------")
-            if (rot === array[4]){
-                randomAxe();
-            }
-            else {
-                if (status === false) {
-                    switch (rot) {
-                        case 0:
-                            if (array[0] < (MAXREP / 4) && rot !== array[4]) {
-                                array[0] += 1;
-                                status = true;
-                             } else {
-                            randomAxe();
-                            }
-                            break;
-                        case 90:
-                            if (array[1] < (MAXREP / 4) && rot !== array[4]) {
-                                array[1] += 1;
-                                status = true;
-                            } else {
-                                randomAxe();
-                            }
-                            break;
-                        case 180:
-                            if (array[2] < (MAXREP / 4) && rot !== array[4]) {
-                                array[2] += 1;
-                                status = true;
-                            } else {
-                                randomAxe();
-                            }
-                            break;
-                        case 270:
-                            if (array[3] < (MAXREP / 4) && rot !== array[4]) {
-                                array[3] += 1;
-                                status = true;
-                            } else {
-                                randomAxe();
-                            }
-                            break;
-                        }
-                    }
-                }
-            }
-        if (tour>=MAXREP){
-            status = true;
-            return
-        }else {
-            status = false;
-        }
-
-        console.log("tableau "+array);
-        console.log("array[4] "+array[4]);
-        array[4] = rot;
-        return rot;
-        }
-    }
-
-    function randomAxe()  {
-        const min = 0;
-        const max = 4;
-        let random = min + Math.random() * (max - min);
-        random = parseInt(random);
-        switch (random){
-            case 0 :
-                rot = 0
-                //console.log("return "+rot)
-                return rot;
-            case 1 :
-                rot = 90
-                //console.log("return "+rot)
-                return rot;
-            case 2 :
-                rot = 180
-                //console.log("return "+rot)
-                return rot;
-            case 3 :
-                rot = 270
-                //console.log("return "+rot)
-                return rot;
-
-        }
+        //console.log("Shuffled array : " + orientationArray);
     }
 
     return (
