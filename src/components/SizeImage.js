@@ -1,32 +1,113 @@
 import React, {useEffect, useState} from "react";
 import {LS_C_SELECTED,  MAXREP} from "../views/App";
+import {algoSimulation} from "../algo/algoSimulation";
 
 export function SizeImage(){
     const [testFinish, setTestFinish] = useState(false)
     const [size, setSize] = useState(100);
     const [rotation, setRotation] = useState(0);
     const [array, setArray] = useState([0,0,0,0,-1]);
+    //const [orientationArray, setOrientationArray] = useState([]);
+    //const [array2] = useState([]);
+
+    let orientationArray;
+    let array2 = [];
     let rot=rotation;
     let status = false;
     let tour = 1;
+    let answer;
+    const algo = new algoSimulation(MAXREP);
+
+
 
     // Each time an answer is selected, next C appeared
     useEffect(() => {
-        setRotation(testValue())
-        localStorage.setItem(LS_C_SELECTED, JSON.stringify({tour: 1, axe:-1}))
+        constructOrientationArray();
+        setRotation(orientationArray[0])
+        console.log("actual axe: " + orientationArray[0])
+        localStorage.setItem(LS_C_SELECTED, JSON.stringify({tour: 0, axe:-1}))
         window.dispatchEvent(new Event("storage"));
         window.addEventListener("storage", e =>{
-                if (tour < 8 ){
+                if (tour < MAXREP-1 ){
                     const newValue = JSON.parse(localStorage.getItem(LS_C_SELECTED))
-                    console.log("C SELECTED: " +  newValue.axe + " tour:" +newValue.tour)
-                    console.log("actual axe: " + array[4])
+                    //console.log("C SELECTED: " +  newValue.axe + " tour:" +newValue.tour)
+                    //console.log("actual axe: " + rotation)
                     tour = newValue.tour;
-                    setRotation(testValue()) //Change rotation
-                    //TODO: change size
+                    setRotation(orientationArray[tour]) //Change rotation
+
+                    //Test if the selected C is the correct one
+                    if(newValue.axe == orientationArray[tour-1]){
+                        answer = 1;
+                    }else{
+                        answer = 0;
+                    }
+
+                    //Call update from algo (param : answer, return new size)
+                    setSize(algo.update(answer)*100);
+                }else{
+                    console.log("Test finish, results is : " + algo.getResult())
+                    setSize(0);
                 }
             }
         );
     }, []);
+
+    //Constructing an array with equal part of each angle. Then shuffle it until there isn't two identical values in a row
+    function constructOrientationArray(){
+
+        //Constructing
+        for (let i = 0; i < MAXREP; i++) {
+            switch (i%4){
+                case 0 : array2.push(0);
+                    break;
+                case 1 : array2.push(90);
+                    break;
+                case 2 : array2.push(180);
+                    break;
+                case 3 : array2.push(270);
+                    break;
+            }
+        }
+
+        //Shuffling
+        let result = false;
+
+        while(result == false){
+            result = true;
+            array2.sort(() => Math.random() - 0.5);
+
+            for (let i = 1; i < array2.length; i++) {
+                if(array2[i] == array2[i-1]){
+                    result = false;
+                }
+            }
+        }
+
+        orientationArray = array2;
+        console.log("Shuffled array : " + orientationArray);
+
+
+    }
+
+    function exConstructOrientationArray(){
+        orientationArray.push(randomAxe());
+
+        //TODO : Régulation
+
+        for (let i = 0; i < MAXREP-1; i++) {
+            let finiWhile = 0;
+            do{
+                let rand = randomAxe();
+                if(orientationArray[i] !== rand){
+                    orientationArray.push(rand);
+                    finiWhile = 1;
+                }
+            }while (finiWhile === 0);
+        }
+
+        console.log("tableau des enfers : " + orientationArray);
+    }
+
 
     function testValue() {
         if (testFinish === false) {
@@ -118,7 +199,7 @@ export function SizeImage(){
 
     return (
         <div>
-            <input
+{/*            <input
                 id="ranger"
                 type="range"
                 min="50"
@@ -130,9 +211,9 @@ export function SizeImage(){
                 }}
             />
             {testFinish===false ?
-                <button onClick={()=>{setRotation(testValue())}}>
+                <button onClick={()=>{}}>
                     Tournez le C
-                </button> :  <div>Test Finish</div>}
+                </button> :  <div>Test Finish</div>}*/}
             <div>
                 <img
                     id="image"
