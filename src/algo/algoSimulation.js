@@ -19,30 +19,39 @@ export class algoSimulation{
 
 
     //Sim params
-    size = 100;
+    size = 1;
+    result = 1;
+    results = [];
+    n_trials;
 
+
+    constructor(n_trials) {
+        this.n_trials = n_trials;
+    }
 
     update(answer){
 
         if(answer == 1){
-            this.size = this.size - 10;
+            this.result = this.size;
+            this.results.push(this.size);
+            if(this.size<0.5)
+                this.size = this.size /1.4;
+            else
+                this.size = this.size /1.8;
         }
         else{
-            this.size = this.size + 10;
+            if(this.size<1)
+                this.size = this.size * 1.8;
         }
 
         return this.size;
     }
 
-    static calculateNewSize(){
-
-    }
-
     getResult(){
-        //return the actual treshold
+        return this.result;
     }
 
     getResults(){
-        //return the list of all the tresholds from this test
+        return this.results;
     }
 }
