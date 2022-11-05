@@ -45,6 +45,7 @@ function StudentForm() {
     function handleSubmit(e) {
         e.preventDefault(); // prevents browser refresh
         addStudentToArray(student)
+        setStudent(student); // set l'étudiant en cours pour l'afficer dans la NAV BAR
         window.open('/acuityTestScreen', '_self')
         window.open('/acuityTestController', '_blank');
     }
