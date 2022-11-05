@@ -10,7 +10,7 @@ import c from "../assets/c_picture.png";
  * angle : actual angle of C displayed
  * size : actual size of C displayed
  * status : 0 = not begins, 1 = begins, 2 = finish
- * result : last size of test
+ * results : array of size
  */
 export function CImage(){
     const [response, setResponse] = useState({tour : 0, angle : 0})
@@ -54,10 +54,11 @@ export function CImage(){
                 // Test begins
                 setStatus(1);
 
+                setResults(results => [...results, size])
+
                 //Change size of C depend on answer correctness
                 if(response.angle == angleArray[response.tour-1]){ // not "==="
                     setAnswer(true)
-                    setResults(results => [...results, size])
                     if(size<0.5)
                         setSize(size / 1.4);
                     else
