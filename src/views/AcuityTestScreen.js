@@ -6,7 +6,6 @@ export function AcuityTestScreen(){
     return(
         <>
             <NavBar/>
-            <h1>Test screen</h1>
             <CImage/>
         </>
     )

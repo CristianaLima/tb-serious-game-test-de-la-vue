@@ -124,7 +124,11 @@ export function CImage(){
                         className="carteImg"
                         alt="C landolt"
                         src={c}
-                        style={{ width: `${size*100}px` ,transform: `rotate(${angle}deg)`}}
+                        style={{
+                            width: `${size*100}px` ,
+                            transform: `rotate(${angle}deg)`,
+                            position: 'absolute', left: '47%', top: '50%',
+                    }}
                     />
                     {status === 0 ? "" : <div>Last answer was {answer.toString()}</div>}
                 </>
