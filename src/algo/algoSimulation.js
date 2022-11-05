@@ -1,7 +1,7 @@
 //This is a simulation to try to understand how the algorithm work.
-export class algoSimulation{
+/*export class algoSimulation{
 
-/*  //Original Params
+ //Original Params
     n_trials = 32
     min_dimensions = -0.3
     max_dimensions = 1.0
@@ -15,7 +15,7 @@ export class algoSimulation{
     stimscale  = "log10"
     stimSelectionMethod = "minEntropy"
     paramEstimationMethod = "mean"
-    name = "LandoltC_VA_4ori"*/
+    name = "LandoltC_VA_4ori"
 
 
     //Sim params
@@ -54,4 +54,4 @@ export class algoSimulation{
     getResults(){
         return this.results;
     }
-}
+}*/

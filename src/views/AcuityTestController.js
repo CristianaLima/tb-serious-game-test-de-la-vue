@@ -7,7 +7,7 @@ export function AcuityTestController(){
     const [tour, setTour] = useState(0)
 
     function c_selected (e) {
-        localStorage.setItem(LS_C_SELECTED, JSON.stringify({tour: tour+1, axe:e}))
+        localStorage.setItem(LS_C_SELECTED, JSON.stringify({tour: tour+1, angle:e}))
         setTour(tour+1)
     }
 
