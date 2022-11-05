@@ -5,16 +5,21 @@ import c from "../assets/c_picture.png";
 /**
  *
  * response: stock tour and angle given by the controller screen
- * answer: true or false depend of real angle and the response
- * angleArray: list of angle p
+ * answer: true or false depend on real angle and the response
+ * angleArray : list of angle calculated at beginning
+ * angle : actual angle of C displayed
+ * size : actual size of C displayed
+ * status : 0 = not begins, 1 = begins, 2 = finish
+ * result : last size of test
  */
-export function SizeImage(){
-    const [response, setResponse] = useState({tour : 0, angle : 0}) //
+export function CImage(){
+    const [response, setResponse] = useState({tour : 0, angle : 0})
     const [answer, setAnswer] = useState(false);
     const [angleArray] = useState(() => constructAngleArray())
-    const [rotation, setRotation] = useState(angleArray[0]);
-    const [size, setSize] = useState(100);
-    const [result, setResult] = useState(0);//0 = not begins, 1 = begins, other = [last size, result of the test]
+    const [angle, setAngle] = useState(angleArray[0]);
+    const [size, setSize] = useState(1);
+    const [status, setStatus] = useState(0);
+    const [results, setResults] = useState([]);
 
     /**
      * Add a listener on local storage
@@ -41,30 +46,32 @@ export function SizeImage(){
             case 0 :
                 break;
             case MAXREP :
-                setResult(size) // Last size is result
-                setSize(0); //C disappear
+                setStatus(2);
+                console.log(results)
+                setSize(0); // C disappear
                 break;
             default :{
                 // Test begins
-                setResult(1)
+                setStatus(1);
 
                 //Change size of C depend on answer correctness
-                if(response.angle == angleArray[response.tour-1]){
+                if(response.angle == angleArray[response.tour-1]){ // not "==="
                     setAnswer(true)
-                    if(size<50)
-                        setSize(size /1.4);
+                    setResults(results => [...results, size])
+                    if(size<0.5)
+                        setSize(size / 1.4);
                     else
-                        setSize(size /1.8)
+                        setSize(size / 1.8);
                 }
                 else{
                     setAnswer(false)
-                    if(size<100) {
-                        setSize(size * 1.8)
+                    if(size<1) {
+                        setSize(size * 1.8);
                     }
                 }
 
                 // Rotate C
-                setRotation(angleArray[response.tour])
+                setAngle(angleArray[response.tour])
             }
         }
     },[response]);
@@ -109,20 +116,20 @@ export function SizeImage(){
 
     return (
         <div>
-            {result<=1 ?
+            {status<=1 ?
                 <>
                     <img
                         id="image"
                         className="carteImg"
                         alt="C landolt"
                         src={c}
-                        style={{ width: `${size}px` ,transform: `rotate(${rotation}deg)`}}
+                        style={{ width: `${size*100}px` ,transform: `rotate(${angle}deg)`}}
                     />
-                    {result === 0 ? "" : <div>Last answer was {answer.toString()}</div>}
+                    {status === 0 ? "" : <div>Last answer was {answer.toString()}</div>}
                 </>
-                :  <div>Test Finish with result {Math.round(result)}</div>}
+                :  <div>Test Finish with result {results[results.length-1]}</div>}
         </div>
     );
 }
 
-export default SizeImage
+export default CImage
