@@ -24,7 +24,14 @@ export function NavBar(){
     const [toast, setToast] = useState(false);
     const toggleModal = () => setModal(!modal);
     const toggleToast = () => setToast(!toast);
-    const student = useState(JSON.parse(localStorage.getItem(LS_STUDENT)));
+    const [student, setStudent] = useState({
+        fullName: "",
+        class: ""
+    });
+
+    useEffect(() => {
+        setStudent(JSON.parse(localStorage.getItem(LS_STUDENT)))
+    }, []);
 
     useEffect(() => {
         localStorage.setItem("language", language);
@@ -60,13 +67,12 @@ export function NavBar(){
                <NavbarBrand href = "/">
                    Visual Acuity (VA) Screening App
                </NavbarBrand>
-               {/*affiche le nom de l'étudiant dans la NAV BAR si existant*/}
-               {student[0] !==null?
+               {/*Show student name if present*/}
+               {student.fullName !== "" ?
                    <div>
-                       Etudiant: {student[0].fullName} - Class: {student[0].class}
+                       Student : {student.fullName} - Class: {student.class}
                    </div>:
                <div>Welcome</div>}
-
                <Button onClick={tryConnection}>Synchronise</Button>
                <UncontrolledButtonDropdown>
                    <DropdownToggle caret>Language</DropdownToggle>
@@ -76,7 +82,6 @@ export function NavBar(){
                        <DropdownItem onClick={()=>setLanguage("po")}>Portugais</DropdownItem>
                    </DropdownMenu>
                </UncontrolledButtonDropdown>
-
                <Nav navbar>
                    <NavItem>
                        <NavLink href = "acuityTestScreen">
