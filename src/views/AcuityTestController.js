@@ -1,8 +1,7 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Button, ButtonGroup} from "reactstrap";
 import c from "../assets/c_picture.png";
 import {LS_C_SELECTED, MAXREP} from "./App";
-import {wait} from "@testing-library/user-event/dist/utils";
 
 export function AcuityTestController(){
     const [tour, setTour] = useState(0)
