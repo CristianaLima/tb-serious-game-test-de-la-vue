@@ -15,6 +15,8 @@ import {
     ModalBody, Modal, Toast, ToastHeader, ToastBody
 } from "reactstrap";
 import {synchronise} from "../config/SynchroFirebase";
+import {LS_STUDENT} from "../views/App";
+
 
 export function NavBar(){
     const [language, setLanguage] = useState("en");
@@ -22,6 +24,14 @@ export function NavBar(){
     const [toast, setToast] = useState(false);
     const toggleModal = () => setModal(!modal);
     const toggleToast = () => setToast(!toast);
+    const [student, setStudent] = useState({
+        fullName: "",
+        class: ""
+    });
+
+    useEffect(() => {
+        setStudent(JSON.parse(localStorage.getItem(LS_STUDENT)))
+    }, []);
 
     useEffect(() => {
         localStorage.setItem("language", language);
@@ -57,6 +67,12 @@ export function NavBar(){
                <NavbarBrand href = "/">
                    Visual Acuity (VA) Screening App
                </NavbarBrand>
+               {/*Show student name if present*/}
+               {student.fullName !== "" ?
+                   <div>
+                       Student : {student.fullName} - Class: {student.class}
+                   </div>:
+               <div>Welcome</div>}
                <Button onClick={tryConnection}>Synchronise</Button>
                <UncontrolledButtonDropdown>
                    <DropdownToggle caret>Language</DropdownToggle>
@@ -66,7 +82,6 @@ export function NavBar(){
                        <DropdownItem onClick={()=>setLanguage("po")}>Portugais</DropdownItem>
                    </DropdownMenu>
                </UncontrolledButtonDropdown>
-
                <Nav navbar>
                    <NavItem>
                        <NavLink href = "acuityTestScreen">
