@@ -45,7 +45,6 @@ function StudentForm() {
     function handleSubmit(e) {
         e.preventDefault(); // prevents browser refresh
         addStudentToArray(student)
-        setStudent(student); // set l'étudiant en cours pour l'afficer dans la NAV BAR
         window.open('/acuityTestScreen', '_self')
         window.open('/acuityTestController', '_blank');
     }
@@ -55,14 +54,6 @@ function StudentForm() {
         const exist = newStudents.some(c => (c.localId === student.localId ));
         if (exist===false && !newStudents.includes(student)){
             setNewStudents([...newStudents, student]);
-            //localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify(newStudents));
-            setStudent({
-                localId: Math.round(Date.now() / 1000).toString(),
-                fullName: "",
-                class: "",
-                dob: "",
-                idSchool: student.idSchool //TODO: reset select option two
-            })
         }
     }
 
