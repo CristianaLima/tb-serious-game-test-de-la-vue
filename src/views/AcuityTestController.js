@@ -6,6 +6,10 @@ import {LS_C_SELECTED, MAXREP} from "./App";
 export function AcuityTestController(){
     const [tour, setTour] = useState(0)
 
+    /**
+     * Add the value of orientation C in local storage and the button can be clicked after 200 ms of delay
+     * @param e
+     */
     function c_selected (e) {setTimeout(()=>{
         localStorage.setItem(LS_C_SELECTED, JSON.stringify({tour: tour+1, angle:e}))
         setTour(tour+1)},200)
