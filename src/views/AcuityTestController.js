@@ -6,9 +6,9 @@ import {LS_C_SELECTED, MAXREP} from "./App";
 export function AcuityTestController(){
     const [tour, setTour] = useState(0)
 
-    function c_selected (e) {
+    function c_selected (e) {setTimeout(()=>{
         localStorage.setItem(LS_C_SELECTED, JSON.stringify({tour: tour+1, angle:e}))
-        setTour(tour+1)
+        setTour(tour+1)},200)
     }
 
     return (
