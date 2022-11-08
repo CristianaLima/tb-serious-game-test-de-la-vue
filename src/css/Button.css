@@ -1,0 +1,24 @@
+.btn-space_BOT {
+    margin-right: 63px;
+    margin-left: 63px;
+    margin-bottom: 63px;
+}
+
+.btn-space_TOP {
+    margin: 63px;
+}
+
+button:active{
+    background-color: #61dafb;
+}
+img:active{
+    color: red;
+}
+a:active {
+    color: red;
+}
+
+.btn-space_TOP-Green {
+    src-color:red;
+
+}
