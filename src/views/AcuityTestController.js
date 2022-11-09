@@ -1,11 +1,17 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, ButtonGroup} from "reactstrap";
 import c from "../assets/c_picture.png";
 import {LS_C_SELECTED, MAXREP} from "./App";
 
 export function AcuityTestController(){
     const [tour, setTour] = useState(0)
-    const [display,setDisplay]=useState(false) // enable to click on the button after answer
+    const [display,setDisplay]=useState(true) // enable to click on the button after answer
+
+    useEffect(()=>
+        {
+            load();
+        }
+    ,[])
 
     /**
      * Add the value of C orienation in local storage
