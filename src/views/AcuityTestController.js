@@ -48,48 +48,9 @@ export function AcuityTestController(){
             }
         }
 
-        const handleClick = (f: React.MouseEvent<HTMLButtonElement>) => {
-            console.log(f)
-            switch (f.detail) {
-                case 1:
-                    console.log("click");
-                    break;
-                case 2:
-                    console.log("double click");
-                    break;
-                case 3:
-                    console.log("triple click");
-                    break;
-            }
-        };
-        const f1 = (f: React.MouseEvent<HTMLButtonElement>);
-
-        console.log(f1);
-        if(f == 1){
-            console.log("Click1")
-        }
-
-        if(f === 2){
-            console.log("clic2")
             localStorage.setItem(LS_C_SELECTED, JSON.stringify({tour: tour+1, angle:e}))
             setTour(tour+1)
         }
-    };
-
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        console.log(e)
-        switch (e.detail) {
-            case 1:
-                console.log("click");
-                break;
-            case 2:
-                console.log("double click");
-                break;
-            case 3:
-                console.log("triple click");
-                break;
-        }
-    };
 
     //TODO essayer de faire fonctionner la constante handleClick avec le reste
     return (
