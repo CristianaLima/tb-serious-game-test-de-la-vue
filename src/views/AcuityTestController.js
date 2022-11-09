@@ -3,7 +3,6 @@ import React, {useEffect, useState} from 'react';
 import c from "../assets/c_picture.png";
 import {LS_C_SELECTED, MAXREP} from "./App";
 import '../css/Button.css';
-import {Button} from "reactstrap";
 
 export function AcuityTestController(){
     const [tour, setTour] = useState(0)
