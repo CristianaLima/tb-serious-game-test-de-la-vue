@@ -13,10 +13,13 @@ export function AcuityTestController(){
     const [active180, setActive180] = useState(true);
     const [active270, setActive270] = useState(true);
 
-    function C_selected (e, f) {
+    function C_selected (e) {
         switch (e) {
             case '0': {
                 setActive0(!active0);
+                setActive90(true);
+                setActive180(true);
+                setActive270(true);
                 setTimeout(() => {
                     setActive0(active0);
                 }, 1000);
@@ -24,6 +27,9 @@ export function AcuityTestController(){
             }
             case '90': {
                 setActive90(!active90);
+                setActive0(true);
+                setActive180(true);
+                setActive270(true);
                 setTimeout(() => {
                     setActive90(active90);
                 }, 1000);
@@ -31,6 +37,9 @@ export function AcuityTestController(){
             }
             case '180': {
                 setActive180(!active180);
+                setActive0(true);
+                setActive90(true);
+                setActive270(true);
                 setTimeout(() => {
                     setActive180(active180);
                 }, 1000);
@@ -38,6 +47,9 @@ export function AcuityTestController(){
             }
             case '270': {
                 setActive270(!active270);
+                setActive0(true);
+                setActive90(true);
+                setActive180(true);
                 setTimeout(() => {
                     setActive270(active270);
                 }, 1000);
@@ -57,7 +69,7 @@ export function AcuityTestController(){
         <>
             {tour === MAXREP ? <div><p>Test finish</p></div> : <>
                 <br/>
-                    <Button className={"btn-space_TOP"} onClick={() => {C_selected("0", MouseEvent)}}
+                    <Button className={"btn-space_TOP"} onClick={() => {C_selected("0")}}
                             style={{backgroundColor: active0?  "#6C757D" : "green"}}>
                         <img width="250"
                              style={{transform: "rotate(0deg)"}}
