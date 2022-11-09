@@ -68,7 +68,7 @@ export function NavBar(){
                    Visual Acuity (VA) Screening App
                </NavbarBrand>
                {/*Show student name if present*/}
-               {student.fullName !== "" ?
+               {student !== null ?
                    <div>
                        Student : {student.fullName} - Class: {student.class}
                    </div>:
