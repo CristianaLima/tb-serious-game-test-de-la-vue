@@ -1,11 +1,19 @@
-import {Button} from "reactstrap";
 import React, {useEffect, useState} from 'react';
+import {Button, ButtonGroup} from "reactstrap";
 import c from "../assets/c_picture.png";
 import {LS_C_SELECTED, MAXREP} from "./App";
 import '../css/Button.css';
 
+/**
+ *Position handling (MH) :
+ * Global positioning onClick via the useEffect who create an event listener (for the entire page)
+ * Local positioning onClick via the const handlMouseClickLocal, who take the position of an element to set position only inside it
+ * TODO : MH and OT need to work together for the right size of the buttons, then call the local positioning
+ */
 export function AcuityTestController(){
     const [tour, setTour] = useState(0)
+    const [mousePos, setMousePos] = useState({});
+    const [localMousePos, setLocalMousePos] = useState({});
     const [display,setDisplay]=useState(true) // enable to click on the button after answer
 
     const [active0, setActive0] = useState(true);
@@ -19,11 +27,34 @@ export function AcuityTestController(){
         }
         ,[])
 
+    //Function to track cursor on click who depend on the element (call from render)
+    const handleMouseClickLocal = (event) => {
+        //  Get mouse position relative to element
+        const localX = event.clientX - event.target.offsetLeft;
+        const localY = event.clientY - event.target.offsetTop;
+
+        setLocalMousePos({ x: localX, y: localY });
+    };
+
+    //Set a listener for the global positioning
+    useEffect(() => {
+        const handleMouseClick = (event) => {
+            setMousePos({ x: event.clientX, y: event.clientY });
+        };
+
+        window.addEventListener('click', handleMouseClick);
+
+        return () => {
+            window.removeEventListener(
+                'click',
+                handleMouseClick
+            );
+        };
+    }, []);
     /**
      * Add the value of C orienation in local storage
      * @param e
      */
-
     function C_selected (e) {
         switch (e) {
             case '0': {
@@ -87,10 +118,9 @@ export function AcuityTestController(){
         }, 1000);
     }
 
-
     return (
         <>
-            {tour === MAXREP ? <div><p>Test finish</p></div> : <>
+            {tour === MAXREP ? <div><p>Test finish</p></div> : <div onClick={handleMouseClickLocal}>
                 <br/>
                     <Button className={"btn-space_TOP"} onClick={() => {C_selected("0")}}  disabled={display}
                             style={{backgroundColor: active0?  "#6C757D" : "green"}}>
@@ -132,7 +162,9 @@ export function AcuityTestController(){
                         />
                     </Button>
 
-            </> }
+                <h1>{"Mouse coords : X:" + mousePos.x +" Y:" + mousePos.y}</h1>
+                <h1>{"Local Mouse coords : X:" + localMousePos.x +" Y:" + localMousePos.y}</h1>
+            </div> }
         </>
     );
 }
