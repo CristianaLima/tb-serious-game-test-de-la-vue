@@ -3,10 +3,27 @@ import {Button, ButtonGroup} from "reactstrap";
 import c from "../assets/c_picture.png";
 import {LS_C_SELECTED, MAXREP} from "./App";
 
+/**
+ *Position handling (MH) :
+ * Global positioning onClick via the useEffect who create an event listener (for the entire page)
+ * Local positioning onClick via the const handlMouseClickLocal, who take the position of an element to set position only inside it
+ * TODO : MH and OT need to work together for the right size of the buttons, then call the local positioning
+ */
 export function AcuityTestController(){
     const [tour, setTour] = useState(0)
     const [mousePos, setMousePos] = useState({});
+    const [localMousePos, setLocalMousePos] = useState({});
 
+    //Function to track cursor on click who depend on the element (call from render)
+    const handleMouseClickLocal = (event) => {
+        //  Get mouse position relative to element
+        const localX = event.clientX - event.target.offsetLeft;
+        const localY = event.clientY - event.target.offsetTop;
+
+        setLocalMousePos({ x: localX, y: localY });
+    };
+
+    //Set a listener for the global positioning
     useEffect(() => {
         const handleMouseClick = (event) => {
             setMousePos({ x: event.clientX, y: event.clientY });
@@ -30,8 +47,7 @@ export function AcuityTestController(){
     return (
         <>
             {tour === MAXREP ? <div><p>Test finish</p></div> : <>
-
-                <ButtonGroup>
+                <ButtonGroup onClick={handleMouseClickLocal}>
                     <Button className="btn btn-secondary" onClick={() => {c_selected("0")}}>
                         <img width="250"
                              style={{transform: "rotate(0deg)"}}
@@ -50,7 +66,7 @@ export function AcuityTestController(){
                     </Button>
                 </ButtonGroup>
                 <br/>
-                <ButtonGroup>
+                <ButtonGroup onClick={handleMouseClickLocal}>
                     <Button className="btn btn-secondary" onClick={() => {c_selected("180")}}>
                         <img width="250"
                              style={{transform: "rotate(180deg)"}}
@@ -69,6 +85,7 @@ export function AcuityTestController(){
                     </Button>
                 </ButtonGroup>
                 <h1>{"Mouse coords : X:" + mousePos.x +" Y:" + mousePos.y}</h1>
+                <h1>{"Local Mouse coords : X:" + localMousePos.x +" Y:" + localMousePos.y}</h1>
             </> }
         </>
     );
