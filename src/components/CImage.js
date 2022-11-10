@@ -68,7 +68,7 @@ export function CImage(){
                     dateTest: Date.now(),
                     comprehension: false,
                     correction: false,
-                    idStudent: JSON.parse(localStorage.getItem(LS_STUDENT)).idStudent,
+                    idStudent: JSON.parse(localStorage.getItem(LS_STUDENT)).id,
                     localIdStudent: JSON.parse(localStorage.getItem(LS_STUDENT)).localId,
                     idTherapist: JSON.parse(localStorage.getItem(LS_CURRENT_THERAPIST)).id,
                     rounds: 1,
