@@ -18,7 +18,7 @@ import {
     Collapse,
     NavbarToggler,
     NavLink,
-    NavItem
+    NavItem, NavbarText
 } from "reactstrap";
 import {synchronise} from "../config/SynchroFirebase";
 
@@ -79,7 +79,7 @@ export function NavBar(){
                                Controller Screen
                            </NavLink>
                        </NavItem>
-
+                       <NavbarText className="text-danger"> 🡠 DONT USE SYNCHRO IS TEST CREATED WITH THIS BUTTONS</NavbarText>
                    </Nav>
                    <Nav className="float-end">
                        <UncontrolledDropdown nav inNavbar>
