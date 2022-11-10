@@ -28,10 +28,11 @@ export function AcuityTestController(){
         ,[])
 
     //Function to track cursor on click who depend on the element (call from render)
-    const handleMouseClickLocal = (event) => {
+    function handleMouseClickLocal(event) {
+
         //  Get mouse position relative to element
-        const localX = event.clientX - event.target.offsetLeft;
-        const localY = event.clientY - event.target.offsetTop;
+        const localX = event.clientX - event.currentTarget.offsetLeft;
+        const localY = event.clientY - event.currentTarget.offsetTop;
 
         setLocalMousePos({ x: localX, y: localY });
     };
@@ -120,8 +121,7 @@ export function AcuityTestController(){
 
     return (
         <>
-            {tour === MAXREP ? <div><p>Test finish</p></div> : <div className={"andiv"} onClick={handleMouseClickLocal}>
-                <br/>
+            {tour === MAXREP ? <div><p>Test finish</p></div> : <div className={"andiv"} onClick={e => handleMouseClickLocal(e)}>
                     <Button className={"btn-space_TOP"} onClick={() => {C_selected("0")}}  disabled={display}
                             style={{backgroundColor: active0?  "#6C757D" : "green"}}>
                         <img width="250"
@@ -140,8 +140,6 @@ export function AcuityTestController(){
                              alt="c 90°"
                         />
                     </Button>
-
-                <br/>
 
                     <Button className="btn-space_BOT" onClick={() => {C_selected("180")}} disabled={display}
                             style={{backgroundColor: active180?  "#6C757D" : "green"}}>
@@ -162,9 +160,10 @@ export function AcuityTestController(){
                         />
                     </Button>
 
-                <h1>{"Mouse coords : X:" + mousePos.x +" Y:" + mousePos.y}</h1>
-                <h1>{"Local Mouse coords : X:" + localMousePos.x +" Y:" + localMousePos.y}</h1>
-            </div> }
+            </div>
+            }
+            <h1>{"Mouse coords : X:" + mousePos.x +" Y:" + mousePos.y}</h1>
+            <h1>{"Local Mouse coords : X:" + localMousePos.x +" Y:" + localMousePos.y}</h1>
         </>
     );
 }
