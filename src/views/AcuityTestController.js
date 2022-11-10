@@ -120,7 +120,7 @@ export function AcuityTestController(){
 
     return (
         <>
-            {tour === MAXREP ? <div><p>Test finish</p></div> : <div onClick={handleMouseClickLocal}>
+            {tour === MAXREP ? <div><p>Test finish</p></div> : <div className={"andiv"} onClick={handleMouseClickLocal}>
                 <br/>
                     <Button className={"btn-space_TOP"} onClick={() => {C_selected("0")}}  disabled={display}
                             style={{backgroundColor: active0?  "#6C757D" : "green"}}>
