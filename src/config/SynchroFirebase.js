@@ -87,7 +87,7 @@ async function synchroniseTests(newStudentsEdited){
                 }).id
             }
             // Add new test to Firebase
-            addTest( {
+            await addTest( {
                 comprehension : newTests[i].comprehension,
                 correction: newTests[i].correction,
                 vaLe: newTests[i].vaLe,
