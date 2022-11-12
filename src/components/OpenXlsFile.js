@@ -25,17 +25,25 @@ const promise = new Promise((resolve,reject)=>{
     }
 
 });
-    promise.then((d)=>{
-        console.log(d);
+    promise.then((data)=>{
+        console.log(data);
         let lsStudents =  JSON.parse(localStorage.getItem(LS_NEW_STUDENTS)) || [];
-        const classNum = d[3].__EMPTY_19;// upload the class number
-        const schoolName = d[0].__EMPTY_3; // TODO getIdSchool or school creation
-        for (let i = 5; i < d.length ; i++) {
+        const classNum = data[3].__EMPTY_19;// upload the class number
+        const schoolName = data[0].__EMPTY_3; // TODO getIdSchool or school creation
+        for (let i = 5; i < data.length ; i++) {
+
+            //transformation date to dd/mm/yyyy
+            const date = data[i].__EMPTY_7;
+            const d = date.slice(0,2);
+            const m = date.slice(3,5);
+            const y = date.slice(6,10);
+            const dateObj = new Date(y, m, d)
+
             const student = {
                 localId: Math.round(Date.now() / 1000)+i.toString(),
-                fullName: d[i].__EMPTY_6,
+                fullName: data[i].__EMPTY_6,
+                dob: dateObj,
                 class: classNum,
-                dob: d[i].__EMPTY_7,
                 school: schoolName}
             lsStudents = [...lsStudents,student]
         }
