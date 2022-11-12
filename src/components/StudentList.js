@@ -1,6 +1,6 @@
 import React from 'react';
 import {useState} from "react";
-import {LS_STUDENTS} from "../views/App";
+import {LS_STUDENT, LS_STUDENTS} from "../views/App";
 
 export function StudentsList(){
     const [students] = useState(JSON.parse(localStorage.getItem(LS_STUDENTS)));
@@ -15,18 +15,6 @@ export function StudentsList(){
     }
 
     function TableConstruction({theadData, tbodyData}) {
-        //TODO: complete for selection button
-        /*const [student, setStudent] = useState({
-            id: "",
-            fullName: "",
-            class: "",
-            dob: "",
-            idSchool: ""
-        });
-        useEffect(() => {
-            localStorage.setItem(LS_STUDENT, JSON.stringify(student));
-        }, [student]);*/
-
         return (
             <table className="table">
                 <thead>
@@ -44,13 +32,13 @@ export function StudentsList(){
                         })}
                         <td><button className="btn btn-outline-primary"
                                     onClick={() => {
-                                        /*getStudentById(row["id"]).then(r => setStudent(
-                                            {fullName: r.fullName, dob: r.dob, class: r.class, idSchool: r.idSchool }))*/
+                                        localStorage.setItem(LS_STUDENT, JSON.stringify( row));
+                                        window.open('/acuityTestScreen', '_self')
+                                        window.open('/acuityTestController', '_blank');
                                     }}>
-                            Select this student TODO</button></td>
+                            Select this student</button></td>
                     </tr>;
                 })}
-
                 </tbody>
             </table>
         );
