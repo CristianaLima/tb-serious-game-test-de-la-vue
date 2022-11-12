@@ -21,6 +21,7 @@ import {
     NavItem, NavbarText
 } from "reactstrap";
 import {synchronise} from "../config/SynchroFirebase";
+import moment from "moment";
 
 
 export function NavBar(){
@@ -87,9 +88,18 @@ export function NavBar(){
                                Language
                            </DropdownToggle>
                            <DropdownMenu className="end-0">
-                               <DropdownItem onClick={()=>setLanguage("fr")}>Français</DropdownItem>
-                               <DropdownItem onClick={()=>setLanguage("en")}>English</DropdownItem>
-                               <DropdownItem onClick={()=>setLanguage("po")}>Portugais</DropdownItem>
+                               <DropdownItem onClick={()=>{
+                                   setLanguage("fr");
+                                   moment().locale('fr');}
+                                   }>Français</DropdownItem>
+                               <DropdownItem onClick={()=>{
+                                   setLanguage("en");
+                                   moment().locale('en');}
+                               }>English</DropdownItem>
+                               <DropdownItem onClick={()=>{
+                                   setLanguage("po");
+                                   moment().locale('po');}
+                               }>Portugais</DropdownItem>
                            </DropdownMenu>
                        </UncontrolledDropdown>
                        <Button onClick={tryConnection}>Synchronise</Button>
