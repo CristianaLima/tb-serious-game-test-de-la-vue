@@ -3,6 +3,7 @@ import {Button} from "reactstrap";
 import c from "../assets/c_picture.png";
 import {LS_C_SELECTED, MAXREP} from "./App";
 import '../css/Button.css';
+import {findByLabelText} from "@testing-library/react";
 
 /**
  *Position handling (MH) :
@@ -16,16 +17,8 @@ export function AcuityTestController(){
     const [localMousePos, setLocalMousePos] = useState({});
     const [display,setDisplay]=useState(true) // enable to click on the button after answer
 
-    const [active0, setActive0] = useState(true);
-    const [active90, setActive90] = useState(true);
-    const [active180, setActive180] = useState(true);
-    const [active270, setActive270] = useState(true);
-
-    useEffect(()=>
-        {
-            load();
-        }
-        ,[])
+    //Storage button value and add a colour to the selective buttons
+    const [CClicked, setCClicked] = useState('-1');
 
     //Function to track cursor on click who depend on the element (call from render)
     const handleMouseClickLocal = (event) => {
@@ -38,6 +31,9 @@ export function AcuityTestController(){
 
     //Set a listener for the global positioning
     useEffect(() => {
+
+        load();
+
         const handleMouseClick = (event) => {
             setMousePos({ x: event.clientX, y: event.clientY });
         };
@@ -51,63 +47,33 @@ export function AcuityTestController(){
             );
         };
     }, []);
+
     /**
-     * Add the value of C orienation in local storage
+     * CClicked stock button selected and after 1s the value returns to -1
      * @param e
      */
     function C_selected (e) {
-        switch (e) {
-            case '0': {
-                setActive0(!active0);
-                setActive90(true);
-                setActive180(true);
-                setActive270(true);
-                setTimeout(() => {
-                    setActive0(active0);
-                }, 1000);
-                break;
-            }
-            case '90': {
-                setActive90(!active90);
-                setActive0(true);
-                setActive180(true);
-                setActive270(true);
-                setTimeout(() => {
-                    setActive90(active90);
-                }, 1000);
-                break;
-            }
-            case '180': {
-                setActive180(!active180);
-                setActive0(true);
-                setActive90(true);
-                setActive270(true);
-                setTimeout(() => {
-                    setActive180(active180);
-                }, 1000);
-                break;
-            }
-            case '270': {
-                setActive270(!active270);
-                setActive0(true);
-                setActive90(true);
-                setActive180(true);
-                setTimeout(() => {
-                    setActive270(active270);
-                }, 1000);
-                break;
-            }
-            default: {
-                break;
-            }
-        }
 
-            localStorage.setItem(LS_C_SELECTED, JSON.stringify({tour: tour+1, angle:e}))
-            setTour(tour+1);
+        if(CClicked === e){
+            newRound(e);
+        }
+        setCClicked(e);
+
+        setTimeout(() => {
+            setCClicked('-1');
+        }, 1000);
+    }
+
+    /**
+     * Add the value of C orientation in local storage.
+     * @param e
+     */
+    function newRound(e){
+        localStorage.setItem(LS_C_SELECTED, JSON.stringify({tour: tour+1, angle:e}))
+        setTour(tour+1);
         setDisplay(true);
         load();
-        }
-
+    }
     /**
      * Load Function is to wait before we can click for the second test
      */
@@ -123,7 +89,7 @@ export function AcuityTestController(){
             {tour === MAXREP ? <div><p>Test finish</p></div> : <div onClick={handleMouseClickLocal}>
                 <br/>
                     <Button className={"btn-space_TOP"} onClick={() => {C_selected("0")}}  disabled={display}
-                            style={{backgroundColor: active0?  "#6C757D" : "green"}}>
+                            style={{backgroundColor: CClicked==='0'?   "green" : "#6C757D"}}>
                         <img width="250"
                              style={{transform: "rotate(0deg)"}}
                              src={c}
@@ -132,7 +98,7 @@ export function AcuityTestController(){
                         />
                     </Button>
                     <Button className="btn-space_TOP" onClick={() => {C_selected("90")}} disabled={display}
-                            style={{backgroundColor: active90?  "#6C757D" : "green"}}>
+                            style={{backgroundColor: CClicked==='90'?  "green" : "#6C757D" }}>
                         <img width="250"
                              style={{transform: "rotate(90deg)"}}
                              src={c}
@@ -144,7 +110,7 @@ export function AcuityTestController(){
                 <br/>
 
                     <Button className="btn-space_BOT" onClick={() => {C_selected("180")}} disabled={display}
-                            style={{backgroundColor: active180?  "#6C757D" : "green"}}>
+                            style={{backgroundColor: CClicked==='180'?  "green" : "#6C757D"}}>
                         <img width="250"
                              style={{transform: "rotate(180deg)"}}
                              src={c}
@@ -153,7 +119,7 @@ export function AcuityTestController(){
                         />
                     </Button >
                     <Button className="btn-space_BOT" onClick={() => {C_selected("270")}} disabled={display}
-                            style={{backgroundColor: active270?  "#6C757D" : "green"}}>
+                            style={{backgroundColor: CClicked==='270'?  "green" : "#6C757D"}}>
                         <img width="250"
                              style={{transform: "rotate(270deg)"}}
                              src={c}
