@@ -1,7 +1,7 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore"
 import {addDoc, doc, getDoc, collection, getFirestore, getDocs} from "firebase/firestore";
-import Moment from "moment";
+import moment from "moment";
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -47,18 +47,17 @@ export async function getAllSchools(){
 }
 
 //Get all students
-export async function getAllStudents(schools){
+export async function getAllStudents(){
     const docsSnap = await getDocs(studentsDbRef);
     let students = [];
     docsSnap.forEach(doc => {
             const student = doc.data();
-            Moment.locale('en'); //TODO: link to quentin code
             const dob = student.dob.toDate();
             const completeStudent = {
                 fullName: student.fullName,
-                dob: Moment(dob).format('d MMMM yyyy'),
+                dob: moment(dob).format('d MMMM yyyy'),
                 class: student.class,
-                nameSchool: schools.find((s) => { return s.id === student.idSchool }).name
+                idSchool: student.idSchool
                 };
             const studentWithId = { ...completeStudent, id: doc.id}
             students.push(studentWithId);
