@@ -16,16 +16,10 @@ export function AcuityTestController(){
     const [localMousePos, setLocalMousePos] = useState({});
     const [display,setDisplay]=useState(true) // enable to click on the button after answer
 
-    const [active0, setActive0] = useState(true);
+    let [active0, setActive0] = useState(true);
     const [active90, setActive90] = useState(true);
     const [active180, setActive180] = useState(true);
     const [active270, setActive270] = useState(true);
-
-    useEffect(()=>
-        {
-            load();
-        }
-        ,[])
 
     //Function to track cursor on click who depend on the element (call from render)
     const handleMouseClickLocal = (event) => {
@@ -38,6 +32,9 @@ export function AcuityTestController(){
 
     //Set a listener for the global positioning
     useEffect(() => {
+
+        load();
+
         const handleMouseClick = (event) => {
             setMousePos({ x: event.clientX, y: event.clientY });
         };
@@ -50,50 +47,84 @@ export function AcuityTestController(){
                 handleMouseClick
             );
         };
+
+
     }, []);
     /**
      * Add the value of C orienation in local storage
      * @param e
      */
+
+    console.log(active0 +" 0")
+    console.log(active90+ " 90")
+    console.log("-----------------------")
+
+   // console.log(active180)
+   // console.log(active270)
     function C_selected (e) {
+
+        if(!active0){
+            newRound();
+        }
+
+/*
+        if(active0 == false || active90 == false || active180 == false || active270 == false){
+            newRound();
+        }
+
+ */
         switch (e) {
             case '0': {
-                setActive0(!active0);
+                setActive0(false);
                 setActive90(true);
                 setActive180(true);
                 setActive270(true);
+
                 setTimeout(() => {
-                    setActive0(active0);
+                    setActive0(true);
                 }, 1000);
+
                 break;
+
             }
             case '90': {
-                setActive90(!active90);
+
+                active0 = true;
+                console.log(active0 +" après avoir cliqué sur 90");
+
                 setActive0(true);
+                setActive90(false);
                 setActive180(true);
                 setActive270(true);
+
+
+                //newRound();
+
                 setTimeout(() => {
-                    setActive90(active90);
+                    setActive90(true);
                 }, 1000);
+
+
+
                 break;
             }
             case '180': {
-                setActive180(!active180);
+                setActive180(false);
                 setActive0(true);
                 setActive90(true);
                 setActive270(true);
                 setTimeout(() => {
-                    setActive180(active180);
+                    setActive180(true);
                 }, 1000);
                 break;
             }
             case '270': {
-                setActive270(!active270);
+                setActive270(false );
                 setActive0(true);
                 setActive90(true);
                 setActive180(true);
                 setTimeout(() => {
-                    setActive270(active270);
+                    setActive270(true);
                 }, 1000);
                 break;
             }
@@ -102,10 +133,18 @@ export function AcuityTestController(){
             }
         }
 
-            localStorage.setItem(LS_C_SELECTED, JSON.stringify({tour: tour+1, angle:e}))
-            setTour(tour+1);
+/*
+        localStorage.setItem(LS_C_SELECTED, JSON.stringify({tour: tour+1, angle:e}))
+        setTour(tour+1);
         setDisplay(true);
         load();
+*/
+        function newRound(){
+            localStorage.setItem(LS_C_SELECTED, JSON.stringify({tour: tour+1, angle:e}))
+            setTour(tour+1);
+            setDisplay(true);
+            load();
+        }
         }
 
     /**
