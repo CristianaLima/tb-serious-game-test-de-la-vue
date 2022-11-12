@@ -9,18 +9,20 @@ export function StudentsList(){
 
     function StudentsFromFirebase() {
         if (students.length > 0) {
-            return <div>
+            return <>
+                <h1>Students from school roster</h1>
                 <TableConstruction theadData={Object.keys(students[0])} tbodyData={students}/>
-            </div>;
+            </>;
         }
         return <div/>;
     }
 
     function NewStudents() {
         if (newStudents.length > 0) {
-            return <div>
+            return <>
+                <h1>New students from this session</h1>
                 <TableConstruction theadData={Object.keys(newStudents[0])} tbodyData={newStudents}/>
-            </div>;
+            </>;
         }
         return <div/>;
     }
@@ -41,6 +43,7 @@ export function StudentsList(){
                             case "localId":   return;
                             default: return  <th  key={heading}>{heading}</th>}
                     })}
+                    <th  style={{width: "20%"}} key={"button"}></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -51,10 +54,10 @@ export function StudentsList(){
                                 case "idSchool":   return <td key={index}>{schools.find((s) => { return s.id === row.idSchool }).name}</td>
                                 case "id": return ;
                                 case "localId":   return;
-                                case "dob": return <td key={index}>{moment(row[key]).format('d MMMM yyyy')}</td>;
+                                case "dob": return <td key={index}>{moment(row[key]).format('DD MMM yyyy')}</td>;
                                 default:     return  <td key={index}>{row[key]}</td>;}
                         })}
-                        <td  style={{width: "20%"}}><button className="btn btn-outline-primary"
+                        <td><button className="btn btn-outline-primary"
                                                             onClick={() => {
                                                                 localStorage.setItem(LS_STUDENT, JSON.stringify( row));
                                                                 window.open('/acuityTestScreen', '_self')
@@ -70,9 +73,7 @@ export function StudentsList(){
 
     return(
         <div className="px-3 m-auto w-75 my-2 text-center">
-            <h1>Students from school roster</h1>
             <StudentsFromFirebase/>
-            <h1>New students from this session</h1>
             <NewStudents/>
         </div>
     )
