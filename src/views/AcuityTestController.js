@@ -3,6 +3,7 @@ import {Button} from "reactstrap";
 import c from "../assets/c_picture.png";
 import {LS_C_SELECTED, MAXREP} from "./App";
 import '../css/Button.css';
+import {findByLabelText} from "@testing-library/react";
 
 /**
  *Position handling (MH) :
@@ -16,10 +17,12 @@ export function AcuityTestController(){
     const [localMousePos, setLocalMousePos] = useState({});
     const [display,setDisplay]=useState(true) // enable to click on the button after answer
 
-    let [active0, setActive0] = useState(true);
-    const [active90, setActive90] = useState(true);
-    const [active180, setActive180] = useState(true);
-    const [active270, setActive270] = useState(true);
+    const [active0, setActive0] = useState(false);
+    const [active90, setActive90] = useState(false);
+    const [active180, setActive180] = useState(false);
+    const [active270, setActive270] = useState(false);
+
+    const [click, setClick] = useState('-1')
 
     //Function to track cursor on click who depend on the element (call from render)
     const handleMouseClickLocal = (event) => {
@@ -63,9 +66,9 @@ export function AcuityTestController(){
    // console.log(active270)
     function C_selected (e) {
 
-        if(!active0){
-            newRound();
-        }
+
+
+
 
 /*
         if(active0 == false || active90 == false || active180 == false || active270 == false){
@@ -75,33 +78,35 @@ export function AcuityTestController(){
  */
         switch (e) {
             case '0': {
-                setActive0(false);
-                setActive90(true);
-                setActive180(true);
-                setActive270(true);
+
+                if(active0){
+                    newRound();
+                }
+
+                setActive0(true);
+                setActive90(false);
+                setActive180(false);
+                setActive270(false);
 
                 setTimeout(() => {
-                    setActive0(true);
+                    setActive0(false);
                 }, 1000);
 
                 break;
 
             }
             case '90': {
+                if(active90){
+                    newRound();
+                }
 
-                active0 = true;
-                console.log(active0 +" après avoir cliqué sur 90");
-
-                setActive0(true);
-                setActive90(false);
-                setActive180(true);
-                setActive270(true);
-
-
-                //newRound();
+                setActive0(false);
+                setActive90(true);
+                setActive180(false);
+                setActive270(false);
 
                 setTimeout(() => {
-                    setActive90(true);
+                    setActive90(false);
                 }, 1000);
 
 
@@ -109,22 +114,22 @@ export function AcuityTestController(){
                 break;
             }
             case '180': {
-                setActive180(false);
-                setActive0(true);
-                setActive90(true);
-                setActive270(true);
+                setActive180(true);
+                setActive0(false);
+                setActive90(false);
+                setActive270(false);
                 setTimeout(() => {
-                    setActive180(true);
+                    setActive180(false);
                 }, 1000);
                 break;
             }
             case '270': {
-                setActive270(false );
-                setActive0(true);
-                setActive90(true);
-                setActive180(true);
+                setActive270(true);
+                setActive0(false);
+                setActive90(false);
+                setActive180(false);
                 setTimeout(() => {
-                    setActive270(true);
+                    setActive270(false);
                 }, 1000);
                 break;
             }
@@ -162,7 +167,7 @@ export function AcuityTestController(){
             {tour === MAXREP ? <div><p>Test finish</p></div> : <div onClick={handleMouseClickLocal}>
                 <br/>
                     <Button className={"btn-space_TOP"} onClick={() => {C_selected("0")}}  disabled={display}
-                            style={{backgroundColor: active0?  "#6C757D" : "green"}}>
+                            style={{backgroundColor: !active0?  "#6C757D" : "green"}}>
                         <img width="250"
                              style={{transform: "rotate(0deg)"}}
                              src={c}
@@ -171,7 +176,7 @@ export function AcuityTestController(){
                         />
                     </Button>
                     <Button className="btn-space_TOP" onClick={() => {C_selected("90")}} disabled={display}
-                            style={{backgroundColor: active90?  "#6C757D" : "green"}}>
+                            style={{backgroundColor: !active90?  "#6C757D" : "green"}}>
                         <img width="250"
                              style={{transform: "rotate(90deg)"}}
                              src={c}
@@ -183,7 +188,7 @@ export function AcuityTestController(){
                 <br/>
 
                     <Button className="btn-space_BOT" onClick={() => {C_selected("180")}} disabled={display}
-                            style={{backgroundColor: active180?  "#6C757D" : "green"}}>
+                            style={{backgroundColor: !active180?  "#6C757D" : "green"}}>
                         <img width="250"
                              style={{transform: "rotate(180deg)"}}
                              src={c}
@@ -192,7 +197,7 @@ export function AcuityTestController(){
                         />
                     </Button >
                     <Button className="btn-space_BOT" onClick={() => {C_selected("270")}} disabled={display}
-                            style={{backgroundColor: active270?  "#6C757D" : "green"}}>
+                            style={{backgroundColor: !active270?  "#6C757D" : "green"}}>
                         <img width="250"
                              style={{transform: "rotate(270deg)"}}
                              src={c}
