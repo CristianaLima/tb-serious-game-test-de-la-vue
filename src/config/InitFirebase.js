@@ -47,19 +47,20 @@ export async function getAllSchools(){
 }
 
 //Get all students
-export async function getAllStudents(){
+export async function getAllStudents(schools){
     const docsSnap = await getDocs(studentsDbRef);
     let students = [];
     docsSnap.forEach(doc => {
             const student = doc.data();
             Moment.locale('en'); //TODO: link to quentin code
             const dob = student.dob.toDate();
-            const studentDate = {
+            const completeStudent = {
                 fullName: student.fullName,
                 dob: Moment(dob).format('d MMMM yyyy'),
-                class: student.class
+                class: student.class,
+                nameSchool: schools.find((s) => { return s.id === student.idSchool }).name
                 };
-            const studentWithId = { ...studentDate, id: doc.id}
+            const studentWithId = { ...completeStudent, id: doc.id}
             students.push(studentWithId);
         }
     );
@@ -68,11 +69,12 @@ export async function getAllStudents(){
 }
 
 //Get all tests
-export async function getAllTests(){
+export async function getAllTests(students){
     const docsSnap = await getDocs(testsDbRef);
     let tests = [];
     docsSnap.forEach(doc => {
-            const testWithId = {...doc.data(), id: doc.id};
+            const test =  doc.data();
+            const testWithId = {...test, id: doc.id, student: students.find((s) => { return s.id === test.idStudent })};
             tests.push(testWithId);
         }
     );

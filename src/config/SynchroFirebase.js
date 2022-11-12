@@ -36,9 +36,14 @@ function clearLocalStorage () {
  * Get data (schools, students, tests) from Firebase and stock in local storage
  */
 export async function stockDataInLocalStorage() {
-    getAllSchools().then(s => localStorage.setItem(LS_SCHOOLS, JSON.stringify(s)));
-    getAllStudents().then(s => localStorage.setItem(LS_STUDENTS, JSON.stringify(s)));
-    getAllTests().then(s => localStorage.setItem(LS_VISUALSTESTS, JSON.stringify(s)));
+    getAllSchools().then(schools => {
+        localStorage.setItem(LS_SCHOOLS, JSON.stringify(schools))
+        getAllStudents(schools).then(students => {
+            localStorage.setItem(LS_STUDENTS, JSON.stringify(students))
+            getAllTests(students).then(tests => localStorage.setItem(LS_VISUALSTESTS, JSON.stringify(tests)));
+        });
+    });
+
     //TODO: if empty, error handling
 }
 

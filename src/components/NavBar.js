@@ -1,21 +1,26 @@
 import React, {useEffect, useState} from 'react';
 import {
-    Nav,
     Navbar,
     NavbarBrand,
-    NavItem,
-    NavLink,
     DropdownMenu,
     DropdownItem,
     DropdownToggle,
-    UncontrolledButtonDropdown,
     Button,
     ModalFooter,
     ModalHeader,
-    ModalBody, Modal, Toast, ToastHeader, ToastBody
+    ModalBody,
+    Modal,
+    Toast,
+    ToastHeader,
+    ToastBody,
+    Nav,
+    UncontrolledDropdown,
+    Collapse,
+    NavbarToggler,
+    NavLink,
+    NavItem, NavbarText
 } from "reactstrap";
 import {synchronise} from "../config/SynchroFirebase";
-import {LS_STUDENT} from "../views/App";
 
 
 export function NavBar(){
@@ -24,18 +29,9 @@ export function NavBar(){
     const [toast, setToast] = useState(false);
     const toggleModal = () => setModal(!modal);
     const toggleToast = () => setToast(!toast);
-    const [student, setStudent] = useState({
-        fullName: "",
-        class: ""
-    });
+    const [collapse, setIsOpen] = useState(false);
 
-    useEffect(() => {
-        setStudent(JSON.parse(localStorage.getItem(LS_STUDENT)))
-    }, []);
-
-    useEffect(() => {
-        localStorage.setItem("language", language);
-    }, [language]);
+    const toggleNavbar = () => setIsOpen(!collapse);
 
     useEffect(() => {
         if (toast) {
@@ -63,36 +59,42 @@ export function NavBar(){
 
    return (
        <div>
-           <Navbar color={"light"}>
+           <Navbar color="light" light  expand="md">
                <NavbarBrand href = "/">
                    Visual Acuity (VA) Screening App
                </NavbarBrand>
-               {/*Show student name if present*/}
-               {student !== null ?
-                   <div>
-                       Student : {student.fullName} - Class: {student.class}
-                   </div>:
-               <div>Welcome</div>}
-               <Button onClick={tryConnection}>Synchronise</Button>
-               <UncontrolledButtonDropdown>
-                   <DropdownToggle caret>Language</DropdownToggle>
-                   <DropdownMenu>
-                       <DropdownItem onClick={()=>setLanguage("fr")}>Français</DropdownItem>
-                       <DropdownItem onClick={()=>setLanguage("en")}>English</DropdownItem>
-                       <DropdownItem onClick={()=>setLanguage("po")}>Portugais</DropdownItem>
-                   </DropdownMenu>
-               </UncontrolledButtonDropdown>
-               <Nav navbar>
-                   <NavItem>
-                       <NavLink href = "acuityTestScreen">
-                           Test Screen
-                       </NavLink>
-                       <NavLink href = "acuityTestController" target={"_blank"}>
-                           Controller Screen
-                       </NavLink>
-                   </NavItem>
-               </Nav>
-
+               <NavbarToggler onClick={toggleNavbar} />
+               <Collapse isOpen={!collapse} navbar className="float-end text-end">
+                   <Nav
+                       className="me-auto px-3"
+                       navbar
+                   >
+                       <NavItem>
+                           <NavLink href = "acuityTestScreen">
+                               Test Screen
+                           </NavLink>
+                       </NavItem>
+                       <NavItem>
+                           <NavLink href = "acuityTestController" target={"_blank"}>
+                               Controller Screen
+                           </NavLink>
+                       </NavItem>
+                       <NavbarText className="text-danger"> 🡠 DONT USE SYNCHRO IS TEST CREATED WITH THIS BUTTONS</NavbarText>
+                   </Nav>
+                   <Nav className="float-end">
+                       <UncontrolledDropdown nav inNavbar>
+                           <DropdownToggle nav caret>
+                               Language
+                           </DropdownToggle>
+                           <DropdownMenu className="end-0">
+                               <DropdownItem onClick={()=>setLanguage("fr")}>Français</DropdownItem>
+                               <DropdownItem onClick={()=>setLanguage("en")}>English</DropdownItem>
+                               <DropdownItem onClick={()=>setLanguage("po")}>Portugais</DropdownItem>
+                           </DropdownMenu>
+                       </UncontrolledDropdown>
+                       <Button onClick={tryConnection}>Synchronise</Button>
+                   </Nav>
+               </Collapse>
            </Navbar>
            <Modal isOpen={modal} toggle={toggleModal}>
                <ModalHeader toggle={toggleModal}>
