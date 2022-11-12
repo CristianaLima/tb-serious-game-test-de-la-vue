@@ -54,7 +54,7 @@ export function StudentsList(){
                                 case "idSchool":   return <td key={index}>{schools.find((s) => { return s.id === row.idSchool }).name}</td>
                                 case "id": return ;
                                 case "localId":   return;
-                                case "dob": return <td key={index}>{moment(row[key]).format('DD MMM yyyy')}</td>;
+                                case "dob": return <td key={index}>{moment(row[key]).format('d MMMM yyyy')}</td>;
                                 default:     return  <td key={index}>{row[key]}</td>;}
                         })}
                         <td><button className="btn btn-outline-primary"
