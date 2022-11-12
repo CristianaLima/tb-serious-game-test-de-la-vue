@@ -19,9 +19,10 @@ import c from "../assets/c_picture.png";
  * results : array of size
  */
 export function CImage(){
-    const [response, setResponse] = useState({tour : 0, angle : 0})
+    const [angleArray] =  constructAngleArray();
+
+    const [response, setResponse] = useState({tour : 0, angle : 0});
     const [answer, setAnswer] = useState(false);
-    const [angleArray] = useState(() => constructAngleArray())
     const [angle, setAngle] = useState(angleArray[0]);
     const [size, setSize] = useState(1);
     const [status, setStatus] = useState(0);
@@ -29,10 +30,7 @@ export function CImage(){
     const [newTests, setNewTests] = useState(() => {
         return JSON.parse(localStorage.getItem(LS_NEW_VISUALSTESTS)) || []
     });
-
-    function addTestToArray(test) {
-        setNewTests([...newTests, test]);
-    }
+    
     useEffect(() => {
         localStorage.setItem(LS_NEW_VISUALSTESTS, JSON.stringify(newTests));
     }, [newTests]);
@@ -63,8 +61,8 @@ export function CImage(){
                 break;
             case MAXREP :
                 setStatus(2);
-                console.log(results)
-                addTestToArray({
+                console.log(results);
+                setNewTests([...newTests, {
                     dateTest: Date.now(),
                     comprehension: false,
                     correction: false,
@@ -74,7 +72,7 @@ export function CImage(){
                     rounds: 1,
                     vaLe: results[results.length-1],
                     vaRe: results[results.length-1]
-                })
+                }])
                 setSize(0); // C disappear
                 break;
             default :{
