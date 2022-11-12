@@ -38,7 +38,7 @@ export function StudentsList(){
                             case "fullName":   return <th style={{width: "20%"}} key={"fullName"}>Full name</th>;
                             case "dob":   return <th style={{width: "20%"}} key={"dob"}>DOB</th>;
                             case "class":   return <th style={{width: "20%"}} key={"class"}>Class</th>;
-                            case "idSchool":   return <th style={{width: "20%"}} key={"school"}>School</th>;
+                            case "idSchool":   return <th style={{width: "20%"}} key={"idSchool"}>School</th>;
                             case "id": return ;
                             case "localId":   return;
                             default: return  <th  key={heading}>{heading}</th>}
