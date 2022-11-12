@@ -38,7 +38,7 @@ function clearLocalStorage () {
 export async function stockDataInLocalStorage() {
     getAllSchools().then(schools => {
         localStorage.setItem(LS_SCHOOLS, JSON.stringify(schools))
-        getAllStudents(schools).then(students => {
+        getAllStudents().then(students => {
             localStorage.setItem(LS_STUDENTS, JSON.stringify(students))
             getAllTests(students).then(tests => localStorage.setItem(LS_VISUALSTESTS, JSON.stringify(tests)));
         });

@@ -14,8 +14,8 @@ function StudentForm() {
     const [student, setStudent] = useState({
         localId: Math.round(Date.now() / 1000).toString(),
         fullName: "",
-        class: "",
         dob: "",
+        class: "",
         idSchool: schools[0].id
     });
 
