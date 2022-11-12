@@ -1,5 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {LS_C_SELECTED,  MAXREP} from "../views/App";
+import {
+    LS_C_SELECTED,
+    LS_CURRENT_THERAPIST,
+    LS_NEW_VISUALSTESTS,
+    LS_STUDENT,
+    MAXREP
+} from "../views/App";
 import c from "../assets/c_picture.png";
 
 /**
@@ -20,6 +26,16 @@ export function CImage(){
     const [size, setSize] = useState(1);
     const [status, setStatus] = useState(0);
     const [results, setResults] = useState([]);
+    const [newTests, setNewTests] = useState(() => {
+        return JSON.parse(localStorage.getItem(LS_NEW_VISUALSTESTS)) || []
+    });
+
+    function addTestToArray(test) {
+        setNewTests([...newTests, test]);
+    }
+    useEffect(() => {
+        localStorage.setItem(LS_NEW_VISUALSTESTS, JSON.stringify(newTests));
+    }, [newTests]);
 
     /**
      * Add a listener on local storage
@@ -48,6 +64,17 @@ export function CImage(){
             case MAXREP :
                 setStatus(2);
                 console.log(results)
+                addTestToArray({
+                    dateTest: Date.now(),
+                    comprehension: false,
+                    correction: false,
+                    idStudent: JSON.parse(localStorage.getItem(LS_STUDENT)).idStudent,
+                    localIdStudent: JSON.parse(localStorage.getItem(LS_STUDENT)).localId,
+                    idTherapist: JSON.parse(localStorage.getItem(LS_CURRENT_THERAPIST)).id,
+                    rounds: 1,
+                    vaLe: results[results.length-1],
+                    vaRe: results[results.length-1]
+                })
                 setSize(0); // C disappear
                 break;
             default :{
