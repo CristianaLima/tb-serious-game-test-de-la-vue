@@ -8,12 +8,11 @@ import '../css/Button.css';
  *Position handling (MH) :
  * Global positioning onClick via the useEffect who create an event listener (for the entire page)
  * Local positioning onClick via the const handlMouseClickLocal, who take the position of an element to set position only inside it
- * TODO : MH and OT need to work together for the right size of the buttons, then call the local positioning
  */
 export function AcuityTestController(){
     const [tour, setTour] = useState(0)
-    const [mousePos, setMousePos] = useState({});
-    const [localMousePos, setLocalMousePos] = useState({});
+    const [localMousePos] = useState({});
+    const [mousePosList, setMouseList] = useState([])
     const [display,setDisplay]=useState(true) // enable to click on the button after answer
 
     const [active0, setActive0] = useState(true);
@@ -27,31 +26,12 @@ export function AcuityTestController(){
         }
         ,[])
 
-    //Function to track cursor on click who depend on the element (call from render)
+    //Function to track cursor on click in the div.
+    //The data is stored in a array and can be use later
     function handleMouseClickLocal(event) {
-
-        //  Get mouse position relative to element
-        const localX = event.clientX - event.currentTarget.offsetLeft;
-        const localY = event.clientY - event.currentTarget.offsetTop;
-
-        setLocalMousePos({ x: localX, y: localY });
+        setMouseList([...mousePosList,{ x: event.clientX - event.currentTarget.offsetLeft, y: event.clientY - event.currentTarget.offsetTop }])
     };
 
-    //Set a listener for the global positioning
-    useEffect(() => {
-        const handleMouseClick = (event) => {
-            setMousePos({ x: event.clientX, y: event.clientY });
-        };
-
-        window.addEventListener('click', handleMouseClick);
-
-        return () => {
-            window.removeEventListener(
-                'click',
-                handleMouseClick
-            );
-        };
-    }, []);
     /**
      * Add the value of C orienation in local storage
      * @param e
@@ -162,7 +142,6 @@ export function AcuityTestController(){
 
             </div>
             }
-            <h1>{"Mouse coords : X:" + mousePos.x +" Y:" + mousePos.y}</h1>
             <h1>{"Local Mouse coords : X:" + localMousePos.x +" Y:" + localMousePos.y}</h1>
         </>
     );
