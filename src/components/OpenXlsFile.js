@@ -1,5 +1,9 @@
 import * as XLSX from 'xlsx';
 import {LS_NEW_STUDENTS} from "../views/App";
+import React from "react";
+
+
+
 
 /**
  * Upload an Excel file to tab NewStudent in local storage
@@ -23,6 +27,7 @@ const promise = new Promise((resolve,reject)=>{
     fileReader.onerror = (error)=>{
     reject(error);
     }
+
 
 });
     promise.then((data)=>{
@@ -48,6 +53,8 @@ const promise = new Promise((resolve,reject)=>{
             lsStudents = [...lsStudents,student]
         }
         localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify(lsStudents));
+
+
     });
 
 }
