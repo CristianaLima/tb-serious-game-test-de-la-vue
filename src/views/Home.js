@@ -6,7 +6,7 @@ import {LS_CURRENT_THERAPIST} from "./App";
 import StudentForm from "../components/StudentForm";
 import {StudentsList} from "../components/StudentList";
 import {OpenXlsFile} from "../components/OpenXlsFile";
-import {disable} from "workbox-navigation-preload";
+
 
 
 export function Home(){
