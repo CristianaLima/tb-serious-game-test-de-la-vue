@@ -21,6 +21,10 @@ export function AcuityTestController(){
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    useEffect(() => {
+        const timer = setTimeout(() => setCClicked('-1'), 2000);
+        return () => clearTimeout(timer);}, [CClicked]);
+
 
     function getWindowDimensions() {
         const { innerWidth: width, innerHeight: height } = window;
@@ -57,14 +61,15 @@ export function AcuityTestController(){
         //TODO
         //clearTimeout();
 
+
         if(CClicked === e){
             startNewRound(e);
         } else {
             setCClicked(e);
 
-            setTimeout(() => {
+/*            setTimeout(() => {
                 setCClicked('-1');
-            }, 5000);
+            }, 5000);*/
         }
     }
 
