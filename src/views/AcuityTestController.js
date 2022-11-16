@@ -96,7 +96,7 @@ export function AcuityTestController(){
                                                                         display: 'flex', alignItems: 'center', flexWrap: 'wrap'}}
                                                                     onClick={e => handleMouseClickLocal(e)}>
                 <div style={{width: windowDimensions.height/8}}></div>
-                <Button className={"btn-space_TOP"} onClick={() => {C_selected("0")}}  disabled={lockedDisplay}
+                <Button onClick={() => {C_selected("0")}}  disabled={lockedDisplay}
                         style={{width: windowDimensions.height/4, backgroundColor: CClicked==='0'? "green" : "#6C757D"}}>
                     <img style={{transform: "rotate(0deg)"}}
                          src={c}
@@ -105,7 +105,7 @@ export function AcuityTestController(){
                     />
                 </Button>
                 <div style={{width: windowDimensions.height/4}}></div>
-                <Button className="btn-space_TOP" onClick={() => {C_selected("90")}} disabled={lockedDisplay}
+                <Button onClick={() => {C_selected("90")}} disabled={lockedDisplay}
                         style={{width: windowDimensions.height/4, backgroundColor: CClicked==='90'? "green" : "grey" }}>
                     <img style={{transform: "rotate(90deg)"}}
                          src={c}
@@ -115,7 +115,7 @@ export function AcuityTestController(){
                 </Button>
                 <div style={{width: windowDimensions.height/8}}></div>
                 <div style={{width: windowDimensions.height/8}}></div>
-                <Button className="btn-space_BOT" onClick={() => {C_selected("180")}} disabled={lockedDisplay}
+                <Button onClick={() => {C_selected("180")}} disabled={lockedDisplay}
                         style={{width: windowDimensions.height/4, backgroundColor: CClicked==='180'?  "green" : "grey"}}>
                     <img style={{transform: "rotate(180deg)"}}
                          src={c}
@@ -124,7 +124,7 @@ export function AcuityTestController(){
                     />
                 </Button >
                 <div style={{width: windowDimensions.height/4}}></div>
-                <Button className="btn-space_BOT" onClick={() => {C_selected("270")}} disabled={lockedDisplay}
+                <Button onClick={() => {C_selected("270")}} disabled={lockedDisplay}
                         style={{width: windowDimensions.height/4, backgroundColor: CClicked==='270'?  "green" : "grey"}}>
                     <img style={{transform: "rotate(270deg)"}}
                          src={c}
