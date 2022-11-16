@@ -16,9 +16,7 @@ export function AcuityTestScreen(){
     return(
         <>
             <NavBar/>
-            <div>
-                Student : {student.fullName} - Class: {student.class}
-            </div>
+            {student == null ? <></> :  <div> {student.fullName} - Class: {student.class}} </div>}
             <CImage/>
         </>
     )

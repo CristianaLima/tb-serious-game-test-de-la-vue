@@ -2,6 +2,7 @@ import React from 'react';
 import {useState} from "react";
 import {LS_NEW_STUDENTS, LS_SCHOOLS, LS_STUDENT, LS_STUDENTS} from "../views/App";
 import moment from "moment/moment";
+import {OpenXlsFile} from "./OpenXlsFile";
 
 export function StudentsList(){
     const [students] = useState(JSON.parse(localStorage.getItem(LS_STUDENTS)));
@@ -10,6 +11,7 @@ export function StudentsList(){
     function StudentsFromFirebase() {
         if (students.length > 0) {
             return <>
+
                 <h1>Students from school roster</h1>
                 <TableConstruction theadData={Object.keys(students[0])} tbodyData={students}/>
             </>;
@@ -30,6 +32,7 @@ export function StudentsList(){
     function TableConstruction({theadData, tbodyData}) {
         const schools = JSON.parse(localStorage.getItem(LS_SCHOOLS))
         return (
+            <div>
             <table className="table">
                 <thead>
                 <tr>
@@ -68,6 +71,7 @@ export function StudentsList(){
                 })}
                 </tbody>
             </table>
+            </div>
         );
     }
 
