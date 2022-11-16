@@ -55,7 +55,7 @@ export async function getAllStudents(){
             const dob = student.dob.toDate();
             const completeStudent = {
                 fullName: student.fullName,
-                dob: moment(dob).format('d MMMM yyyy'),
+                dob: moment(dob).format('DD MMMM yyyy'),
                 class: student.class,
                 idSchool: student.idSchool
                 };

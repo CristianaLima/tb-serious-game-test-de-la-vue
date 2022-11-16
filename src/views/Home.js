@@ -5,6 +5,7 @@ import {getTherapistById} from "../config/InitFirebase";
 import {LS_CURRENT_THERAPIST} from "./App";
 import StudentForm from "../components/StudentForm";
 import {StudentsList} from "../components/StudentList";
+import {OpenXlsFile} from "../components/OpenXlsFile";
 
 export function Home(){
     const [content, setContent] = useState(0)
@@ -23,6 +24,10 @@ export function Home(){
                         <button type="button" className="btn btn-success btn-lg m-5"  onClick={() => {setContent(1)}}>
                             New Test
                         </button>
+                        <input type="file"  onChange={(e)=>{
+                            const file = e.target.files[0];
+                            OpenXlsFile(file);
+                        }}/>
                     </div> :
                     <>
                     {content===1 ?
