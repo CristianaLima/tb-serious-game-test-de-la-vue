@@ -23,7 +23,8 @@ export function AcuityTestController(){
 
     useEffect(() => {
         const timer = setTimeout(() => setCClicked('-1'), 2000);
-        return () => clearTimeout(timer);}, [CClicked]);
+        return () => clearTimeout(timer);
+    }, [CClicked]);
 
 
     function getWindowDimensions() {
@@ -52,24 +53,10 @@ export function AcuityTestController(){
      * @param e
      */
     function C_selected (e) {
-
-        /**
-         * This is a way to reset the timer and avoid problem when changing button.
-         * Couldn't implement this simple thing with React sorcery...
-         * MH
-         */
-        //TODO
-        //clearTimeout();
-
-
         if(CClicked === e){
             startNewRound(e);
         } else {
             setCClicked(e);
-
-/*            setTimeout(() => {
-                setCClicked('-1');
-            }, 5000);*/
         }
     }
 
