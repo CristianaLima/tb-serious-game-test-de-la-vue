@@ -82,7 +82,6 @@ async function synchroniseStudents(newSchoolsEdited) {
         for (let i = 0; i < newStudents.length; i++) {
             // Edit idSchool if it was a new school (from excel import)
             if (newStudents[i].idSchool === undefined){
-                console.log("undefined")
                 newStudents[i].idSchool = newSchoolsEdited.find((s) => {
                     return s.localId === newStudents[i].localIdSchool
                 }).id

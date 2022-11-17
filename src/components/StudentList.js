@@ -61,7 +61,7 @@ export function StudentsList(){
                             case "class":   return <th style={{width: "20%"}} key={"class"}>Class</th>;
                             case "idSchool":   return <th style={{width: "20%"}} key={"idSchool"}>School</th>;
                             case "localIdSchool":   return <th style={{width: "20%"}} key={"idSchool"}>School</th>;
-                            default: return}
+                            default: return <></>}
                     })}
                     <th  style={{width: "20%"}} key={"button"}></th>
                 </tr>
@@ -76,7 +76,7 @@ export function StudentsList(){
                                 case "class":   return  <td key={index}>{row[key]}</td>;
                                 case "idSchool":   return <td key={index}>{SchoolName(row)}</td>
                                 case "localIdSchool":   return <td key={index}>{SchoolName(row)}</td>
-                                default: return }
+                                default: return <></>}
                         })}
                         <td><button className="btn btn-outline-primary"
                                                             onClick={() => {

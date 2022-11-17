@@ -1,6 +1,5 @@
 import * as XLSX from 'xlsx';
 import {LS_NEW_SCHOOLS, LS_NEW_STUDENTS, LS_SCHOOLS} from "../views/App";
-import React from "react";
 
 /**
  * Upload an Excel file to tab NewStudent in local storage
@@ -67,7 +66,7 @@ const promise = new Promise((resolve,reject)=>{
             }
         } else {
             let localIdSchool = Math.round(Date.now() / 1000);
-            localStorage.setItem(LS_NEW_SCHOOLS,JSON.stringify([...lsNewSchools,{name: schoolName, localId:Math.round(Date.now() / 1000)}]));
+            localStorage.setItem(LS_NEW_SCHOOLS,JSON.stringify([...lsNewSchools,{name: schoolName, localId: localIdSchool}]));
             for (let i = 0; i < studentsToAdd.length; i++) {
                 if (studentsToAdd[i].idSchool == undefined) {
                     studentsToAdd[i] = {...studentsToAdd[i], localIdSchool: localIdSchool};
