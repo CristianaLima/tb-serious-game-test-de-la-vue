@@ -55,10 +55,10 @@ export function StudentsList(){
                         {theadData.map((key, index) => {
                             switch(key) {
                                 case "idSchool":   return <td key={index}>{schools.find((s) => { return s.id === row.idSchool }).name}</td>
+                                case "dob": return <td key={index}>{moment(row[key]).format('DD MMMM yyyy')}</td>;
                                 case "id": return ;
                                 case "localId":   return;
-                                case "dob": return <td key={index}>{moment(row[key]).format('DD MMMM yyyy')}</td>;
-                                default:     return  <td key={index}>{row[key]}</td>;}
+                                default: return  <td key={index}>{row[key]}</td>;}
                         })}
                         <td><button className="btn btn-outline-primary"
                                                             onClick={() => {
