@@ -1,8 +1,7 @@
 import React from 'react';
 import {useState} from "react";
-import {LS_NEW_STUDENTS, LS_SCHOOLS, LS_STUDENT, LS_STUDENTS} from "../views/App";
+import {LS_NEW_SCHOOLS, LS_NEW_STUDENTS, LS_SCHOOLS, LS_STUDENT, LS_STUDENTS} from "../views/App";
 import moment from "moment/moment";
-import {OpenXlsFile} from "./OpenXlsFile";
 
 export function StudentsList(){
     const [students] = useState(JSON.parse(localStorage.getItem(LS_STUDENTS)));
@@ -29,8 +28,27 @@ export function StudentsList(){
         return <div/>;
     }
 
+    /** Get school name from localIdSchool or idSchool if existent
+     * @param student
+     */
+    function SchoolName(student){
+        const newSchools = JSON.parse(localStorage.getItem(LS_NEW_SCHOOLS));
+        const schools = JSON.parse(localStorage.getItem(LS_SCHOOLS));
+        const concatSchools = newSchools.concat(schools);
+        for (let i = 0; i < concatSchools.length; i++) {
+            if (student.localIdSchool !== undefined){
+                if (concatSchools[i].localId === student.localIdSchool){
+                    return concatSchools[i].name;
+                }
+            } else {
+                if (concatSchools[i].id === student.idSchool){
+                    return concatSchools[i].name;
+                }
+            }
+        }
+    }
+
     function TableConstruction({theadData, tbodyData}) {
-        const schools = JSON.parse(localStorage.getItem(LS_SCHOOLS))
         return (
             <div>
             <table className="table">
@@ -42,9 +60,8 @@ export function StudentsList(){
                             case "dob":   return <th style={{width: "20%"}} key={"dob"}>DOB</th>;
                             case "class":   return <th style={{width: "20%"}} key={"class"}>Class</th>;
                             case "idSchool":   return <th style={{width: "20%"}} key={"idSchool"}>School</th>;
-                            case "id": return ;
-                            case "localId":   return;
-                            default: return  <th  key={heading}>{heading}</th>}
+                            case "localIdSchool":   return <th style={{width: "20%"}} key={"idSchool"}>School</th>;
+                            default: return}
                     })}
                     <th  style={{width: "20%"}} key={"button"}></th>
                 </tr>
@@ -54,11 +71,12 @@ export function StudentsList(){
                     return <tr key={index}>
                         {theadData.map((key, index) => {
                             switch(key) {
-                                case "idSchool":   return <td key={index}>{schools.find((s) => { return s.id === row.idSchool }).name}</td>
-                                case "id": return ;
-                                case "localId":   return;
+                                case "fullName":   return  <td key={index}>{row[key]}</td>;
                                 case "dob": return <td key={index}>{moment(row[key]).format('DD MMMM yyyy')}</td>;
-                                default:     return  <td key={index}>{row[key]}</td>;}
+                                case "class":   return  <td key={index}>{row[key]}</td>;
+                                case "idSchool":   return <td key={index}>{SchoolName(row)}</td>
+                                case "localIdSchool":   return <td key={index}>{SchoolName(row)}</td>
+                                default: return }
                         })}
                         <td><button className="btn btn-outline-primary"
                                                             onClick={() => {

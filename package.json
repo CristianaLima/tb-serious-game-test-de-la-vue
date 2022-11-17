@@ -16,7 +16,6 @@
     "react-draggable": "^4.4.5",
     "react-router-dom": "^6.4.2",
     "react-scripts": "5.0.1",
-    "react-success-popup": "^1.1.2",
     "reactstrap": "^9.1.4",
     "use-navigator-online": "^3.2.4",
     "web-vitals": "^2.1.4",

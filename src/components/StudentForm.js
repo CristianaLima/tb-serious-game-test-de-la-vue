@@ -8,7 +8,7 @@ export default StudentForm;
  */
 function StudentForm() {
     const [newStudents, setNewStudents] = useState(() => {
-        return JSON.parse(localStorage.getItem(LS_NEW_STUDENTS)) || []
+        return JSON.parse(localStorage.getItem(LS_NEW_STUDENTS));
     });
     const [schools] = useState(JSON.parse(localStorage.getItem(LS_SCHOOLS)));
     const [student, setStudent] = useState({

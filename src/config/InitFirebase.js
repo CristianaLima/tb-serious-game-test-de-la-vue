@@ -27,6 +27,12 @@ function dateConverter(timeToChange) {
 }
 
 //Add Student
+export async function addSchool(e){
+    return await addDoc(schoolsDbRef, e);
+    //TODO: error handling
+}
+
+//Add Student
 export async function addStudent(e){
     e.dob = dateConverter(e.dob);
     return await addDoc(studentsDbRef, e);

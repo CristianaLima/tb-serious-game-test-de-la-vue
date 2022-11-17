@@ -28,7 +28,7 @@ export function CImage(){
     const [status, setStatus] = useState(0);
     const [results, setResults] = useState([]);
     const [newTests, setNewTests] = useState(() => {
-        return JSON.parse(localStorage.getItem(LS_NEW_VISUALSTESTS)) || []
+        return JSON.parse(localStorage.getItem(LS_NEW_VISUALSTESTS));
     });
 
     useEffect(() => {
@@ -61,7 +61,6 @@ export function CImage(){
                 break;
             case MAXREP :
                 setStatus(2);
-                console.log(results);
                 setNewTests([...newTests, {
                     dateTest: Date.now(),
                     comprehension: false,
