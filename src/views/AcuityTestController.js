@@ -22,7 +22,7 @@ export function AcuityTestController(){
     }, []);
 
     useEffect(() => {
-        const timer = setTimeout(() => setCClicked('-1'), 2000);
+        const timer = setTimeout(() => setCClicked('-1'), 1000);
         return () => clearTimeout(timer);
     }, [CClicked]);
 
