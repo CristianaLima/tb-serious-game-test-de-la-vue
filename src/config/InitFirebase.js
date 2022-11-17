@@ -1,7 +1,7 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore"
 import {addDoc, doc, getDoc, collection, getFirestore, getDocs} from "firebase/firestore";
-import Moment from "moment";
+import moment from "moment";
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -24,6 +24,12 @@ function dateConverter(timeToChange) {
     let date;
     date=(new Date(timeToChange))
     return date;
+}
+
+//Add Student
+export async function addSchool(e){
+    return await addDoc(schoolsDbRef, e);
+    //TODO: error handling
 }
 
 //Add Student
@@ -52,14 +58,14 @@ export async function getAllStudents(){
     let students = [];
     docsSnap.forEach(doc => {
             const student = doc.data();
-            Moment.locale('en'); //TODO: link to quentin code
             const dob = student.dob.toDate();
-            const studentDate = {
+            const completeStudent = {
                 fullName: student.fullName,
-                dob: Moment(dob).format('d MMMM yyyy'),
-                class: student.class
+                dob: moment(dob).format('DD MMMM yyyy'),
+                class: student.class,
+                idSchool: student.idSchool
                 };
-            const studentWithId = { ...studentDate, id: doc.id}
+            const studentWithId = { ...completeStudent, id: doc.id}
             students.push(studentWithId);
         }
     );
@@ -68,11 +74,12 @@ export async function getAllStudents(){
 }
 
 //Get all tests
-export async function getAllTests(){
+export async function getAllTests(students){
     const docsSnap = await getDocs(testsDbRef);
     let tests = [];
     docsSnap.forEach(doc => {
-            const testWithId = {...doc.data(), id: doc.id};
+            const test =  doc.data();
+            const testWithId = {...test, id: doc.id, student: students.find((s) => { return s.id === test.idStudent })};
             tests.push(testWithId);
         }
     );

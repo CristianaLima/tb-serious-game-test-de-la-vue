@@ -1,17 +1,44 @@
 import React, {useEffect, useState} from "react";
 import {NavBar} from "../components/NavBar";
-import {stockDataInLocalStorage} from "../config/SynchroFirebase";
+import {stockDataInLocalStorage, synchronise} from "../config/SynchroFirebase";
 import {getTherapistById} from "../config/InitFirebase";
-import {LS_CURRENT_THERAPIST} from "./App";
+import {LS_CURRENT_THERAPIST, LS_NEW_SCHOOLS, LS_NEW_STUDENTS, LS_NEW_VISUALSTESTS} from "./App";
 import StudentForm from "../components/StudentForm";
 import {StudentsList} from "../components/StudentList";
+import {OpenXlsFile} from "../components/OpenXlsFile";
+
+
 
 export function Home(){
     const [content, setContent] = useState(0)
+    // Load local storage if exist or initialise it
+    const [newSchools] = useState(() => {
+        return JSON.parse(localStorage.getItem(LS_NEW_SCHOOLS)) || [];
+    });
+    const [newStudents] = useState(() => {
+        return JSON.parse(localStorage.getItem(LS_NEW_STUDENTS)) || [];
+    });
+    const [newTests] = useState(() => {
+        return JSON.parse(localStorage.getItem(LS_NEW_VISUALSTESTS)) || [];
+    });
+
+
 
     useEffect(() => {
         getTherapistById("X6ITtB97ZhCqf4Uw3yhH").then(t => localStorage.setItem(LS_CURRENT_THERAPIST, JSON.stringify(t)));
-        stockDataInLocalStorage().then(() => console.log("Data load"))
+        let condition = navigator.onLine ? 'online' : 'offline'; //TODO: double with navbar
+        if (condition === 'online') {
+            fetch('https://www.google.com/', { // Check for internet connectivity
+                mode: 'no-cors',
+            })
+                .then(() => {
+                    synchronise().then(() => stockDataInLocalStorage().then(() => console.log("Data load")))
+                }).catch(() => {
+            }  )
+        }
+        localStorage.setItem(LS_NEW_SCHOOLS, JSON.stringify(newSchools));
+        localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify(newStudents));
+        localStorage.setItem(LS_NEW_VISUALSTESTS, JSON.stringify(newTests));
     }, []);
 
     return(
@@ -23,6 +50,15 @@ export function Home(){
                         <button type="button" className="btn btn-success btn-lg m-5"  onClick={() => {setContent(1)}}>
                             New Test
                         </button>
+
+                            <input type="file"  onChange={(e)=>{
+                                const file = e.target.files[0];
+                                OpenXlsFile(file);
+                                window.location.reload();
+                                window.alert("File "+file.name.toString()+" uploaded")
+                            }}/>
+
+
                     </div> :
                     <>
                     {content===1 ?
