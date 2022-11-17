@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {NavBar} from "../components/NavBar";
-import {stockDataInLocalStorage} from "../config/SynchroFirebase";
+import {stockDataInLocalStorage, synchronise} from "../config/SynchroFirebase";
 import {getTherapistById} from "../config/InitFirebase";
 import {LS_CURRENT_THERAPIST, LS_NEW_SCHOOLS, LS_NEW_STUDENTS, LS_NEW_VISUALSTESTS} from "./App";
 import StudentForm from "../components/StudentForm";
@@ -26,7 +26,16 @@ export function Home(){
 
     useEffect(() => {
         getTherapistById("X6ITtB97ZhCqf4Uw3yhH").then(t => localStorage.setItem(LS_CURRENT_THERAPIST, JSON.stringify(t)));
-        stockDataInLocalStorage().then(() => console.log("Data load"));
+        let condition = navigator.onLine ? 'online' : 'offline'; //TODO: double with navbar
+        if (condition === 'online') {
+            fetch('https://www.google.com/', { // Check for internet connectivity
+                mode: 'no-cors',
+            })
+                .then(() => {
+                    synchronise().then(() => stockDataInLocalStorage().then(() => console.log("Data load")))
+                }).catch(() => {
+            }  )
+        }
         localStorage.setItem(LS_NEW_SCHOOLS, JSON.stringify(newSchools));
         localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify(newStudents));
         localStorage.setItem(LS_NEW_VISUALSTESTS, JSON.stringify(newTests));
