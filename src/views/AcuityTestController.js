@@ -22,7 +22,7 @@ export function AcuityTestController(){
     }, []);
 
     useEffect(() => {
-        const timer = setTimeout(() => setCClicked('-1'), 2000);
+        const timer = setTimeout(() => setCClicked('-1'), 1000);
         return () => clearTimeout(timer);
     }, [CClicked]);
 
@@ -82,50 +82,47 @@ export function AcuityTestController(){
 
     return (
         <>
-            {tour === MAXREP ? <div><p>Test finish</p></div> : <div className={"btns-background"}
-                                                                    style={{width: windowDimensions.height, height: windowDimensions.height,
-                                                                        position: 'center', margin: 'auto', backgroundColor: '#282c34',
-                                                                        display: 'flex', alignItems: 'center', flexWrap: 'wrap'}}
-                                                                    onClick={e => handleMouseClickLocal(e)}>
-                <div style={{width: windowDimensions.height/8}}></div>
-                <Button onClick={() => {C_selected("0")}}  disabled={lockedDisplay}
-                        style={{width: windowDimensions.height/4, backgroundColor: CClicked==='0'? "green" : "#6C757D"}}>
-                    <img style={{transform: "rotate(0deg)"}}
-                         src={c}
-                         className="img-thumbnail"
-                         alt="c 0°"
-                    />
-                </Button>
-                <div style={{width: windowDimensions.height/4}}></div>
-                <Button onClick={() => {C_selected("90")}} disabled={lockedDisplay}
-                        style={{width: windowDimensions.height/4, backgroundColor: CClicked==='90'? "green" : "grey" }}>
-                    <img style={{transform: "rotate(90deg)"}}
-                         src={c}
-                         className="img-thumbnail"
-                         alt="c 90°"
-                    />
-                </Button>
-                <div style={{width: windowDimensions.height/8}}></div>
-                <div style={{width: windowDimensions.height/8}}></div>
-                <Button onClick={() => {C_selected("180")}} disabled={lockedDisplay}
-                        style={{width: windowDimensions.height/4, backgroundColor: CClicked==='180'?  "green" : "grey"}}>
-                    <img style={{transform: "rotate(180deg)"}}
-                         src={c}
-                         className="img-thumbnail"
-                         alt="c 180°"
-                    />
-                </Button >
-                <div style={{width: windowDimensions.height/4}}></div>
-                <Button onClick={() => {C_selected("270")}} disabled={lockedDisplay}
-                        style={{width: windowDimensions.height/4, backgroundColor: CClicked==='270'?  "green" : "grey"}}>
-                    <img style={{transform: "rotate(270deg)"}}
-                         src={c}
-                         className="img-thumbnail"
-                         alt="c 270°"
-                    />
-                </Button>
-                <div style={{width: windowDimensions.height/8}}></div>
-            </div>
+            {tour === MAXREP ? <div><p>Test finish</p></div> :
+                <div className={"btns-background"}
+                     style={{width: windowDimensions.height, height: windowDimensions.height,
+                         position: 'center', margin: 'auto', backgroundColor: '#282c34',
+                         display: "flex",flex: 1, flexWrap: "wrap",
+                        justifyContent: "space-around", alignItems: "center"
+                        }}
+                    onClick={e => handleMouseClickLocal(e)}>
+                    <Button onClick={() => {C_selected("0")}}  disabled={lockedDisplay}
+                            style={{ margin: windowDimensions.height/16, height: windowDimensions.height/4, width: windowDimensions.height/4, backgroundColor: CClicked==='0'? "green" : "#6C757D"}}>
+                        <img style={{transform: "rotate(0deg)"}}
+                             src={c}
+                             className="img-thumbnail"
+                             alt="c 0°"
+                        />
+                    </Button>
+                    <Button onClick={() => {C_selected("90")}}  disabled={lockedDisplay}
+                            style={{  margin: windowDimensions.height/16, height: windowDimensions.height/4, width: windowDimensions.height/4, backgroundColor: CClicked==='90'? "green" : "#6C757D"}}>
+                        <img style={{transform: "rotate(90deg)"}}
+                             src={c}
+                             className="img-thumbnail"
+                             alt="c 90°"
+                        />
+                    </Button>
+                    <Button onClick={() => {C_selected("180")}}  disabled={lockedDisplay}
+                            style={{  margin: windowDimensions.height/16,height: windowDimensions.height/4, width: windowDimensions.height/4, backgroundColor: CClicked==='180'? "green" : "#6C757D"}}>
+                        <img style={{transform: "rotate(180deg)"}}
+                             src={c}
+                             className="img-thumbnail"
+                             alt="c 180°"
+                        />
+                    </Button>
+                    <Button onClick={() => {C_selected("270")}}  disabled={lockedDisplay}
+                            style={{  margin: windowDimensions.height/16, height: windowDimensions.height/4, width: windowDimensions.height/4, backgroundColor: CClicked==='270'? "green" : "#6C757D"}}>
+                        <img style={{transform: "rotate(270deg)"}}
+                             src={c}
+                             className="img-thumbnail"
+                             alt="c 270°"
+                        />
+                    </Button>
+                </div>
             }
         </>
     );
