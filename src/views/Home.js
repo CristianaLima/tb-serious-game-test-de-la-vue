@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {NavBar} from "../components/NavBar";
 import {stockDataInLocalStorage} from "../config/SynchroFirebase";
 import {getTherapistById} from "../config/InitFirebase";
-import {LS_CURRENT_THERAPIST} from "./App";
+import {LS_CURRENT_THERAPIST, LS_NEW_SCHOOLS, LS_NEW_STUDENTS, LS_NEW_VISUALSTESTS} from "./App";
 import StudentForm from "../components/StudentForm";
 import {StudentsList} from "../components/StudentList";
 import {OpenXlsFile} from "../components/OpenXlsFile";
@@ -11,10 +11,25 @@ import {OpenXlsFile} from "../components/OpenXlsFile";
 
 export function Home(){
     const [content, setContent] = useState(0)
+    // Load local storage if exist or initialise it
+    const [newSchools] = useState(() => {
+        return JSON.parse(localStorage.getItem(LS_NEW_SCHOOLS)) || [];
+    });
+    const [newStudents] = useState(() => {
+        return JSON.parse(localStorage.getItem(LS_NEW_STUDENTS)) || [];
+    });
+    const [newTests] = useState(() => {
+        return JSON.parse(localStorage.getItem(LS_NEW_VISUALSTESTS)) || [];
+    });
+
+
 
     useEffect(() => {
         getTherapistById("X6ITtB97ZhCqf4Uw3yhH").then(t => localStorage.setItem(LS_CURRENT_THERAPIST, JSON.stringify(t)));
-        stockDataInLocalStorage().then(() => console.log("Data load"))
+        stockDataInLocalStorage().then(() => console.log("Data load"));
+        localStorage.setItem(LS_NEW_SCHOOLS, JSON.stringify(newSchools));
+        localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify(newStudents));
+        localStorage.setItem(LS_NEW_VISUALSTESTS, JSON.stringify(newTests));
     }, []);
 
     return(

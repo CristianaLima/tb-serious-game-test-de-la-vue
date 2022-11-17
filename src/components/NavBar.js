@@ -66,10 +66,11 @@ export function NavBar(){
                </NavbarBrand>
                <NavbarToggler onClick={toggleNavbar} />
                <Collapse isOpen={!collapse} navbar className="float-end text-end">
+
                    <Nav
                        className="me-auto px-3"
                        navbar
-                   >
+                   >{/*
                        <NavItem>
                            <NavLink href = "acuityTestScreen">
                                Test Screen
@@ -80,7 +81,7 @@ export function NavBar(){
                                Controller Screen
                            </NavLink>
                        </NavItem>
-                       <NavbarText className="text-danger"> 🡠 DONT USE SYNCHRO IS TEST CREATED WITH THIS BUTTONS</NavbarText>
+                       <NavbarText className="text-danger"> 🡠 DONT USE SYNCHRO IS TEST CREATED WITH THIS BUTTONS</NavbarText>*/}
                    </Nav>
                    <Nav className="float-end">
                        <UncontrolledDropdown nav inNavbar>

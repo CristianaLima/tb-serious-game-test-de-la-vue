@@ -1,4 +1,5 @@
 import {
+    LS_NEW_SCHOOLS,
     LS_NEW_STUDENTS,
     LS_NEW_VISUALSTESTS,
     LS_SCHOOLS,
@@ -6,6 +7,7 @@ import {
     LS_VISUALSTESTS
 } from "../views/App";
 import {
+    addSchool,
     addStudent,
     addTest,
     getAllSchools,
@@ -17,19 +19,20 @@ import {
  * Main method for synchronise data in local storage to Firebase
  */
 export async function synchronise(){
-    // Synchronise students, test and clear local storage from pushed data
-   await synchroniseStudents().then(r => synchroniseTests(r)).then(() => clearLocalStorage())
+    // Synchronise schools, students and tests then clear local storage from pushed data
+   await synchroniseSchools().then(sc => synchroniseStudents(sc).then(st => synchroniseTests(st)).then(() => {clearLocalStorage()}));
 
     // Refresh data
     await stockDataInLocalStorage();
 }
 
 /**
- * Clear NEW values (student, visual test) in local storage
+ * Clear NEW values (schools, students, visual tests) in local storage
  */
 function clearLocalStorage () {
     localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify([]));
     localStorage.setItem(LS_NEW_VISUALSTESTS, JSON.stringify([]));
+    localStorage.setItem(LS_NEW_SCHOOLS, JSON.stringify([]));
 }
 
 /**
@@ -48,14 +51,41 @@ export async function stockDataInLocalStorage() {
 }
 
 /**
+ * Push new schools from local storage to Firebase
+ */
+async function synchroniseSchools() {
+    //Get value in local storage
+    let newSchools = JSON.parse(localStorage.getItem(LS_NEW_SCHOOLS));
+
+    if (newSchools != null) {
+        for (let i = 0; i < newSchools.length; i++) {
+            // Add new student to Firebase and set the id
+            await addSchool({
+                name: newSchools[i].name
+            }).then(r => { // Set idStudent from Firebase
+                newSchools[i]={...newSchools[i], id : r.id};
+                console.log("School " + newSchools[i].id + " added to Firebase");
+            });
+        }
+    }
+    return newSchools
+}
+
+/**
  * Push new students from local storage to Firebase
  */
-async function synchroniseStudents() {
+async function synchroniseStudents(newSchoolsEdited) {
     //Get value in local storage
     let newStudents = JSON.parse(localStorage.getItem(LS_NEW_STUDENTS));
 
     if (newStudents != null) {
         for (let i = 0; i < newStudents.length; i++) {
+            // Edit idSchool if it was a new school (from excel import)
+            if (newStudents[i].idSchool === undefined){
+                newStudents[i].idSchool = newSchoolsEdited.find((s) => {
+                    return s.localId === newStudents[i].localIdSchool
+                }).id
+            }
             // Add new student to Firebase and set the id
             await addStudent({
                 fullName: newStudents[i].fullName,

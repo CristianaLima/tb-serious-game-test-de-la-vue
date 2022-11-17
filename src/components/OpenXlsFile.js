@@ -1,9 +1,5 @@
 import * as XLSX from 'xlsx';
-import {LS_NEW_STUDENTS} from "../views/App";
-import React from "react";
-
-
-
+import {LS_NEW_SCHOOLS, LS_NEW_STUDENTS, LS_SCHOOLS} from "../views/App";
 
 /**
  * Upload an Excel file to tab NewStudent in local storage
@@ -32,9 +28,14 @@ const promise = new Promise((resolve,reject)=>{
 });
     promise.then((data)=>{
         console.log(data);
-        let lsStudents =  JSON.parse(localStorage.getItem(LS_NEW_STUDENTS)) || [];
-        const classNum = data[3].__EMPTY_19;// upload the class number
-        const schoolName = data[0].__EMPTY_3; // TODO getIdSchool or school creation
+        let lsNewStudents =  JSON.parse(localStorage.getItem(LS_NEW_STUDENTS));
+        let lsNewSchools =  JSON.parse(localStorage.getItem(LS_NEW_SCHOOLS));
+        let lsSchools =  JSON.parse(localStorage.getItem(LS_SCHOOLS));
+        let studentsToAdd = [];
+
+        const classNum = data[3].__EMPTY_19;// get the class number
+        const schoolName = data[0].__EMPTY_3.replace(/(\r\n|\n|\r)/gm, " ");
+
         for (let i = 5; i < data.length ; i++) {
 
             //transformation date to dd/mm/yyyy
@@ -48,13 +49,32 @@ const promise = new Promise((resolve,reject)=>{
                 localId: Math.round(Date.now() / 1000)+i.toString(),
                 fullName: data[i].__EMPTY_6,
                 dob: dateObj,
-                class: classNum,
-                school: schoolName}
-            lsStudents = [...lsStudents,student]
+                class: classNum
+            }
+            studentsToAdd = [...studentsToAdd,student]
         }
-        localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify(lsStudents));
 
-
+        const school = lsSchools.find((s) => {
+            return s.name === schoolName;
+        });
+        // if school is not undefined, it's not a new school
+        if (school !== undefined){
+            for (let i = 0; i < studentsToAdd.length; i++) {
+                if (studentsToAdd[i].idSchool == undefined) {
+                    studentsToAdd[i] = {...studentsToAdd[i], idSchool: school.id};
+                }
+            }
+        } else {
+            let localIdSchool = Math.round(Date.now() / 1000);
+            localStorage.setItem(LS_NEW_SCHOOLS,JSON.stringify([...lsNewSchools,{name: schoolName, localId: localIdSchool}]));
+            for (let i = 0; i < studentsToAdd.length; i++) {
+                if (studentsToAdd[i].idSchool == undefined) {
+                    studentsToAdd[i] = {...studentsToAdd[i], localIdSchool: localIdSchool};
+                }
+            }
+        }
+        lsNewStudents = lsNewStudents.concat(studentsToAdd);
+        localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify(lsNewStudents));
     });
 
 }

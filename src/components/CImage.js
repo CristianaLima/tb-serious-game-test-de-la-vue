@@ -19,20 +19,18 @@ import c from "../assets/c_picture.png";
  * results : array of size
  */
 export function CImage(){
-    const [response, setResponse] = useState({tour : 0, angle : 0})
+    const [angleArray] =  useState(()=> constructAngleArray());
+
+    const [response, setResponse] = useState({tour : 0, angle : 0});
     const [answer, setAnswer] = useState(false);
-    const [angleArray] = useState(() => constructAngleArray())
     const [angle, setAngle] = useState(angleArray[0]);
     const [size, setSize] = useState(1);
     const [status, setStatus] = useState(0);
     const [results, setResults] = useState([]);
     const [newTests, setNewTests] = useState(() => {
-        return JSON.parse(localStorage.getItem(LS_NEW_VISUALSTESTS)) || []
+        return JSON.parse(localStorage.getItem(LS_NEW_VISUALSTESTS));
     });
 
-    function addTestToArray(test) {
-        setNewTests([...newTests, test]);
-    }
     useEffect(() => {
         localStorage.setItem(LS_NEW_VISUALSTESTS, JSON.stringify(newTests));
     }, [newTests]);
@@ -44,7 +42,7 @@ export function CImage(){
     useEffect(() => {
         localStorage.setItem(LS_C_SELECTED, JSON.stringify({tour: 1, angle:-1}))
         window.dispatchEvent(new Event("storage"));
-        window.addEventListener("storage", e =>{
+        window.addEventListener("storage", () =>{
                 // Get info from local storage
                 setResponse(JSON.parse(localStorage.getItem(LS_C_SELECTED)))
             }
@@ -63,8 +61,7 @@ export function CImage(){
                 break;
             case MAXREP :
                 setStatus(2);
-                console.log(results)
-                addTestToArray({
+                setNewTests([...newTests, {
                     dateTest: Date.now(),
                     comprehension: false,
                     correction: false,
@@ -74,7 +71,7 @@ export function CImage(){
                     rounds: 1,
                     vaLe: results[results.length-1],
                     vaRe: results[results.length-1]
-                })
+                }])
                 setSize(0); // C disappear
                 break;
             default :{
@@ -84,7 +81,7 @@ export function CImage(){
                 setResults(results => [...results, size])
 
                 //Change size of C depend on answer correctness
-                if(response.angle == angleArray[response.tour-1]){ // not "==="
+                if(response.angle.toString() === angleArray[response.tour-1].toString()){ // not "==="
                     setAnswer(true)
                     if(size<0.5)
                         setSize(size / 1.4);
