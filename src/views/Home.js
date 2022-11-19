@@ -69,8 +69,6 @@ export function Home(){
                                 window.location.reload();
                                 window.alert("File "+file.name.toString()+" uploaded")
                             }}/>
-
-
                     </div> :
                     <>
                     {content===1 ?

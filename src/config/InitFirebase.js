@@ -79,7 +79,9 @@ export async function getAllTests(students){
     let tests = [];
     docsSnap.forEach(doc => {
             const test =  doc.data();
-            const testWithId = {...test, id: doc.id, student: students.find((s) => { return s.id === test.idStudent })};
+            const date = test.dateTest.toDate();
+            const testWithId = {...test, id: doc.id, date: moment(date).format('DD MMMM yyyy'),
+                student: students.find((s) => { return s.id === test.idStudent })};
             tests.push(testWithId);
         }
     );

@@ -3,7 +3,9 @@ import '../css/App.css';
 import {Route, Routes} from "react-router-dom";
 import {AcuityTestScreen} from "./AcuityTestScreen";
 import {AcuityTestController} from "./AcuityTestController";
-import {Home} from "./Home";
+import {Mockup} from "./Mockup";
+import {StartGame} from "./StartGame";
+import {TestResult} from "./TestsResult";
 
 // Constants for local storage
 export const LS_SCHOOLS = "schools";
@@ -22,7 +24,9 @@ function App() {
  return (
      <div className="App">
          <Routes>
-             <Route path="/" element={<Home />}/>
+             <Route path="/" element={<Mockup />}/>
+             <Route path="/startGame" element={<StartGame />}/>
+             <Route path="/testResults" element={<TestResult />}/>
              <Route path="/acuityTestController" element={<AcuityTestController />}/>
              <Route path="/acuityTestScreen" element={<AcuityTestScreen />}/>
          </Routes>

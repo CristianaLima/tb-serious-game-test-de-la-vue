@@ -3,6 +3,26 @@ import {useState} from "react";
 import {LS_NEW_SCHOOLS, LS_NEW_STUDENTS, LS_SCHOOLS, LS_STUDENT, LS_STUDENTS} from "../views/App";
 import moment from "moment/moment";
 
+/** Get school name from localIdSchool or idSchool if existent
+ * @param student
+ */
+export function SchoolName(student){
+    const newSchools = JSON.parse(localStorage.getItem(LS_NEW_SCHOOLS));
+    const schools = JSON.parse(localStorage.getItem(LS_SCHOOLS));
+    const concatSchools = newSchools.concat(schools);
+    for (let i = 0; i < concatSchools.length; i++) {
+        if (student.localIdSchool !== undefined){
+            if (concatSchools[i].localId === student.localIdSchool){
+                return concatSchools[i].name;
+            }
+        } else {
+            if (concatSchools[i].id === student.idSchool){
+                return concatSchools[i].name;
+            }
+        }
+    }
+}
+
 export function StudentsList(){
     const [students] = useState(JSON.parse(localStorage.getItem(LS_STUDENTS)));
     const [newStudents] = useState(JSON.parse(localStorage.getItem(LS_NEW_STUDENTS)));
@@ -28,42 +48,29 @@ export function StudentsList(){
         return <div/>;
     }
 
-    /** Get school name from localIdSchool or idSchool if existent
-     * @param student
-     */
-    function SchoolName(student){
-        const newSchools = JSON.parse(localStorage.getItem(LS_NEW_SCHOOLS));
-        const schools = JSON.parse(localStorage.getItem(LS_SCHOOLS));
-        const concatSchools = newSchools.concat(schools);
-        for (let i = 0; i < concatSchools.length; i++) {
-            if (student.localIdSchool !== undefined){
-                if (concatSchools[i].localId === student.localIdSchool){
-                    return concatSchools[i].name;
-                }
-            } else {
-                if (concatSchools[i].id === student.idSchool){
-                    return concatSchools[i].name;
-                }
-            }
-        }
-    }
+
 
     function TableConstruction({theadData, tbodyData}) {
         return (
             <div>
+                <input type="text" id="myInput" onKeyUp="myFunction()" placeholder="Search for..."
+                       title="Type in a name"></input>
             <table className="table">
                 <thead>
                 <tr>
                     {theadData.map(heading => {
                         switch(heading) {
-                            case "fullName":   return <th style={{width: "20%"}} key={"fullName"}>Full name</th>;
-                            case "dob":   return <th style={{width: "20%"}} key={"dob"}>DOB</th>;
-                            case "class":   return <th style={{width: "20%"}} key={"class"}>Class</th>;
+                            case "fullName":   return <th key={"fullName"}>Full name</th>;
+                            case "dob":   return <th key={"dob"}>DOB</th>;
+                            case "class":   return <th key={"class"}>Class</th>;
                             case "idSchool":   return <th style={{width: "20%"}} key={"idSchool"}>School</th>;
-                            case "localIdSchool":   return <th style={{width: "20%"}} key={"idSchool"}>School</th>;
+                            case "localIdSchool":   return <th key={"idSchool"}>School</th>;
                             default: return <></>}
                     })}
-                    <th  style={{width: "20%"}} key={"button"}></th>
+                    <th>Date of last test</th>
+                    <th>Last  VAR</th>
+                    <th>Last  VAL</th>
+                    <th  style={{width: "20%"}} key={"button"}> </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -74,11 +81,14 @@ export function StudentsList(){
                                 case "fullName":   return  <td key={index}>{row[key]}</td>;
                                 case "dob": return <td key={index}>{moment(row[key]).format('DD MMMM yyyy')}</td>;
                                 case "class":   return  <td key={index}>{row[key]}</td>;
-                                case "idSchool":   return <td key={index}>{SchoolName(row)}</td>
+                                case "idSchool":   return <td style={{width: "20%"}} key={index}>{SchoolName(row)}</td>
                                 case "localIdSchool":   return <td key={index}>{SchoolName(row)}</td>
                                 default: return <></>}
                         })}
-                        <td><button className="btn btn-outline-primary"
+                        <td>{moment(Date.now()).format('DD MMMM yyyy')}</td>
+                        <td style={{width: "10%"}}>0.55</td>
+                        <td style={{width: "10%"}}>1</td>
+                        <td  style={{width: "20%"}}><button className="btn btn-outline-primary"
                                                             onClick={() => {
                                                                 localStorage.setItem(LS_STUDENT, JSON.stringify( row));
                                                                 window.open('/acuityTestScreen', '_self')
@@ -94,7 +104,7 @@ export function StudentsList(){
     }
 
     return(
-        <div className="px-3 m-auto w-75 my-2 text-center">
+        <div>
             <StudentsFromFirebase/>
             <NewStudents/>
         </div>
