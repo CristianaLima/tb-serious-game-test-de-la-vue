@@ -34,7 +34,7 @@ export function StudentsList(){
     function TableConstruction({theadData, tbodyData}) {
         return (
             <div>
-                <input type="text" id="myInput" onKeyUp="myFunction()" placeholder="Search for..."
+                <input type="text" id="myInput" placeholder="Search for..."
                        title="Type in a name"></input>
             <table className="table">
                 <thead>
@@ -48,10 +48,10 @@ export function StudentsList(){
                             case "localIdSchool":   return <th key={"idSchool"}>School</th>;
                             default: return <></>}
                     })}
-                    <th>Date of last test</th>
-                    <th>Last  VAR</th>
-                    <th>Last  VAL</th>
-                    <th  style={{width: "10%"}} key={"button"}> </th>
+                    <th key={"dateTest"}>Date of last test</th>
+                    <th key={"vaRe"}>Last  vaRe</th>
+                    <th key={"vaLe"}>Last  vaLe</th>
+                    <th key={"button"} style={{width: "10%"}} key={"button"}> </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -60,16 +60,16 @@ export function StudentsList(){
                         {theadData.map((key, index) => {
                             switch(key) {
                                 case "fullName":   return  <td key={index}>{row[key]}</td>;
-                                case "dob": return <td key={index}>{moment(row[key]).format('DD MMMM yyyy')}</td>;
+                                case "dob": return <td key={index}>{row[key]}</td>;
                                 case "class":   return  <td key={index}>{row[key]}</td>;
                                 case "idSchool":   return <td style={{width: "20%"}} key={index}>{SchoolName(row)}</td>
                                 case "localIdSchool":   return <td key={index}>{SchoolName(row)}</td>
                                 default: return <></>}
                         })}
-                        <td>{moment(Date.now()).format('DD MMMM yyyy')}</td>
-                        <td style={{width: "10%"}}>0.55</td>
-                        <td style={{width: "10%"}}>1</td>
-                        <td  style={{width: "10%"}}><button className="btn btn-primary"
+                        <td key={"dateTest"} >TODO: {Date.now()}</td>
+                        <td key={"vaRe"} style={{width: "10%"}}>TODO</td>
+                        <td key={"vaLe"} style={{width: "10%"}}>TODO</td>
+                        <td key={"button"} style={{width: "10%"}}><button className="btn btn-primary"
                                                             onClick={() => {
                                                                 localStorage.setItem(LS_STUDENT, JSON.stringify(row));
                                                                 navigate('/studentForm');

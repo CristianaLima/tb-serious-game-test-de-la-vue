@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {LS_STUDENT, LS_SCHOOLS, LS_NEW_STUDENTS} from "./App";
 import {useNavigate} from "react-router-dom";
 import {NavBar} from "../components/NavBar";
+import moment from "moment/moment";
 
 export default StudentForm;
 
@@ -74,37 +75,38 @@ function StudentForm() {
     }
 
     return (
-        <div>
+        <>
             <NavBar/>
             <div  className="px-3 m-auto w-75 my-2">
-            <button type="button" className="btn btn-danger btn-lg m-5"
-                    onClick={() => navigate('/studentList')}>
-                Back to student list
-            </button>
-            <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label htmlFor="school">School</label>
-                    <select disabled={student.id !== undefined} className="form-control" id="school" onChange={handleChangeSchool}>
-                        {schools.map((s) => (
-                            <option key={s.id} value={s.id}>{s.name}</option>
-                        ))}
-                    </select>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="fullName">Full name</label>
-                    <input disabled={student.id !== undefined} required id="fullName" type="text" className="form-control" value={student.fullName} onChange={handleChangeFullName} />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="class">Class</label>
-                    <input disabled={student.id !== undefined} required id="class" type="text" className="form-control" value={student.class} onChange={handleChangeClass} />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="dob">Date of birth</label>
-                    <input disabled={student.id !== undefined} required id="dob" type="date" className="form-control" value={student.dob} onChange={handleChangeDateOfBirth} />
-                </div>
-                <button type="submit" className="btn btn-primary">Let's play</button>
-            </form>
+                <button type="button" className="btn btn-danger btn-lg m-5"
+                        onClick={() => navigate('/startGame')}>
+                    Back to student list
+                </button>
+                <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="school">School</label>
+                        <select disabled={student.id !== undefined} className="form-control" id="school" onChange={handleChangeSchool}>
+                            {schools.map((s) => (
+                                <option key={s.id} value={s.id}>{s.name}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="fullName">Full name</label>
+                        <input disabled={student.id !== undefined} required id="fullName" type="text" className="form-control" value={student.fullName} onChange={handleChangeFullName} />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="class">Class</label>
+                        <input disabled={student.id !== undefined} required id="class" type="text" className="form-control" value={student.class} onChange={handleChangeClass} />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="dob">Date of birth</label>
+                        {/* need format YYYY-MM-DD, display depends on browser language*/}
+                        <input disabled={student.id !== undefined} required id="dob" type="date" className="form-control"  value={moment(student.dob).format('YYYY-MM-DD')} onChange={handleChangeDateOfBirth} />
+                    </div>
+                    <button type="submit" className="btn btn-primary">Let's play</button>
+                </form>
             </div>
-    </div>
+        </>
     );
 }

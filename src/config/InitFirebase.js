@@ -61,7 +61,7 @@ export async function getAllStudents(){
             const dob = student.dob.toDate();
             const completeStudent = {
                 fullName: student.fullName,
-                dob: moment(dob).format('DD MMMM yyyy'),
+                dob: moment(dob).format('YYYY-MM-DD'),
                 class: student.class,
                 idSchool: student.idSchool
                 };
@@ -80,7 +80,7 @@ export async function getAllTests(students){
     docsSnap.forEach(doc => {
             const test =  doc.data();
             const date = test.dateTest.toDate();
-            const testWithId = {...test, id: doc.id, date: moment(date).format('DD MMMM yyyy'),
+            const testWithId = {...test, id: doc.id, date: moment(date).format('YYYY-MM-DD'),
                 student: students.find((s) => { return s.id === test.idStudent })};
             tests.push(testWithId);
         }

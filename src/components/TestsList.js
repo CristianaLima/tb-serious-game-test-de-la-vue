@@ -34,7 +34,7 @@ export function TestsList(){
     function TableConstruction({theadData, tbodyData}) {
         return (
             <div>
-                <input type="text" id="myInput" onKeyUp="myFunction()" placeholder="Search for..."
+                <input type="text" id="myInput" placeholder="Search for..."
                        title="Type in a name"></input>
             <table className="table">
                 <thead>
@@ -43,13 +43,13 @@ export function TestsList(){
                         switch(heading) {
                             case "date":   return <th key={"dateTest"}>Date</th>;
                             case "vaRe":   return <th key={"vaRe"}>vaRe</th>;
-                            case "vaLe":   return <th key={"vaRe"}>vaLe</th>;
+                            case "vaLe":   return <th key={"vaLe"}>vaLe</th>;
                             case "dateTest":   return <></>;
                             case "student":   return  <>
-                                <th key={"student"}>Fullname</th>
-                                <th key={"student"}>DOB</th>
-                                <th key={"student"}>Class</th>
-                                <th key={"student"}>School</th>
+                                <th key={"fullName"}>Fullname</th>
+                                <th key={"dob"}>DOB</th>
+                                <th key={"class"}>Class</th>
+                                <th key={"schoolName"}>School</th>
                             </>;
                             default: return }
                     })}
@@ -60,15 +60,15 @@ export function TestsList(){
                     return <tr key={index}>
                         {theadData.map((key, index) => {
                             switch(key) {
-                                case "date": return <td key={index}>{moment(row[key]).format('DD MMMM yyyy')}</td>;
-                                case "vaRe":   return <td key={index}>{row[key]}</td>;
-                                case "vaLe":   return <td key={index}>{row[key]}</td>;
+                                case "date": return <td key={{index}+"date"}>{row[key]}</td>;
+                                case "vaRe":   return <td key={{index}+"vaRe"}>{row[key]}</td>;
+                                case "vaLe":   return <td key={{index}+"vaLe"}>{row[key]}</td>;
                                 case "dateTest":   return <></>;
                                 case "student":   return <>
-                                    <td key={index}>{row[key].fullName}</td>
-                                    <td key={index}>{row[key].dob}</td>
-                                    <td key={index}>{row[key].class}</td>
-                                    <td key={index}>{SchoolName(row[key])}</td>
+                                    <td key={{index}+"fullName"}>{row[key].fullName}</td>
+                                    <td key={{index}+"dob"}>{row[key].dob}</td>
+                                    <td key={{index}+"class"}>{row[key].class}</td>
+                                    <td key={{index}+"schoolName"}>{SchoolName(row[key])}</td>
                                 </>;
                                 default: return}
                         })}
