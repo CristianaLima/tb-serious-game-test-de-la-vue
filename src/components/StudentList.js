@@ -1,24 +1,19 @@
 import React from 'react';
 import {useState} from "react";
-import {LS_NEW_STUDENTS, LS_SCHOOLS, LS_STUDENT, LS_STUDENTS} from "./App";
+import {LS_NEW_STUDENTS, LS_STUDENT, LS_STUDENTS} from "../views/App";
 import moment from "moment/moment";
 import {SchoolName} from "../config/SearchLocalStorage";
 import {useNavigate} from "react-router-dom";
-import {NavBar} from "../components/NavBar";
-import {Button, Col, Input, Row} from "reactstrap";
-import {OpenXlsFile} from "../components/OpenXlsFile";
 
 export function StudentsList(){
     const navigate = useNavigate();
 
     const [students] = useState(JSON.parse(localStorage.getItem(LS_STUDENTS)));
     const [newStudents] = useState(JSON.parse(localStorage.getItem(LS_NEW_STUDENTS)));
-    const [schools] = useState(JSON.parse(localStorage.getItem(LS_SCHOOLS)));
 
     function StudentsFromFirebase() {
         if (students.length > 0) {
             return <>
-
                 <h1>Students from school roster</h1>
                 <TableConstruction theadData={Object.keys(students[0])} tbodyData={students}/>
             </>;
@@ -35,8 +30,6 @@ export function StudentsList(){
         }
         return <div/>;
     }
-
-
 
     function TableConstruction({theadData, tbodyData}) {
         return (
@@ -76,7 +69,7 @@ export function StudentsList(){
                         <td>{moment(Date.now()).format('DD MMMM yyyy')}</td>
                         <td style={{width: "10%"}}>0.55</td>
                         <td style={{width: "10%"}}>1</td>
-                        <td  style={{width: "10%"}}><button className="btn btn-outline-primary"
+                        <td  style={{width: "10%"}}><button className="btn btn-primary"
                                                             onClick={() => {
                                                                 localStorage.setItem(LS_STUDENT, JSON.stringify(row));
                                                                 navigate('/studentForm');
@@ -92,36 +85,8 @@ export function StudentsList(){
 
     return(
         <div>
-            <NavBar/>
-            <div  className="px-3 m-auto w-75 my-2">
-                <Row className="row-cols-lg-auto g-3 align-items-center"  style={{display: "flex",
-                    justifyContent: "end", alignItems: "flex-end"
-                }}>
-                    <Col>
-                        <Input  label='Upload' type="file" name="file" id="xlsxClassList"  onChange={(e)=>{
-                            const file = e.target.files[0];
-                            OpenXlsFile(file);
-                            window.location.reload();
-                            window.alert("File "+file.name.toString()+" uploaded")
-                        }}/>
-                    </Col>
-                    <Button type="button" className="btn btn-success mx-4" onClick={() => {
-                        localStorage.setItem(LS_STUDENT, JSON.stringify({
-                            localId: Math.round(Date.now() / 1000).toString(),
-                            fullName: "",
-                            dob: "",
-                            class: "",
-                            idSchool: schools[0].id}))
-                            navigate('/studentForm');
-                    }
-
-                    }>
-                        New student
-                    </Button>
-                </Row>
             <StudentsFromFirebase/>
             <NewStudents/>
-            </div>
         </div>
     )
 }

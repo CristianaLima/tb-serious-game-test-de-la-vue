@@ -7,7 +7,7 @@ import {
 import moment from "moment/moment";
 import {SchoolName} from "../config/SearchLocalStorage";
 
-export function TestList(){
+export function TestsList(){
     const [tests] = useState(JSON.parse(localStorage.getItem(LS_VISUALSTESTS)));
     const [newTests] = useState(JSON.parse(localStorage.getItem(LS_NEW_VISUALSTESTS)));
 
@@ -81,7 +81,7 @@ export function TestList(){
     }
 
     return(
-            <div className="px-3 m-auto w-75 my-2 text-center">
+            <div>
                 <TestsFromFirebase/>
                 <NewTests/>
             </div>
