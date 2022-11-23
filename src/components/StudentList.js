@@ -1,7 +1,6 @@
 import React from 'react';
 import {useState} from "react";
 import {LS_NEW_STUDENTS, LS_STUDENT, LS_STUDENTS} from "../views/App";
-import moment from "moment/moment";
 import {SchoolName} from "../config/SearchLocalStorage";
 import {useNavigate} from "react-router-dom";
 
@@ -45,13 +44,13 @@ export function StudentsList(){
                             case "dob":   return <th key={"dob"}>DOB</th>;
                             case "class":   return <th key={"class"}>Class</th>;
                             case "idSchool":   return <th style={{width: "20%"}} key={"idSchool"}>School</th>;
-                            case "localIdSchool":   return <th key={"idSchool"}>School</th>;
-                            default: return <></>}
+                            case "localIdSchool":   return <th key={"localIdSchool"}>School</th>;
+                            default: return}
                     })}
                     <th key={"dateTest"}>Date of last test</th>
                     <th key={"vaRe"}>Last  vaRe</th>
                     <th key={"vaLe"}>Last  vaLe</th>
-                    <th key={"button"} style={{width: "10%"}} key={"button"}> </th>
+                    <th key={"button"} style={{width: "10%"}}/>
                 </tr>
                 </thead>
                 <tbody>
@@ -64,7 +63,7 @@ export function StudentsList(){
                                 case "class":   return  <td key={index}>{row[key]}</td>;
                                 case "idSchool":   return <td style={{width: "20%"}} key={index}>{SchoolName(row)}</td>
                                 case "localIdSchool":   return <td key={index}>{SchoolName(row)}</td>
-                                default: return <></>}
+                                default: return}
                         })}
                         <td key={"dateTest"} >TODO: {Date.now()}</td>
                         <td key={"vaRe"} style={{width: "10%"}}>TODO</td>

@@ -4,7 +4,6 @@ import {
     LS_NEW_VISUALSTESTS,
     LS_VISUALSTESTS
 } from "../views/App";
-import moment from "moment/moment";
 import {SchoolName} from "../config/SearchLocalStorage";
 
 export function TestsList(){
@@ -41,10 +40,10 @@ export function TestsList(){
                 <tr>
                     {theadData.map(heading => {
                         switch(heading) {
-                            case "date":   return <th key={"dateTest"}>Date</th>;
+                            case "date":   return <th key={"date"}>Date</th>;
                             case "vaRe":   return <th key={"vaRe"}>vaRe</th>;
                             case "vaLe":   return <th key={"vaLe"}>vaLe</th>;
-                            case "dateTest":   return <></>;
+                            //TODO: key warning is because of <>
                             case "student":   return  <>
                                 <th key={"fullName"}>Fullname</th>
                                 <th key={"dob"}>DOB</th>
@@ -63,7 +62,7 @@ export function TestsList(){
                                 case "date": return <td key={{index}+"date"}>{row[key]}</td>;
                                 case "vaRe":   return <td key={{index}+"vaRe"}>{row[key]}</td>;
                                 case "vaLe":   return <td key={{index}+"vaLe"}>{row[key]}</td>;
-                                case "dateTest":   return <></>;
+                                //TODO: key warning is because of <>
                                 case "student":   return <>
                                     <td key={{index}+"fullName"}>{row[key].fullName}</td>
                                     <td key={{index}+"dob"}>{row[key].dob}</td>
