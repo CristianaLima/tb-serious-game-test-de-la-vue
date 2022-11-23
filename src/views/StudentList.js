@@ -1,31 +1,19 @@
 import React from 'react';
 import {useState} from "react";
-import {LS_NEW_SCHOOLS, LS_NEW_STUDENTS, LS_SCHOOLS, LS_STUDENT, LS_STUDENTS} from "../views/App";
+import {LS_NEW_STUDENTS, LS_SCHOOLS, LS_STUDENT, LS_STUDENTS} from "./App";
 import moment from "moment/moment";
-
-/** Get school name from localIdSchool or idSchool if existent
- * @param student
- */
-export function SchoolName(student){
-    const newSchools = JSON.parse(localStorage.getItem(LS_NEW_SCHOOLS));
-    const schools = JSON.parse(localStorage.getItem(LS_SCHOOLS));
-    const concatSchools = newSchools.concat(schools);
-    for (let i = 0; i < concatSchools.length; i++) {
-        if (student.localIdSchool !== undefined){
-            if (concatSchools[i].localId === student.localIdSchool){
-                return concatSchools[i].name;
-            }
-        } else {
-            if (concatSchools[i].id === student.idSchool){
-                return concatSchools[i].name;
-            }
-        }
-    }
-}
+import {SchoolName} from "../config/SearchLocalStorage";
+import {useNavigate} from "react-router-dom";
+import {NavBar} from "../components/NavBar";
+import {Button, Col, Input, Row} from "reactstrap";
+import {OpenXlsFile} from "../components/OpenXlsFile";
 
 export function StudentsList(){
+    const navigate = useNavigate();
+
     const [students] = useState(JSON.parse(localStorage.getItem(LS_STUDENTS)));
     const [newStudents] = useState(JSON.parse(localStorage.getItem(LS_NEW_STUDENTS)));
+    const [schools] = useState(JSON.parse(localStorage.getItem(LS_SCHOOLS)));
 
     function StudentsFromFirebase() {
         if (students.length > 0) {
@@ -70,7 +58,7 @@ export function StudentsList(){
                     <th>Date of last test</th>
                     <th>Last  VAR</th>
                     <th>Last  VAL</th>
-                    <th  style={{width: "20%"}} key={"button"}> </th>
+                    <th  style={{width: "10%"}} key={"button"}> </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -88,13 +76,12 @@ export function StudentsList(){
                         <td>{moment(Date.now()).format('DD MMMM yyyy')}</td>
                         <td style={{width: "10%"}}>0.55</td>
                         <td style={{width: "10%"}}>1</td>
-                        <td  style={{width: "20%"}}><button className="btn btn-outline-primary"
+                        <td  style={{width: "10%"}}><button className="btn btn-outline-primary"
                                                             onClick={() => {
-                                                                localStorage.setItem(LS_STUDENT, JSON.stringify( row));
-                                                                window.open('/acuityTestScreen', '_self')
-                                                                window.open('/acuityTestController', '_blank');
+                                                                localStorage.setItem(LS_STUDENT, JSON.stringify(row));
+                                                                navigate('/studentForm');
                                                             }}>
-                            Select this student</button></td>
+                           Let's play</button></td>
                     </tr>;
                 })}
                 </tbody>
@@ -105,8 +92,36 @@ export function StudentsList(){
 
     return(
         <div>
+            <NavBar/>
+            <div  className="px-3 m-auto w-75 my-2">
+                <Row className="row-cols-lg-auto g-3 align-items-center"  style={{display: "flex",
+                    justifyContent: "end", alignItems: "flex-end"
+                }}>
+                    <Col>
+                        <Input  label='Upload' type="file" name="file" id="xlsxClassList"  onChange={(e)=>{
+                            const file = e.target.files[0];
+                            OpenXlsFile(file);
+                            window.location.reload();
+                            window.alert("File "+file.name.toString()+" uploaded")
+                        }}/>
+                    </Col>
+                    <Button type="button" className="btn btn-success mx-4" onClick={() => {
+                        localStorage.setItem(LS_STUDENT, JSON.stringify({
+                            localId: Math.round(Date.now() / 1000).toString(),
+                            fullName: "",
+                            dob: "",
+                            class: "",
+                            idSchool: schools[0].id}))
+                            navigate('/studentForm');
+                    }
+
+                    }>
+                        New student
+                    </Button>
+                </Row>
             <StudentsFromFirebase/>
             <NewStudents/>
+            </div>
         </div>
     )
 }

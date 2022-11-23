@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {LS_STUDENT, LS_SCHOOLS, LS_NEW_STUDENTS} from "../views/App";
+import {LS_STUDENT, LS_SCHOOLS, LS_NEW_STUDENTS} from "./App";
+import {useNavigate} from "react-router-dom";
+import {NavBar} from "../components/NavBar";
 
 export default StudentForm;
 
@@ -7,16 +9,14 @@ export default StudentForm;
  * Form which allow to start a test with a student not on list charged
  */
 function StudentForm() {
+    const navigate = useNavigate();
+
     const [newStudents, setNewStudents] = useState(() => {
         return JSON.parse(localStorage.getItem(LS_NEW_STUDENTS));
     });
     const [schools] = useState(JSON.parse(localStorage.getItem(LS_SCHOOLS)));
-    const [student, setStudent] = useState({
-        localId: Math.round(Date.now() / 1000).toString(),
-        fullName: "",
-        dob: "",
-        class: "",
-        idSchool: schools[0].id
+    const [student, setStudent] = useState(() => {
+        return JSON.parse(localStorage.getItem(LS_STUDENT));
     });
 
     /**
@@ -39,7 +39,9 @@ function StudentForm() {
      */
     function handleSubmit(e) {
         e.preventDefault(); // prevents browser refresh
-        addStudentToArray(student)
+        if (student.id === undefined) {
+            addStudentToArray(student)
+        }
         window.open('/acuityTestScreen', '_self')
         window.open('/acuityTestController', '_blank');
     }
@@ -73,10 +75,16 @@ function StudentForm() {
 
     return (
         <div>
+            <NavBar/>
+            <div  className="px-3 m-auto w-75 my-2">
+            <button type="button" className="btn btn-danger btn-lg m-5"
+                    onClick={() => navigate('/studentList')}>
+                Back to student list
+            </button>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="school">School</label>
-                    <select className="form-control" id="school" onChange={handleChangeSchool}>
+                    <select disabled={student.id !== undefined} className="form-control" id="school" onChange={handleChangeSchool}>
                         {schools.map((s) => (
                             <option key={s.id} value={s.id}>{s.name}</option>
                         ))}
@@ -84,18 +92,19 @@ function StudentForm() {
                 </div>
                 <div className="form-group">
                     <label htmlFor="fullName">Full name</label>
-                    <input required id="fullName" type="text"  className="form-control" value={student.fullName} onChange={handleChangeFullName} />
+                    <input disabled={student.id !== undefined} required id="fullName" type="text" className="form-control" value={student.fullName} onChange={handleChangeFullName} />
                 </div>
                 <div className="form-group">
                     <label htmlFor="class">Class</label>
-                    <input required id="class" type="text"  className="form-control" value={student.class} onChange={handleChangeClass} />
+                    <input disabled={student.id !== undefined} required id="class" type="text" className="form-control" value={student.class} onChange={handleChangeClass} />
                 </div>
                 <div className="form-group">
                     <label htmlFor="dob">Date of birth</label>
-                    <input required id="dob" type="date"  className="form-control" value={student.dob} onChange={handleChangeDateOfBirth} />
+                    <input disabled={student.id !== undefined} required id="dob" type="date" className="form-control" value={student.dob} onChange={handleChangeDateOfBirth} />
                 </div>
                 <button type="submit" className="btn btn-primary">Let's play</button>
             </form>
+            </div>
     </div>
     );
 }

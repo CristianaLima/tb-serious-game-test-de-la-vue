@@ -5,7 +5,7 @@ import {
     LS_VISUALSTESTS
 } from "../views/App";
 import moment from "moment/moment";
-import {SchoolName} from "./StudentList";
+import {SchoolName} from "../config/SearchLocalStorage";
 
 export function TestList(){
     const [tests] = useState(JSON.parse(localStorage.getItem(LS_VISUALSTESTS)));
