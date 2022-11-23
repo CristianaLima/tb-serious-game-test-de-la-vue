@@ -3,6 +3,7 @@ import {useState} from "react";
 import {LS_NEW_STUDENTS, LS_STUDENT, LS_STUDENTS} from "../views/App";
 import {SchoolName} from "../config/SearchLocalStorage";
 import {useNavigate} from "react-router-dom";
+import moment from "moment";
 
 export function StudentsList(){
     const navigate = useNavigate();
@@ -65,7 +66,7 @@ export function StudentsList(){
                                 case "localIdSchool":   return <td key={index}>{SchoolName(row)}</td>
                                 default: return}
                         })}
-                        <td key={"dateTest"} >TODO: {Date.now()}</td>
+                        <td key={"dateTest"} >TODO: {moment(Date.now()).format('YYYY-MM-DD')}</td>
                         <td key={"vaRe"} style={{width: "10%"}}>TODO</td>
                         <td key={"vaLe"} style={{width: "10%"}}>TODO</td>
                         <td key={"button"} style={{width: "10%"}}><button className="btn btn-primary"
