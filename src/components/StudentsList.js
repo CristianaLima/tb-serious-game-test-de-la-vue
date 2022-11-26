@@ -5,7 +5,6 @@ import {SchoolName} from "../config/SearchLocalStorage";
 import {useNavigate} from "react-router-dom";
 import moment from "moment";
 
-
 export function StudentsList(){
     const navigate = useNavigate();
 
@@ -31,45 +30,40 @@ export function StudentsList(){
         }
         return <div/>;
     }
-
-    //TODO un boutton "addFilter" qui permet de mettre un filtre sur autre chose que le nom
     //TODO design
-    function myFunctionFilter(columnToFilter) {
-
-        // Declare variables
-        let input, filter, tr, td, i, txtValue, newStudents,studentsFirebase, columnFilter;
-
-        //récupère la valeur indiqué dans la barre de recherche
-       // input = document.getElementById("myInput")
-        //console.log(input.value)
-       // filter = input.value.toUpperCase();
-
-        //fait le filtre sur le document
-        studentsFirebase = document.getElementById("studentsFromFirebase");
-        tr = studentsFirebase.getElementsByTagName("tr");
-
-
+    function selectColumnToFilter(columnToFilter) {
 
         switch(columnToFilter){
             case 'fullName':
-                columnFilter = 0;
-                input = document.getElementById("InputFullName")
-                console.log("fullNameInput" +input.value)
+                ColumnFilter("studentsFromFirebase",0,document.getElementById("InputFullName"))
+                ColumnFilter("newStudents",0,document.getElementById("InputFullName"))
+
                 break;
             case 'class':
-                columnFilter = 2;
-                input = document.getElementById("InputClass")
-                console.log("classInput" +input.value)
+                ColumnFilter("studentsFromFirebase",2,document.getElementById("InputClass"))
+                ColumnFilter("newStudents",2,document.getElementById("InputClass"))
+
+                break;
+            case 'school':
+                ColumnFilter("studentsFromFirebase",3,document.getElementById("InputSchool"))
+                ColumnFilter("newStudents",3,document.getElementById("InputSchool"))
                 break;
             default:
                 break;
         }
+    }
+
+    function ColumnFilter(table, columnNumberToFilter, input) {
+
+        let i, td, txtValue, filter;
 
         filter = input.value.toUpperCase();
 
+        let studentsFirebase = document.getElementById(table);
+        let tr = studentsFirebase.getElementsByTagName("tr");
+
         for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[columnFilter];
-            console.log(td)
+            td = tr[i].getElementsByTagName("td")[columnNumberToFilter];
 
             if (td) {
                 txtValue = td.textContent || td.innerText;
@@ -81,21 +75,6 @@ export function StudentsList(){
             }
         }
 
-
-        newStudents = document.getElementById("newStudents");
-        tr = newStudents.getElementsByTagName("tr");
-
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[columnFilter];
-            if (td) {
-                txtValue = td.textContent || td.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
-                }
-            }
-        }
     }
 
     function TableConstruction({theadData, tbodyData}) {
@@ -152,11 +131,17 @@ export function StudentsList(){
     return(
 
         <div>
-            <input type="text" id="InputFullName" onKeyUp={() => {myFunctionFilter("fullName")}}
-                placeholder="Search for names"
+            <label> Search fullName : </label>
+            <input type="text" id="InputFullName" className="m-3" onKeyUp={() => {selectColumnToFilter("fullName")}}
+                placeholder="Search for fullName"
             ></input>
-            <input type="text" id="InputClass" onKeyUp={() => {myFunctionFilter("class")}}
+            <label>  class : </label>
+            <input type="text" id="InputClass" className="m-3" onKeyUp={() => {selectColumnToFilter("class")}}
                    placeholder="Search for class"
+            ></input>
+            <label> school : </label>
+            <input type="text" id="InputSchool" className="m-3" onKeyUp={() => {selectColumnToFilter("school")}}
+                   placeholder="Search for school"
             ></input>
 
             <StudentsFromFirebase/>
