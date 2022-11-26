@@ -48,18 +48,17 @@ export function ResultsList() {
 
         // Create CSV file object and feed
         // our csv_data into it
-        var CSVFile = new Blob([csv_data], {
+        const CSVFile = new Blob([csv_data], {
             type: "text/csv"
         });
 
         // Create to temporary link to initiate
         // download process
-        var temp_link = document.createElement('a');
+        const temp_link = document.createElement('a');
 
         // Download csv file with predefine name
         temp_link.download = "ExportResult.csv";
-        var url = window.URL.createObjectURL(CSVFile);
-        temp_link.href = url;
+        temp_link.href =  window.URL.createObjectURL(CSVFile);
 
         // This link should not be displayed
         temp_link.style.display = "none";
@@ -76,7 +75,7 @@ export function ResultsList() {
     function TestsFromFirebase() {
         if (tests.length > 0) {
             return <>
-                <h1>Tests in database</h1>
+                <h1>Results in database</h1>
                 <TableConstruction theadData={Object.keys(tests[0])} tbodyData={tests}/>
             </>;
         }
@@ -86,7 +85,7 @@ export function ResultsList() {
     function NewTests() {
         if (newTests.length > 0) {
             return <>
-                <h1>Tests not synchronise</h1>
+                <h1>Results not synchronised</h1>
                 <TableConstruction theadData={Object.keys(newTests[0])} tbodyData={newTests}/>
             </>;
         }
@@ -97,12 +96,6 @@ export function ResultsList() {
         return (
 
             <div>
-                <Row className="row-cols-lg-auto g-3 align-items-center"
-                     style={{ display: "flex", justifyContent: "end", alignItems: "flex-end"}}>
-                    <button type="button" className="btn btn-primary" onClick={()=>tableToCSV()}>
-                        Export
-                    </button>
-                </Row>
                 <input type="text" id="myInput" placeholder="Search for..."
                        title="Type in a name"></input>
             <table className="table">
@@ -147,8 +140,8 @@ export function ResultsList() {
                                 case "correction":   return <td key={index}>{row[key].toString()}</td>;
                                 case "comprehension":   return <td key={index}>{row[key].toString()}</td>;
                                 case "rounds":   return <td key={index}>{row[key]}</td>;
-                                case "vaRe":   return <td key={index}>{row[key]}</td>;
-                                case "vaLe":   return <td key={index}>{row[key]}</td>;
+                                case "vaRe":   return <td key={index}>{Math.round(row[key] * 100) / 100}</td>;
+                                case "vaLe":   return <td key={index}>{Math.round(row[key] * 100) / 100}</td>;
                                 default: return}
                         })}
                     </tr>;
@@ -161,6 +154,12 @@ export function ResultsList() {
 
     return(
             <div>
+                <Row className="row-cols-lg-auto g-3 align-items-center"
+                     style={{ display: "flex", justifyContent: "end", alignItems: "flex-end"}}>
+                    <button type="button" className="btn btn-primary" onClick={()=>tableToCSV()}>
+                        Export all results
+                    </button>
+                </Row>
                 <TestsFromFirebase/>
                 <NewTests/>
             </div>
