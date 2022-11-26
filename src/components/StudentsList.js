@@ -5,6 +5,7 @@ import {SchoolName} from "../config/SearchLocalStorage";
 import {useNavigate} from "react-router-dom";
 import moment from "moment";
 
+
 export function StudentsList(){
     const navigate = useNavigate();
 
@@ -13,35 +14,78 @@ export function StudentsList(){
 
     function StudentsFromFirebase() {
         if (students.length > 0) {
-            return <>
+            return  <div id="studentsFromFirebase">
                 <h1>Students from school roster</h1>
                 <TableConstruction theadData={Object.keys(students[0])} tbodyData={students}/>
-            </>;
+            </div>;
         }
         return <div/>;
     }
 
     function NewStudents() {
         if (newStudents.length > 0) {
-            return <>
+            return <div id="newStudents">
                 <h1>New students from this session</h1>
                 <TableConstruction theadData={Object.keys(newStudents[0])} tbodyData={newStudents}/>
-            </>;
+            </div>;
         }
         return <div/>;
+    }
+
+    //TODO un boutton "addFilter" qui permet de mettre un filtre sur autre chose que le nom
+    //TODO design
+    function myFunctionFilter(columnNumber) {
+
+        // Declare variables
+        let input, filter, tr, td, i, txtValue, newStudents,studentsFirebase;
+
+        //récupère la valeur indiqué dans la barre de recherche
+        input = document.getElementById("myInput")
+        filter = input.value.toUpperCase();
+
+        //fait le filtre sur le document
+        studentsFirebase = document.getElementById("studentsFromFirebase");
+
+        tr = studentsFirebase.getElementsByTagName("tr");
+
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[columnNumber];
+
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+
+        newStudents = document.getElementById("newStudents");
+        tr = newStudents.getElementsByTagName("tr");
+
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[columnNumber];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
     }
 
     function TableConstruction({theadData, tbodyData}) {
         return (
             <div>
-                <input type="text" id="myInput" placeholder="Search for..."
-                       title="Type in a name"></input>
-            <table className="table">
-                <thead>
+                <table className="table" id="filterTab">
+                <thead >
                 <tr>
                     {theadData.map(heading => {
                         switch(heading) {
-                            case "fullName":   return <th key={"fullName"}>Full name</th>;
+                            case "fullName":   return <th key={"fullName"}>Full name </th>;
                             case "dob":   return <th key={"dob"}>DOB</th>;
                             case "class":   return <th key={"class"}>Class</th>;
                             case "idSchool":   return <th style={{width: "20%"}} key={"idSchool"}>School</th>;
@@ -80,11 +124,16 @@ export function StudentsList(){
                 </tbody>
             </table>
             </div>
+
         );
     }
 
     return(
+
         <div>
+            <input type="text" id="myInput" onKeyUp={myFunctionFilter(0)} placeholder="Search for names"
+            ></input>
+
             <StudentsFromFirebase/>
             <NewStudents/>
         </div>
