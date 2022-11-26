@@ -34,22 +34,42 @@ export function StudentsList(){
 
     //TODO un boutton "addFilter" qui permet de mettre un filtre sur autre chose que le nom
     //TODO design
-    function myFunctionFilter(valeurInput) {
+    function myFunctionFilter(columnToFilter) {
 
         // Declare variables
-        let input, filter, tr, td, i, txtValue, newStudents,studentsFirebase;
+        let input, filter, tr, td, i, txtValue, newStudents,studentsFirebase, columnFilter;
 
         //récupère la valeur indiqué dans la barre de recherche
-        input = document.getElementById("myInput")
-        filter = input.value.toUpperCase();
+       // input = document.getElementById("myInput")
+        //console.log(input.value)
+       // filter = input.value.toUpperCase();
 
         //fait le filtre sur le document
         studentsFirebase = document.getElementById("studentsFromFirebase");
-
         tr = studentsFirebase.getElementsByTagName("tr");
 
+
+
+        switch(columnToFilter){
+            case 'fullName':
+                columnFilter = 0;
+                input = document.getElementById("InputFullName")
+                console.log("fullNameInput" +input.value)
+                break;
+            case 'class':
+                columnFilter = 2;
+                input = document.getElementById("InputClass")
+                console.log("classInput" +input.value)
+                break;
+            default:
+                break;
+        }
+
+        filter = input.value.toUpperCase();
+
         for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[0];
+            td = tr[i].getElementsByTagName("td")[columnFilter];
+            console.log(td)
 
             if (td) {
                 txtValue = td.textContent || td.innerText;
@@ -61,11 +81,12 @@ export function StudentsList(){
             }
         }
 
+
         newStudents = document.getElementById("newStudents");
         tr = newStudents.getElementsByTagName("tr");
 
         for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[0];
+            td = tr[i].getElementsByTagName("td")[columnFilter];
             if (td) {
                 txtValue = td.textContent || td.innerText;
                 if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -131,7 +152,11 @@ export function StudentsList(){
     return(
 
         <div>
-            <input type="text" id="myInput" onKeyUp={myFunctionFilter} placeholder="Search for names"
+            <input type="text" id="InputFullName" onKeyUp={() => {myFunctionFilter("fullName")}}
+                placeholder="Search for names"
+            ></input>
+            <input type="text" id="InputClass" onKeyUp={() => {myFunctionFilter("class")}}
+                   placeholder="Search for class"
             ></input>
 
             <StudentsFromFirebase/>
