@@ -105,9 +105,9 @@ export function ResultsList() {
                         switch(heading) {
                             case "idStudent":
                             case "localIdStudent":   return <>
-                                <th key={"schoolName"}>School</th>
+                                <th style={{width: "15%"}} key={"schoolName"}>School</th>
                                 <th key={"class"}>Class</th>
-                                <th key={"fullName"}>Fullname</th>
+                                <th style={{width: "15%"}} key={"fullName"}>Fullname</th>
                                 <th key={"dob"}>DOB</th>
                             </>;
                             // TODO: key warning is because of <>
