@@ -60,10 +60,10 @@ export async function getAllStudents(){
             const student = doc.data();
             const dob = student.dob.toDate();
             const completeStudent = {
-                fullName: student.fullName,
-                dob: moment(dob).format('YYYY-MM-DD'),
+                idSchool: student.idSchool,
                 class: student.class,
-                idSchool: student.idSchool
+                fullName: student.fullName,
+                dob: moment(dob).format('YYYY-MM-DD')
                 };
             const studentWithId = { ...completeStudent, id: doc.id}
             students.push(studentWithId);
