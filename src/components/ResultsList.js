@@ -56,7 +56,7 @@ export function ResultsList() {
         // download process
         var temp_link = document.createElement('a');
 
-        // Download csv file
+        // Download csv file with predefine name
         temp_link.download = "ExportResult.csv";
         var url = window.URL.createObjectURL(CSVFile);
         temp_link.href = url;
@@ -110,20 +110,20 @@ export function ResultsList() {
                 <tr>
                     {theadData.map(heading => {
                         switch(heading) {
+                            case "idStudent":
+                            case "localIdStudent":   return <>
+                                <th key={"schoolName"}>School</th>
+                                <th key={"class"}>Class</th>
+                                <th key={"fullName"}>Fullname</th>
+                                <th key={"dob"}>DOB</th>
+                            </>;
+                            // TODO: key warning is because of <>
                             case "dateTest":   return <th key={"dateTest"}>Date</th>;
-                            case "vaRe":   return <th key={"vaRe"}>vaRe</th>;
-                            case "vaLe":   return <th key={"vaLe"}>vaLe</th>;
                             case "correction":   return <th key={"correction"}>Glasses </th>;
                             case "comprehension":   return <th key={"comprehension"}>Understood </th>;
                             case "rounds":   return <th key={"rounds"}>Rounds </th>;
-                            //TODO: key warning is because of <>
-                            case "idStudent":
-                            case "localIdStudent":   return <>
-                                <th key={"fullName"}>Fullname</th>
-                                <th key={"dob"}>DOB</th>
-                                <th key={"class"}>Class</th>
-                                <th key={"schoolName"}>School</th>
-                            </>;
+                            case "vaRe":   return <th key={"vaRe"}>vaRe</th>;
+                            case "vaLe":   return <th key={"vaLe"}>vaLe</th>;
                             default: return }
                     })}
                 </tr>
@@ -133,22 +133,22 @@ export function ResultsList() {
                     return <tr key={index}>
                         {theadData.map((key, index) => {
                             switch(key) {
-                                case "dateTest": return <td key={index}>{row[key]}</td>;
-                                case "vaRe":   return <td key={index}>{row[key]}</td>;
-                                case "vaLe":   return <td key={index}>{row[key]}</td>;
-                                case "correction":   return <td key={index}>{row[key].toString()}</td>;
-                                case "comprehension":   return <td key={index}>{row[key].toString()}</td>;
-                                case "rounds":   return <td key={index}>{row[key]}</td>;
                                 case "idStudent":
                                 case "localIdStudent": {
                                     const student = getStudentFromLS(row);
                                     return <>
+                                        <td key={{index}+"schoolName"}>{getSchoolNameFromLS(student)}</td>
+                                        <td key={{index}+"class"}>{student.class}</td>
                                         <td key={{index}+"fullName"}>{student.fullName}</td>
                                         <td key={{index}+"dob"}>{student.dob}</td>
-                                        <td key={{index}+"class"}>{student.class}</td>
-                                        <td key={{index}+"schoolName"}>{getSchoolNameFromLS(student)}</td>
                                     </>;
                                 }
+                                case "dateTest": return <td key={index}>{row[key]}</td>;
+                                case "correction":   return <td key={index}>{row[key].toString()}</td>;
+                                case "comprehension":   return <td key={index}>{row[key].toString()}</td>;
+                                case "rounds":   return <td key={index}>{row[key]}</td>;
+                                case "vaRe":   return <td key={index}>{row[key]}</td>;
+                                case "vaLe":   return <td key={index}>{row[key]}</td>;
                                 default: return}
                         })}
                     </tr>;
