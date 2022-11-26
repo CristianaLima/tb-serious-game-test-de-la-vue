@@ -34,7 +34,7 @@ export function StudentsList(){
 
     //TODO un boutton "addFilter" qui permet de mettre un filtre sur autre chose que le nom
     //TODO design
-    function myFunctionFilter(columnNumber) {
+    function myFunctionFilter(valeurInput) {
 
         // Declare variables
         let input, filter, tr, td, i, txtValue, newStudents,studentsFirebase;
@@ -49,7 +49,7 @@ export function StudentsList(){
         tr = studentsFirebase.getElementsByTagName("tr");
 
         for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[columnNumber];
+            td = tr[i].getElementsByTagName("td")[0];
 
             if (td) {
                 txtValue = td.textContent || td.innerText;
@@ -65,7 +65,7 @@ export function StudentsList(){
         tr = newStudents.getElementsByTagName("tr");
 
         for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[columnNumber];
+            td = tr[i].getElementsByTagName("td")[0];
             if (td) {
                 txtValue = td.textContent || td.innerText;
                 if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -131,7 +131,7 @@ export function StudentsList(){
     return(
 
         <div>
-            <input type="text" id="myInput" onKeyUp={myFunctionFilter(0)} placeholder="Search for names"
+            <input type="text" id="myInput" onKeyUp={myFunctionFilter()} placeholder="Search for names"
             ></input>
 
             <StudentsFromFirebase/>
