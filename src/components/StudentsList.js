@@ -1,7 +1,7 @@
 import React from 'react';
 import {useState} from "react";
 import {LS_NEW_STUDENTS, LS_STUDENT, LS_STUDENTS} from "../views/App";
-import {SchoolName} from "../config/SearchLocalStorage";
+import {getSchoolNameFromLS} from "../config/SearchLocalStorage";
 import {useNavigate} from "react-router-dom";
 import moment from "moment";
 
@@ -62,8 +62,8 @@ export function StudentsList(){
                                 case "fullName":   return  <td key={index}>{row[key]}</td>;
                                 case "dob": return <td key={index}>{row[key]}</td>;
                                 case "class":   return  <td key={index}>{row[key]}</td>;
-                                case "idSchool":   return <td style={{width: "20%"}} key={index}>{SchoolName(row)}</td>
-                                case "localIdSchool":   return <td key={index}>{SchoolName(row)}</td>
+                                case "idSchool":   return <td style={{width: "20%"}} key={index}>{getSchoolNameFromLS(row)}</td>
+                                case "localIdSchool":   return <td key={index}>{getSchoolNameFromLS(row)}</td>
                                 default: return}
                         })}
                         <td key={"dateTest"} >TODO: {moment(Date.now()).format('YYYY-MM-DD')}</td>

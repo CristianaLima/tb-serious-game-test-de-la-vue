@@ -7,6 +7,7 @@ import {
     MAXREP
 } from "../views/App";
 import c from "../assets/c_picture.png";
+import moment from "moment";
 
 /**
  *
@@ -62,15 +63,15 @@ export function CImage(){
             case MAXREP :
                 setStatus(2);
                 setNewTests([...newTests, {
-                    dateTest: Date.now(),
-                    comprehension: false,
-                    correction: false,
                     idStudent: JSON.parse(localStorage.getItem(LS_STUDENT)).id,
                     localIdStudent: JSON.parse(localStorage.getItem(LS_STUDENT)).localId,
-                    idTherapist: JSON.parse(localStorage.getItem(LS_CURRENT_THERAPIST)).id,
+                    dateTest: moment(Date.now()).format('YYYY-MM-DD'),
+                    correction: false,
+                    comprehension: false,
                     rounds: 1,
+                    vaRe: results[results.length-1],
                     vaLe: results[results.length-1],
-                    vaRe: results[results.length-1]
+                    idTherapist: JSON.parse(localStorage.getItem(LS_CURRENT_THERAPIST)).id,
                 }])
                 setSize(0); // C disappear
                 break;

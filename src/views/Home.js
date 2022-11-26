@@ -34,15 +34,12 @@ export function Home(){
         }
         // Initialize new array in local storage if first opening
         if (newSchools === null){
-            console.log("schools null")
             localStorage.setItem(LS_NEW_SCHOOLS, JSON.stringify([]));
         }
         if (newStudents === null){
-            console.log("students null")
             localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify([]));
         }
         if (newTests === null){
-            console.log("tests null")
             localStorage.setItem(LS_NEW_VISUALSTESTS, JSON.stringify([]));
         }
     }, []);

@@ -4,7 +4,7 @@ import {
     LS_NEW_VISUALSTESTS,
     LS_VISUALSTESTS
 } from "../views/App";
-import {SchoolName} from "../config/SearchLocalStorage";
+import {getSchoolNameFromLS, getStudentFromLS} from "../config/SearchLocalStorage";
 
 export function ResultsList(){
     const [tests] = useState(JSON.parse(localStorage.getItem(LS_VISUALSTESTS)));
@@ -40,11 +40,15 @@ export function ResultsList(){
                 <tr>
                     {theadData.map(heading => {
                         switch(heading) {
-                            case "date":   return <th key={"date"}>Date</th>;
+                            case "dateTest":   return <th key={"dateTest"}>Date</th>;
                             case "vaRe":   return <th key={"vaRe"}>vaRe</th>;
                             case "vaLe":   return <th key={"vaLe"}>vaLe</th>;
+                            case "correction":   return <th key={"correction"}>Glasses </th>;
+                            case "comprehension":   return <th key={"comprehension"}>Understood </th>;
+                            case "rounds":   return <th key={"rounds"}>Rounds </th>;
                             //TODO: key warning is because of <>
-                            case "student":   return  <>
+                            case "idStudent":
+                            case "localIdStudent":   return <>
                                 <th key={"fullName"}>Fullname</th>
                                 <th key={"dob"}>DOB</th>
                                 <th key={"class"}>Class</th>
@@ -59,16 +63,22 @@ export function ResultsList(){
                     return <tr key={index}>
                         {theadData.map((key, index) => {
                             switch(key) {
-                                case "date": return <td key={{index}+"date"}>{row[key]}</td>;
-                                case "vaRe":   return <td key={{index}+"vaRe"}>{row[key]}</td>;
-                                case "vaLe":   return <td key={{index}+"vaLe"}>{row[key]}</td>;
-                                //TODO: key warning is because of <>
-                                case "student":   return <>
-                                    <td key={{index}+"fullName"}>{row[key].fullName}</td>
-                                    <td key={{index}+"dob"}>{row[key].dob}</td>
-                                    <td key={{index}+"class"}>{row[key].class}</td>
-                                    <td key={{index}+"schoolName"}>{SchoolName(row[key])}</td>
-                                </>;
+                                case "dateTest": return <td key={index}>{row[key]}</td>;
+                                case "vaRe":   return <td key={index}>{row[key]}</td>;
+                                case "vaLe":   return <td key={index}>{row[key]}</td>;
+                                case "correction":   return <td key={index}>{row[key].toString()}</td>;
+                                case "comprehension":   return <td key={index}>{row[key].toString()}</td>;
+                                case "rounds":   return <td key={index}>{row[key]}</td>;
+                                case "idStudent":
+                                case "localIdStudent": {
+                                    const student = getStudentFromLS(row);
+                                    return <>
+                                        <td key={{index}+"fullName"}>{student.fullName}</td>
+                                        <td key={{index}+"dob"}>{student.dob}</td>
+                                        <td key={{index}+"class"}>{student.class}</td>
+                                        <td key={{index}+"schoolName"}>{getSchoolNameFromLS(student)}</td>
+                                    </>;
+                                }
                                 default: return}
                         })}
                     </tr>;
