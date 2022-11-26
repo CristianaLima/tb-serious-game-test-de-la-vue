@@ -35,18 +35,18 @@ export function StudentsList(){
 
         switch(columnToFilter){
             case 'fullName':
-                ColumnFilter("studentsFromFirebase",0,document.getElementById("InputFullName"))
-                ColumnFilter("newStudents",0,document.getElementById("InputFullName"))
+                ColumnFilter("studentsFromFirebase",2,document.getElementById("InputFullName"))
+                ColumnFilter("newStudents",2,document.getElementById("InputFullName"))
 
                 break;
             case 'class':
-                ColumnFilter("studentsFromFirebase",2,document.getElementById("InputClass"))
-                ColumnFilter("newStudents",2,document.getElementById("InputClass"))
+                ColumnFilter("studentsFromFirebase",1,document.getElementById("InputClass"))
+                ColumnFilter("newStudents",1,document.getElementById("InputClass"))
 
                 break;
             case 'school':
-                ColumnFilter("studentsFromFirebase",3,document.getElementById("InputSchool"))
-                ColumnFilter("newStudents",3,document.getElementById("InputSchool"))
+                ColumnFilter("studentsFromFirebase",0,document.getElementById("InputSchool"))
+                ColumnFilter("newStudents",0,document.getElementById("InputSchool"))
                 break;
             default:
                 break;
