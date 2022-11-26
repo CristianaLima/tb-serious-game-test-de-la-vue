@@ -20,7 +20,7 @@ export function StartGame(){
                         <Input  label='Upload' type="file" name="file" id="xlsxClassList"  onChange={(e)=>{
                             const file = e.target.files[0];
                             OpenXlsFile(file);
-                            window.location.reload();
+                            //window.location.reload();
                             window.alert("File "+file.name.toString()+" uploaded")
                         }}/>
                     </Col>
