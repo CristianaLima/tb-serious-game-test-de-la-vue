@@ -131,7 +131,7 @@ export function StudentsList(){
     return(
 
         <div>
-            <input type="text" id="myInput" onKeyUp={myFunctionFilter()} placeholder="Search for names"
+            <input type="text" id="myInput" onKeyUp={myFunctionFilter} placeholder="Search for names"
             ></input>
 
             <StudentsFromFirebase/>
