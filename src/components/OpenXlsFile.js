@@ -35,7 +35,7 @@ const promise = new Promise((resolve,reject)=>{
         let studentsToAdd = [];
 
         const classNum = data[3].__EMPTY_19;// get the class number
-        const schoolName = data[0].__EMPTY_3.replace(/(\r\n|\n|\r)/gm, " ");
+        const schoolName = data[3].__EMPTY_5;
 
         for (let i = 5; i < data.length ; i++) {
 
