@@ -8,6 +8,7 @@ import {
 } from "../views/App";
 import c from "../assets/c_picture.png";
 import moment from "moment";
+import {useNavigate} from "react-router-dom";
 
 /**
  *
@@ -20,6 +21,7 @@ import moment from "moment";
  * results : array of size
  */
 export function CImage(){
+    const navigate = useNavigate();
     const [angleArray] =  useState(()=> constructAngleArray());
 
     const [response, setResponse] = useState({tour : 0, angle : 0});
@@ -41,7 +43,6 @@ export function CImage(){
      * Stock the new value in response
      */
     useEffect(() => {
-        localStorage.setItem(LS_C_SELECTED, JSON.stringify({tour: 1, angle:-1}))
         window.dispatchEvent(new Event("storage"));
         window.addEventListener("storage", () =>{
                 // Get info from local storage
@@ -155,9 +156,19 @@ export function CImage(){
                             position: 'absolute', left: '47%', top: '50%',
                     }}
                     />
-                    {status === 0 ? "" : <div>Last answer was {answer.toString()}</div>}
                 </>
-                :  <div>Test Finish with result {results[results.length-1]}</div>}
+                :   <>
+                    <button type="button" className="btn btn-danger btn-lg m-5"
+                            onClick={() => navigate('/')}>
+                        Back to home
+                    </button>
+                    <button onClick={() => navigate('/viewResults')}  type="button" className="btn btn-primary btn-lg m-5">
+                        View results
+                    </button>
+                    <button onClick={() => navigate('/startGame')} type="button" className="btn btn-success btn-lg m-5">
+                        Start game
+                    </button>
+                </>}
         </div>
     );
 }
