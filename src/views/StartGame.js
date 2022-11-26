@@ -3,7 +3,7 @@ import {Button, Col, Input, Row} from "reactstrap";
 import {OpenXlsFile} from "../components/OpenXlsFile";
 import {LS_SCHOOLS, LS_STUDENT} from "./App";
 import React, {useState} from "react";
-import {StudentsList} from "../components/StudentList";
+import {StudentsList} from "../components/StudentsList";
 import {useNavigate} from "react-router-dom";
 
 export function StartGame(){

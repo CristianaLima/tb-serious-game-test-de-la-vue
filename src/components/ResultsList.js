@@ -6,7 +6,7 @@ import {
 } from "../views/App";
 import {SchoolName} from "../config/SearchLocalStorage";
 
-export function TestsList(){
+export function ResultsList(){
     const [tests] = useState(JSON.parse(localStorage.getItem(LS_VISUALSTESTS)));
     const [newTests] = useState(JSON.parse(localStorage.getItem(LS_NEW_VISUALSTESTS)));
 

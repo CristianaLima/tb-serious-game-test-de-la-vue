@@ -1,7 +1,7 @@
 import React  from "react";
 import {NavBar} from "../components/NavBar";
 import {Row} from "reactstrap";
-import {TestsList} from "../components/TestsList";
+import {ResultsList} from "../components/ResultsList";
 
 export function ViewResults() {
 
@@ -15,7 +15,7 @@ export function ViewResults() {
                         Export
                     </button>
                 </Row>
-                <TestsList/>
+                <ResultsList/>
             </div>
         </>
     )
