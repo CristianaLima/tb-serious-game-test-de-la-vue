@@ -4,7 +4,7 @@ import {
     LS_CURRENT_THERAPIST,
     LS_NEW_VISUALSTESTS,
     LS_STUDENT,
-    MAXREP
+    MAXREP, SS_WEAR_GLASSES
 } from "../views/App";
 import c from "../assets/c_picture.png";
 import moment from "moment";
@@ -67,7 +67,7 @@ export function CImage(){
                     idStudent: JSON.parse(localStorage.getItem(LS_STUDENT)).id,
                     localIdStudent: JSON.parse(localStorage.getItem(LS_STUDENT)).localId,
                     dateTest: moment(Date.now()).format('YYYY-MM-DD'),
-                    correction: false,
+                    correction: JSON.parse(sessionStorage.getItem(SS_WEAR_GLASSES)),
                     comprehension: false,
                     rounds: 1,
                     vaRe: results[results.length-1],
