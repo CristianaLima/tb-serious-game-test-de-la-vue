@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {LS_STUDENT, LS_SCHOOLS, LS_NEW_STUDENTS} from "./App";
+import {LS_STUDENT, LS_SCHOOLS, LS_NEW_STUDENTS, SS_WEAR_GLASSES} from "./App";
 import {useNavigate} from "react-router-dom";
 import {NavBar} from "../components/NavBar";
 import moment from "moment/moment";
+import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 
 export default StudentForm;
 
@@ -11,6 +12,9 @@ export default StudentForm;
  */
 function StudentForm() {
     const navigate = useNavigate();
+
+    const [modal, setModal] = useState(false);
+    const toggleModal = () => setModal(!modal);
 
     const [newStudents, setNewStudents] = useState(() => {
         return JSON.parse(localStorage.getItem(LS_NEW_STUDENTS));
@@ -43,6 +47,11 @@ function StudentForm() {
         if (student.id === undefined) {
             addStudentToArray(student)
         }
+        toggleModal();
+    }
+
+    function startGame(wearGlasses){
+        sessionStorage.setItem(SS_WEAR_GLASSES, wearGlasses);
         window.open('/acuityTestScreen', '_self')
         window.open('/acuityTestController', '_blank');
     }
@@ -106,6 +115,20 @@ function StudentForm() {
                     </div>
                     <button type="submit" className="btn btn-primary">Let's play</button>
                 </form>
+                <Modal isOpen={modal} toggle={toggleModal}>
+                    <ModalHeader toggle={toggleModal}>
+                        Correction
+                    </ModalHeader>
+                    <ModalBody>Does the patient wear prescription glasses?</ModalBody>
+                    <ModalFooter>
+                        <Button color="success" onClick={()=>startGame(true)}>
+                            Yes
+                        </Button>
+                        <Button color="danger" onClick={()=>startGame(false)}>
+                            No
+                        </Button>
+                    </ModalFooter>
+                </Modal>
             </div>
         </>
     );

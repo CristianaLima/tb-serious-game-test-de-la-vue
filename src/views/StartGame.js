@@ -33,7 +33,6 @@ export function StartGame(){
                             idSchool: schools[0].id}))
                         navigate('/studentForm');
                     }
-
                     }>
                         New student
                     </Button>

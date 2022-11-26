@@ -4,9 +4,11 @@ import {
     LS_CURRENT_THERAPIST,
     LS_NEW_VISUALSTESTS,
     LS_STUDENT,
-    MAXREP
+    MAXREP, SS_WEAR_GLASSES
 } from "../views/App";
 import c from "../assets/c_picture.png";
+import moment from "moment";
+import {useNavigate} from "react-router-dom";
 
 /**
  *
@@ -19,6 +21,7 @@ import c from "../assets/c_picture.png";
  * results : array of size
  */
 export function CImage(){
+    const navigate = useNavigate();
     const [angleArray] =  useState(()=> constructAngleArray());
 
     const [response, setResponse] = useState({tour : 0, angle : 0});
@@ -40,7 +43,6 @@ export function CImage(){
      * Stock the new value in response
      */
     useEffect(() => {
-        localStorage.setItem(LS_C_SELECTED, JSON.stringify({tour: 1, angle:-1}))
         window.dispatchEvent(new Event("storage"));
         window.addEventListener("storage", () =>{
                 // Get info from local storage
@@ -62,15 +64,15 @@ export function CImage(){
             case MAXREP :
                 setStatus(2);
                 setNewTests([...newTests, {
-                    dateTest: Date.now(),
-                    comprehension: false,
-                    correction: false,
                     idStudent: JSON.parse(localStorage.getItem(LS_STUDENT)).id,
                     localIdStudent: JSON.parse(localStorage.getItem(LS_STUDENT)).localId,
-                    idTherapist: JSON.parse(localStorage.getItem(LS_CURRENT_THERAPIST)).id,
+                    dateTest: moment(Date.now()).format('YYYY-MM-DD'),
+                    correction: JSON.parse(sessionStorage.getItem(SS_WEAR_GLASSES)),
+                    comprehension: false,
                     rounds: 1,
+                    vaRe: results[results.length-1],
                     vaLe: results[results.length-1],
-                    vaRe: results[results.length-1]
+                    idTherapist: JSON.parse(localStorage.getItem(LS_CURRENT_THERAPIST)).id,
                 }])
                 setSize(0); // C disappear
                 break;
@@ -154,9 +156,19 @@ export function CImage(){
                             position: 'absolute', left: '47%', top: '50%',
                     }}
                     />
-                    {status === 0 ? "" : <div>Last answer was {answer.toString()}</div>}
                 </>
-                :  <div>Test Finish with result {results[results.length-1]}</div>}
+                :   <>
+                    <button type="button" className="btn btn-danger btn-lg m-5"
+                            onClick={() => navigate('/')}>
+                        Back to home
+                    </button>
+                    <button onClick={() => navigate('/viewResults')}  type="button" className="btn btn-primary btn-lg m-5">
+                        View results
+                    </button>
+                    <button onClick={() => navigate('/startGame')} type="button" className="btn btn-success btn-lg m-5">
+                        Start game
+                    </button>
+                </>}
         </div>
     );
 }

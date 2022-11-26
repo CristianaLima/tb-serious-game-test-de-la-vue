@@ -60,10 +60,10 @@ export async function getAllStudents(){
             const student = doc.data();
             const dob = student.dob.toDate();
             const completeStudent = {
-                fullName: student.fullName,
-                dob: moment(dob).format('YYYY-MM-DD'),
+                idSchool: student.idSchool,
                 class: student.class,
-                idSchool: student.idSchool
+                fullName: student.fullName,
+                dob: moment(dob).format('YYYY-MM-DD')
                 };
             const studentWithId = { ...completeStudent, id: doc.id}
             students.push(studentWithId);
@@ -74,14 +74,23 @@ export async function getAllStudents(){
 }
 
 //Get all tests
-export async function getAllTests(students){
+export async function getAllTests(){
     const docsSnap = await getDocs(testsDbRef);
     let tests = [];
     docsSnap.forEach(doc => {
             const test =  doc.data();
             const date = test.dateTest.toDate();
-            const testWithId = {...test, id: doc.id, date: moment(date).format('YYYY-MM-DD'),
-                student: students.find((s) => { return s.id === test.idStudent })};
+            const testWithId = {
+                id: doc.id,
+                idStudent: test.idStudent,
+                localIdStudent: undefined,
+                dateTest: moment(date).format('YYYY-MM-DD'),
+                correction: test.correction,
+                comprehension: test.comprehension,
+                rounds: test.rounds,
+                vaRe: test.vaRe,
+                vaLe: test.vaLe,
+                idTherapist: test.idTherapist};
             tests.push(testWithId);
         }
     );
@@ -102,7 +111,7 @@ export async function getTestsById(id){
         return {...docSnap.data(), id: docSnap.id};
     } else {
         console.log("Document does not exist")
-        //TODO : pop-up ou page qui dit que ça n'existe pas
+        //TODO: error handlling
     }
 }
 
@@ -113,7 +122,7 @@ export async function getStudentById(id){
             return {...docSnap.data(), id: docSnap.id};
         } else {
             console.log("Document does not exist")
-            //TODO : pop-up ou page qui dit que ça n'existe pas
+            //TODO: error handlling
         }
 }
 
@@ -124,7 +133,7 @@ export async function getTherapistById(id){
         return {...docSnap.data(), id: docSnap.id};
     } else {
         console.log("Document does not exist")
-        //TODO : pop-up ou page qui dit que ça n'existe pas
+        //TODO: error handlling
     }
 }
 
@@ -135,6 +144,6 @@ export async function getSchoolById(id){
         return {...docSnap.data(), id: docSnap.id};
     } else {
         console.log("Document does not exist")
-        //TODO : pop-up ou page qui dit que ça n'existe pas
+        //TODO: error handlling
     }
 }

@@ -1,5 +1,6 @@
 import * as XLSX from 'xlsx';
 import {LS_NEW_SCHOOLS, LS_NEW_STUDENTS, LS_SCHOOLS} from "../views/App";
+import moment from "moment";
 
 /**
  * Upload an Excel file to tab NewStudent in local storage
@@ -34,7 +35,7 @@ const promise = new Promise((resolve,reject)=>{
         let studentsToAdd = [];
 
         const classNum = data[3].__EMPTY_19;// get the class number
-        const schoolName = data[0].__EMPTY_3.replace(/(\r\n|\n|\r)/gm, " ");
+        const schoolName = data[3].__EMPTY_5;
 
         for (let i = 5; i < data.length ; i++) {
 
@@ -47,9 +48,9 @@ const promise = new Promise((resolve,reject)=>{
 
             const student = {
                 localId: Math.round(Date.now() / 1000)+i.toString(),
+                class: classNum,
                 fullName: data[i].__EMPTY_6,
-                dob: dateObj,
-                class: classNum
+                dob: moment(dateObj).format('YYYY-MM-DD')
             }
             studentsToAdd = [...studentsToAdd,student]
         }
@@ -61,7 +62,7 @@ const promise = new Promise((resolve,reject)=>{
         if (school !== undefined){
             for (let i = 0; i < studentsToAdd.length; i++) {
                 if (studentsToAdd[i].idSchool == undefined) {
-                    studentsToAdd[i] = {...studentsToAdd[i], idSchool: school.id};
+                    studentsToAdd[i] = {idSchool: school.id, ...studentsToAdd[i]};
                 }
             }
         } else {
@@ -69,7 +70,7 @@ const promise = new Promise((resolve,reject)=>{
             localStorage.setItem(LS_NEW_SCHOOLS,JSON.stringify([...lsNewSchools,{name: schoolName, localId: localIdSchool}]));
             for (let i = 0; i < studentsToAdd.length; i++) {
                 if (studentsToAdd[i].idSchool == undefined) {
-                    studentsToAdd[i] = {...studentsToAdd[i], localIdSchool: localIdSchool};
+                    studentsToAdd[i] = {localIdSchool: localIdSchool, ...studentsToAdd[i]};
                 }
             }
         }

@@ -1,7 +1,7 @@
 import React from 'react';
 import {useState} from "react";
 import {LS_NEW_STUDENTS, LS_STUDENT, LS_STUDENTS} from "../views/App";
-import {SchoolName} from "../config/SearchLocalStorage";
+import {getSchoolNameFromLS} from "../config/SearchLocalStorage";
 import {useNavigate} from "react-router-dom";
 import moment from "moment";
 
@@ -85,14 +85,14 @@ export function StudentsList(){
                 <tr>
                     {theadData.map(heading => {
                         switch(heading) {
-                            case "fullName":   return <th key={"fullName"}>Full name </th>;
-                            case "dob":   return <th key={"dob"}>DOB</th>;
-                            case "class":   return <th key={"class"}>Class</th>;
+                            case "fullName":   return <th style={{width: "20%"}} key={"fullName"}>Full name</th>;
+                            case "dob":   return <th style={{width: "10%"}} key={"dob"}>DOB</th>;
+                            case "class":   return <th style={{width: "10%"}} key={"class"}>Class</th>;
                             case "idSchool":   return <th style={{width: "20%"}} key={"idSchool"}>School</th>;
-                            case "localIdSchool":   return <th key={"localIdSchool"}>School</th>;
+                            case "localIdSchool":   return <th style={{width: "20%"}} key={"localIdSchool"}>School</th>;
                             default: return}
                     })}
-                    <th key={"dateTest"}>Date of last test</th>
+                    <th key={"dateTest"} style={{width: "10%"}}>Date of last test</th>
                     <th key={"vaRe"}>Last  vaRe</th>
                     <th key={"vaLe"}>Last  vaLe</th>
                     <th key={"button"} style={{width: "10%"}}/>
@@ -103,16 +103,16 @@ export function StudentsList(){
                     return <tr key={index}>
                         {theadData.map((key, index) => {
                             switch(key) {
-                                case "fullName":   return  <td key={index}>{row[key]}</td>;
-                                case "dob": return <td key={index}>{row[key]}</td>;
-                                case "class":   return  <td key={index}>{row[key]}</td>;
-                                case "idSchool":   return <td style={{width: "20%"}} key={index}>{SchoolName(row)}</td>
-                                case "localIdSchool":   return <td key={index}>{SchoolName(row)}</td>
+                                case "fullName":   return  <td style={{width: "20%"}} key={index}>{row[key]}</td>;
+                                case "dob": return <td style={{width: "10%"}} key={index}>{row[key]}</td>;
+                                case "class":   return  <td style={{width: "10%"}} key={index}>{row[key]}</td>;
+                                case "idSchool":   return <td style={{width: "20%"}} key={index}>{getSchoolNameFromLS(row)}</td>
+                                case "localIdSchool":   return <td style={{width: "20%"}} key={index}>{getSchoolNameFromLS(row)}</td>
                                 default: return}
                         })}
-                        <td key={"dateTest"} >TODO: {moment(Date.now()).format('YYYY-MM-DD')}</td>
-                        <td key={"vaRe"} style={{width: "10%"}}>TODO</td>
-                        <td key={"vaLe"} style={{width: "10%"}}>TODO</td>
+                        <td key={"dateTest"} style={{width: "10%"}} >TODO: {moment(Date.now()).format('YYYY-MM-DD')}</td>
+                        <td key={"vaRe"} >TODO</td>
+                        <td key={"vaLe"} >TODO</td>
                         <td key={"button"} style={{width: "10%"}}><button className="btn btn-primary"
                                                             onClick={() => {
                                                                 localStorage.setItem(LS_STUDENT, JSON.stringify(row));
