@@ -1,5 +1,6 @@
 import * as XLSX from 'xlsx';
 import {LS_NEW_SCHOOLS, LS_NEW_STUDENTS, LS_SCHOOLS} from "../views/App";
+import moment from "moment";
 
 /**
  * Upload an Excel file to tab NewStudent in local storage
@@ -34,7 +35,7 @@ const promise = new Promise((resolve,reject)=>{
         let studentsToAdd = [];
 
         const classNum = data[3].__EMPTY_19;// get the class number
-        const schoolName = data[0].__EMPTY_3.replace(/(\r\n|\n|\r)/gm, " ");
+        const schoolName = data[3].__EMPTY_5;
 
         for (let i = 5; i < data.length ; i++) {
 
@@ -43,12 +44,14 @@ const promise = new Promise((resolve,reject)=>{
             const d = date.slice(0,2);
             const m = date.slice(3,5);
             const y = date.slice(6,10);
-            const dateObj = new Date(y, m, d)
+            const dateObj = new Date(y, m, d);
 
+            console.log(date);
+            console.log(dateObj);
             const student = {
                 localId: Math.round(Date.now() / 1000)+i.toString(),
                 fullName: data[i].__EMPTY_6,
-                dob: dateObj,
+                dob: moment(dateObj).format('YYYY-MM-DD'),
                 class: classNum
             }
             studentsToAdd = [...studentsToAdd,student]
