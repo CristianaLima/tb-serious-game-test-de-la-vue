@@ -32,13 +32,6 @@ function StudentForm() {
     }, [newStudents]);
 
     /**
-     * Update local storage each time student gets updated
-     */
-    useEffect(() => {
-        localStorage.setItem(LS_STUDENT, JSON.stringify(student));
-        }, [student]);
-
-    /**
      * Handle submition of the form
      * @param e
      */
@@ -51,6 +44,8 @@ function StudentForm() {
     }
 
     function startGame(wearGlasses){
+        setStudent({...student,  localId: Math.round(Date.now() / 1000).toString()});
+        localStorage.setItem(LS_STUDENT, JSON.stringify(student));
         sessionStorage.setItem(SS_WEAR_GLASSES, wearGlasses);
         window.open('/acuityTestScreen', '_self')
         window.open('/acuityTestController', '_blank');
@@ -94,7 +89,7 @@ function StudentForm() {
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="school">School</label>
-                        <select disabled={student.id !== undefined} className="form-control" id="school" onChange={handleChangeSchool}>
+                        <select disabled={student.id !== undefined || student.localId !== undefined} className="form-control" id="school" onChange={handleChangeSchool}>
                             {schools.map((s) => (
                                 <option key={s.id} value={s.id}>{s.name}</option>
                             ))}
@@ -102,16 +97,16 @@ function StudentForm() {
                     </div>
                     <div className="form-group">
                         <label htmlFor="fullName">Full name</label>
-                        <input disabled={student.id !== undefined} required id="fullName" type="text" className="form-control" value={student.fullName} onChange={handleChangeFullName} />
+                        <input disabled={student.id !== undefined || student.localId !== undefined} required id="fullName" type="text" className="form-control" value={student.fullName} onChange={handleChangeFullName} />
                     </div>
                     <div className="form-group">
                         <label htmlFor="class">Class</label>
-                        <input disabled={student.id !== undefined} required id="class" type="text" className="form-control" value={student.class} onChange={handleChangeClass} />
+                        <input disabled={student.id !== undefined || student.localId !== undefined} required id="class" type="text" className="form-control" value={student.class} onChange={handleChangeClass} />
                     </div>
                     <div className="form-group">
                         <label htmlFor="dob">Date of birth</label>
                         {/* need format YYYY-MM-DD, display depends on browser language*/}
-                        <input disabled={student.id !== undefined} required id="dob" type="date" className="form-control"  value={moment(student.dob).format('YYYY-MM-DD')} onChange={handleChangeDateOfBirth} />
+                        <input disabled={student.id !== undefined || student.localId !== undefined} required id="dob" type="date" className="form-control"  value={student.dob === "" ? "" : moment(student.dob).format('YYYY-MM-DD')} onChange={handleChangeDateOfBirth} />
                     </div>
                     <button type="submit" className="btn btn-primary">Let's play</button>
                 </form>
