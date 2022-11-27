@@ -5,7 +5,7 @@ import {
     LS_VISUALSTESTS
 } from "../views/App";
 import {getSchoolNameFromLS, getStudentFromLS} from "../config/SearchLocalStorage";
-import {Row} from "reactstrap";
+import {Row, Table} from "reactstrap";
 
 export function ResultsList() {
     const [tests] = useState(JSON.parse(localStorage.getItem(LS_VISUALSTESTS)));
@@ -98,7 +98,7 @@ export function ResultsList() {
             <div>
                 <input type="text" id="myInput" placeholder="Search for..."
                        title="Type in a name"></input>
-            <table className="table">
+                <Table size="sm">
                 <thead>
                 <tr>
                     {theadData.map(heading => {
@@ -147,7 +147,7 @@ export function ResultsList() {
                     </tr>;
                 })}
                 </tbody>
-            </table>
+            </Table>
             </div>
         );
     }
