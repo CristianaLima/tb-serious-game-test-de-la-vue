@@ -96,9 +96,9 @@ export function ResultsList() {
         const student = getStudentFromLS(row);
         return (
             <>
-                <td key={"schoolName"}>{getSchoolNameFromLS(student)}</td>
+                <td style={{width: "15%"}} key={"schoolName"}>{getSchoolNameFromLS(student)}</td>
                 <td key={"class"}>{student.class}</td>
-                <td key={"fullName"}>{student.fullName}</td>
+                <td style={{width: "15%"}} key={"fullName"}>{student.fullName}</td>
                 <td key={"dob"}>{student.dob}</td>
             </>
         )
