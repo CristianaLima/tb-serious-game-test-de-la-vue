@@ -29,7 +29,6 @@ export function getSchoolNameFromLS(student){
  * @param result
  */
 export function getStudentFromLS(result){
-    console.log(result)
     const newStudents = JSON.parse(localStorage.getItem(LS_NEW_STUDENTS));
     const students = JSON.parse(localStorage.getItem(LS_STUDENTS));
     const concatStudents = newStudents.concat(students);

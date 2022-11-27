@@ -44,14 +44,14 @@ function StudentForm() {
      */
     function handleSubmit(e) {
         e.preventDefault(); // prevents browser refresh
-        if (student.id === undefined) {
-            addStudentToArray(student)
-        }
         toggleModal();
     }
 
     function startGame(wearGlasses){
-        setStudent({...student,  localId: Math.round(Date.now() / 1000).toString()});
+        if (student.id === undefined) {
+            setStudent({...student,  localId: Math.round(Date.now() / 1000).toString()});
+            addStudentToArray({...student,  localId: Math.round(Date.now() / 1000).toString()})
+        }
         sessionStorage.setItem(SS_WEAR_GLASSES, wearGlasses);
         window.open('/acuityTestScreen', '_self')
         window.open('/acuityTestController', '_blank');
