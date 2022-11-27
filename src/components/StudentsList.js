@@ -97,9 +97,9 @@ export function StudentsList(){
                                 case "localIdSchool":   return <th style={{width: "20%"}} key={"localIdSchool"}>School</th>;
                                 default: return}
                         })}
-                        <th key={"dateTest"} style={{width: "10%"}}>Date of last test</th>
-                        <th key={"vaRe"}>Last  vaRe</th>
-                        <th key={"vaLe"}>Last  vaLe</th>
+                        <th key={"dateTest"} style={{width: "10%"}}>Date of last result</th>
+                        <th key={"vaRe"}>Last vaRe</th>
+                        <th key={"vaLe"}>Last vaLe</th>
                     </tr>
                     </thead>
                     <tbody>
