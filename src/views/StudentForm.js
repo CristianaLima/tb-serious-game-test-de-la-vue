@@ -32,6 +32,13 @@ function StudentForm() {
     }, [newStudents]);
 
     /**
+     * Update local storage each time student gets updated
+     */
+    useEffect(() => {
+        localStorage.setItem(LS_STUDENT, JSON.stringify(student));
+    }, [student]);
+
+    /**
      * Handle submition of the form
      * @param e
      */
@@ -45,7 +52,6 @@ function StudentForm() {
 
     function startGame(wearGlasses){
         setStudent({...student,  localId: Math.round(Date.now() / 1000).toString()});
-        localStorage.setItem(LS_STUDENT, JSON.stringify(student));
         sessionStorage.setItem(SS_WEAR_GLASSES, wearGlasses);
         window.open('/acuityTestScreen', '_self')
         window.open('/acuityTestController', '_blank');

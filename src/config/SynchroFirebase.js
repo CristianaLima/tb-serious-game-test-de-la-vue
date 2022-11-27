@@ -1,10 +1,10 @@
 import {
     LS_NEW_SCHOOLS,
     LS_NEW_STUDENTS,
-    LS_NEW_VISUALSTESTS,
+    LS_NEW_RESULTS,
     LS_SCHOOLS,
     LS_STUDENTS,
-    LS_VISUALSTESTS
+    LS_RESULTS
 } from "../views/App";
 import {
     addSchool,
@@ -31,7 +31,7 @@ export async function synchronise(){
  */
 function clearLocalStorage () {
     localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify([]));
-    localStorage.setItem(LS_NEW_VISUALSTESTS, JSON.stringify([]));
+    localStorage.setItem(LS_NEW_RESULTS, JSON.stringify([]));
     localStorage.setItem(LS_NEW_SCHOOLS, JSON.stringify([]));
 }
 
@@ -43,7 +43,7 @@ export async function stockDataInLocalStorage() {
         localStorage.setItem(LS_SCHOOLS, JSON.stringify(schools))
         getAllStudents().then(students => {
             localStorage.setItem(LS_STUDENTS, JSON.stringify(students))
-            getAllTests(students).then(tests => localStorage.setItem(LS_VISUALSTESTS, JSON.stringify(tests)));
+            getAllTests(students).then(tests => localStorage.setItem(LS_RESULTS, JSON.stringify(tests)));
         });
     });
 
@@ -106,7 +106,7 @@ async function synchroniseStudents(newSchoolsEdited) {
  */
 async function synchroniseTests(newStudentsEdited){
     //Get value in local storage
-    const newTests = JSON.parse(localStorage.getItem(LS_NEW_VISUALSTESTS));
+    const newTests = JSON.parse(localStorage.getItem(LS_NEW_RESULTS));
 
     if (newTests != null){
         for (let i = 0; i < newTests.length; i++) {

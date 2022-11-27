@@ -1,31 +1,31 @@
 import React from 'react';
 import {useState} from "react";
 import {
-    LS_NEW_VISUALSTESTS,
-    LS_VISUALSTESTS
+    LS_NEW_RESULTS,
+    LS_RESULTS
 } from "../views/App";
 import {getSchoolNameFromLS, getStudentFromLS} from "../config/SearchLocalStorage";
 import {Row, Table} from "reactstrap";
 
 export function ResultsList() {
-    const [tests] = useState(JSON.parse(localStorage.getItem(LS_VISUALSTESTS)));
-    const [newTests] = useState(JSON.parse(localStorage.getItem(LS_NEW_VISUALSTESTS)));
+    const [tests] = useState(JSON.parse(localStorage.getItem(LS_RESULTS)));
+    const [newTests] = useState(JSON.parse(localStorage.getItem(LS_NEW_RESULTS)));
 
     function tableToCSV() {
 
         // Variable to store the final csv data
-        var csv_data = [];
+        let csv_data = [];
 
         // Get each row data
-        var rows = document.getElementsByTagName('tr');
-        for (var i = 0; i < rows.length; i++) {
+        let rows = document.getElementsByTagName('tr');
+        for (let i = 0; i < rows.length; i++) {
 
             // Get each column data
-            var cols = rows[i].querySelectorAll('td,th');
+            let cols = rows[i].querySelectorAll('td,th');
 
             // Stores each csv row data
-            var csvrow = [];
-            for (var j = 0; j < cols.length; j++) {
+            let csvrow = [];
+            for (let j = 0; j < cols.length; j++) {
 
                 // Get the text data of each cell
                 // of a row and push it to csvrow
