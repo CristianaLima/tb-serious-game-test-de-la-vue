@@ -15,7 +15,6 @@ function StudentForm() {
 
     const [modal, setModal] = useState(false);
     const toggleModal = () => setModal(!modal);
-
     const [newStudents, setNewStudents] = useState(() => {
         return JSON.parse(localStorage.getItem(LS_NEW_STUDENTS));
     });
@@ -39,7 +38,7 @@ function StudentForm() {
     }, [student]);
 
     /**
-     * Handle submition of the form
+     * Handle submission of the form
      * @param e
      */
     function handleSubmit(e) {
@@ -47,6 +46,11 @@ function StudentForm() {
         toggleModal();
     }
 
+    /**
+     * After modal (wearGlasses) response, stock student in new_students list if it's new
+     * Then go to test screen
+     * @param wearGlasses
+     */
     function startGame(wearGlasses){
         if (student.id === undefined && student.localId === undefined) {
             setStudent({...student,  localId: Math.round(Date.now() / 1000).toString()});

@@ -47,6 +47,11 @@ export function getStudentFromLS(result){
     }
 }
 
+/**
+ * Give 3 main information of last result for the student given
+ * @param student
+ * @returns {{vaLe: string, vaRe: string, dateTest: string}|*}
+ */
 export function getLastResultFromLS(student){
     const newResults = JSON.parse(localStorage.getItem(LS_NEW_RESULTS));
     const results = JSON.parse(localStorage.getItem(LS_RESULTS));

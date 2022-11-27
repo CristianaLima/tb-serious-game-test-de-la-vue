@@ -11,8 +11,10 @@ export function ResultsList() {
     const [tests] = useState(JSON.parse(localStorage.getItem(LS_RESULTS)));
     const [newTests] = useState(JSON.parse(localStorage.getItem(LS_NEW_RESULTS)));
 
+    /**
+     * Create a csv data form a html table
+     */
     function tableToCSV() {
-
         // Variable to store the final csv data
         let csv_data = [];
 
@@ -41,11 +43,13 @@ export function ResultsList() {
 
         // Call this function to download csv file
         downloadCSVFile(csv_data);
-
     }
 
+    /**
+     * Download csv data
+     * @param csv_data
+     */
     function downloadCSVFile(csv_data) {
-
         // Create CSV file object and feed
         // our csv_data into it
         const CSVFile = new Blob([csv_data], {
@@ -68,10 +72,11 @@ export function ResultsList() {
         // trigger download
         temp_link.click();
         document.body.removeChild(temp_link);
-
     }
 
-
+    /**
+     * First array with results in database
+     */
     function TestsFromFirebase() {
         if (tests.length > 0) {
             return <>
@@ -82,6 +87,9 @@ export function ResultsList() {
         return <div/>;
     }
 
+    /**
+     * Second array with results created on the navigator
+     */
     function NewTests() {
         if (newTests.length > 0) {
             return <>
@@ -92,6 +100,11 @@ export function ResultsList() {
         return <div/>;
     }
 
+    /**
+     * Construction of student's rows
+     * Not in return because creating a warning the <> with no key value
+     * @param row
+     */
     function UnderTableStudentConstruction(row){
         const student = getStudentFromLS(row);
         return (
@@ -104,9 +117,13 @@ export function ResultsList() {
         )
     }
 
+    /**
+     * Construct the results table html with 2 list
+     * @param theadData for headers
+     * @param tbodyData for data
+     */
     function TableConstruction({theadData, tbodyData}) {
         return (
-
             <div>
                 <input type="text" id="myInput" placeholder="Search for..."
                        title="Type in a name"></input>

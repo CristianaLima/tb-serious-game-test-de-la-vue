@@ -12,17 +12,17 @@ export function StudentsList(){
     const [newStudents] = useState(JSON.parse(localStorage.getItem(LS_NEW_STUDENTS)));
     const [searchRadio, setSearchRadio] = useState("school")
 
+    /**
+     * Refresh search each time radiobutton of search is changed
+     */
     useEffect(() => {
         let inputSearch = document.getElementById("inputSearch");
-        selectColumnToFilter(inputSearch.value)
+        SelectColumnToFilter(inputSearch.value)
     }, [searchRadio]);
 
-
-    function handleChangeRadioButton(value) {
-        setSearchRadio(value);
-    }
-
-
+    /**
+     * First array with students in database
+     */
     function StudentsFromFirebase() {
         if (students.length > 0) {
             return  <div id="studentsFromFirebase">
@@ -33,6 +33,9 @@ export function StudentsList(){
         return <div/>;
     }
 
+    /**
+     * Second array with students created on the navigator
+     */
     function NewStudents() {
         if (newStudents.length > 0) {
             return <div id="newStudents">
@@ -42,63 +45,85 @@ export function StudentsList(){
         }
         return <div/>;
     }
-    //TODO design
-    function selectColumnToFilter(input) {
 
+    /**
+     * Select where apply filter based on radio button
+     * @param input of searching
+     */
+    function SelectColumnToFilter(input) {
         switch(searchRadio){
             case 'school':
-                ColumnFilter("studentsFromFirebase",0, input);
-                ColumnFilter("newStudents",0, input);
+                new ColumnFilter("studentsFromFirebase",0, input);
+                if (newStudents.length > 0){
+                    new ColumnFilter("newStudents",0, input);
+                }
                 break;
             case 'class':
-                ColumnFilter("studentsFromFirebase",1, input);
-                ColumnFilter("newStudents",1, input);
+                new ColumnFilter("studentsFromFirebase",1, input);
+                if (newStudents.length > 0){
+                    new ColumnFilter("newStudents",1, input);
+                }
                 break;
             case 'fullName':
-                ColumnFilter("studentsFromFirebase",2, input);
-                ColumnFilter("newStudents",2, input);
+                new ColumnFilter("studentsFromFirebase",2, input);
+                if (newStudents.length > 0){
+                    new ColumnFilter("newStudents",2, input);
+                }
                 break;
             default:
                 break;
         }
     }
 
+    /**
+     * Hide row of column based on filter input
+     * @param table to filter
+     * @param columnNumberToFilter
+     * @param input of searching
+     * @constructor
+     */
     function ColumnFilter(table, columnNumberToFilter, input) {
         let i, td;
-        const inputUpperCase = input.value.toUpperCase();
-
-        const filter = input.toUpperCase();
-
+        const inputUpperCase = input.toUpperCase();
         const tableById = document.getElementById(table);
         const tr = tableById.getElementsByTagName("tr");
-
         for (i = 0; i < tr.length; i++) {
             td = tr[i].getElementsByTagName("td")[columnNumberToFilter];
-        for (let i = 0; i < tr.length; i++) {
-            const td = tr[i].getElementsByTagName("td")[columnNumberToFilter];
-
-            if (td) {
-                const txtValue = td.textContent || td.innerText;
-                if (txtValue.toUpperCase().indexOf(inputUpperCase) > -1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
+            for (let i = 0; i < tr.length; i++) {
+                const td = tr[i].getElementsByTagName("td")[columnNumberToFilter];
+                if (td) {
+                    const txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(inputUpperCase) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
                 }
             }
         }
     }
 
-    function UnderTableResultConstruction(row){
+    /**
+     * Construction of last result rows of the student
+     * Not in return because creating a warning the <> with no key value
+     * @param row
+     */
+    function UnderTableResultConstruction(row) {
         const [result] = useState(getLastResultFromLS(row))
         return (
             <>
-                <td key={"dateTest"} style={{width: "10%"}} >{result.dateTest}</td>
-                <td key={"vaRe"} >{result.vaRe === "-" ? result.vaRe : Math.round(result.vaRe * 100) / 100}</td>
-                <td key={"vaLe"} >{result.vaLe === "-" ? result.vaLe : Math.round(result.vaLe * 100) / 100}</td>
+                <td key={"dateTest"} style={{width: "10%"}}>{result.dateTest}</td>
+                <td key={"vaRe"}>{result.vaRe === "-" ? result.vaRe : Math.round(result.vaRe * 100) / 100}</td>
+                <td key={"vaLe"}>{result.vaLe === "-" ? result.vaLe : Math.round(result.vaLe * 100) / 100}</td>
             </>
         )
     }
 
+    /**
+     * Construct the students table html with 2 list
+     * @param theadData for headers
+     * @param tbodyData for data
+     */
     function TableConstruction({theadData, tbodyData}) {
         return (
             <div>
@@ -147,12 +172,12 @@ export function StudentsList(){
     return(
         <>
             <label>Search : </label>
-            <input type="text" className="m-3" id="inputSearch" onChange={(e) => {selectColumnToFilter( e.target.value)}}
-                   placeholder="Search..."
-            ></input>
-            <input type="radio" checked={searchRadio === 'school'} className="m-1" value="school" name="search" onChange={(e)=>handleChangeRadioButton(e.target.value)}/> School
-            <input type="radio" className="m-1" value="class" name="search" onChange={(e)=>handleChangeRadioButton(e.target.value)} /> Class
-            <input type="radio" className="m-1" value="fullName" name="search" onChange={(e)=>handleChangeRadioButton(e.target.value)}/> FullName
+            <input type="text" className="m-3" id="inputSearch" placeholder="Search..."
+                   onChange={(e) => {SelectColumnToFilter(e.target.value)}}>
+            </input>
+            <input type="radio" checked={searchRadio === 'school'} className="m-1" value="school" name="search" onChange={(e)=>setSearchRadio(e.target.value)}/> School
+            <input type="radio" className="m-1" value="class" name="search" onChange={(e)=>setSearchRadio(e.target.value)} /> Class
+            <input type="radio" className="m-1" value="fullName" name="search" onChange={(e)=>setSearchRadio(e.target.value)}/> FullName
             <StudentsFromFirebase/>
             <NewStudents/>
         </>
