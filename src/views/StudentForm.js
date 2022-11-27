@@ -48,7 +48,7 @@ function StudentForm() {
     }
 
     function startGame(wearGlasses){
-        if (student.id === undefined) {
+        if (student.id === undefined && student.localId === undefined) {
             setStudent({...student,  localId: Math.round(Date.now() / 1000).toString()});
             addStudentToArray({...student,  localId: Math.round(Date.now() / 1000).toString()})
         }

@@ -92,6 +92,18 @@ export function ResultsList() {
         return <div/>;
     }
 
+    function UnderTableStudentConstruction(row){
+        const student = getStudentFromLS(row);
+        return (
+            <>
+                <td key={"schoolName"}>{getSchoolNameFromLS(student)}</td>
+                <td key={"class"}>{student.class}</td>
+                <td key={"fullName"}>{student.fullName}</td>
+                <td key={"dob"}>{student.dob}</td>
+            </>
+        )
+    }
+
     function TableConstruction({theadData, tbodyData}) {
         return (
 
@@ -101,16 +113,12 @@ export function ResultsList() {
                 <Table size="sm">
                 <thead>
                 <tr>
+                    <th key={"schoolName"}>School</th>
+                    <th key={"classs"}>Class</th>
+                    <th key={"fullName"}>Fullname</th>
+                    <th key={"dob"}>DOB</th>
                     {theadData.map(heading => {
                         switch(heading) {
-                            case "idStudent":
-                            case "localIdStudent":   return <>
-                                <th key={"schoolName"}>School</th>
-                                <th key={"class"}>Class</th>
-                                <th key={"fullName"}>Fullname</th>
-                                <th key={"dob"}>DOB</th>
-                            </>;
-                            // TODO: key warning is because of <>
                             case "dateTest":   return <th key={"dateTest"}>Date</th>;
                             case "correction":   return <th key={"correction"}>Glasses </th>;
                             case "comprehension":   return <th key={"comprehension"}>Understood </th>;
@@ -124,18 +132,9 @@ export function ResultsList() {
                 <tbody>
                 {tbodyData.map((row, index) => {
                     return <tr key={index}>
+                        {UnderTableStudentConstruction(row)}
                         {theadData.map((key, index) => {
                             switch(key) {
-                                case "idStudent":
-                                case "localIdStudent": {
-                                    const student = getStudentFromLS(row);
-                                    return <>
-                                        <td key={{index}+"schoolName"}>{getSchoolNameFromLS(student)}</td>
-                                        <td key={{index}+"class"}>{student.class}</td>
-                                        <td key={{index}+"fullName"}>{student.fullName}</td>
-                                        <td key={{index}+"dob"}>{student.dob}</td>
-                                    </>;
-                                }
                                 case "dateTest": return <td key={index}>{row[key]}</td>;
                                 case "correction":   return <td key={index}>{row[key].toString()}</td>;
                                 case "comprehension":   return <td key={index}>{row[key].toString()}</td>;

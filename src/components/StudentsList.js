@@ -1,9 +1,8 @@
 import React from 'react';
 import {useState} from "react";
 import {LS_NEW_STUDENTS, LS_STUDENT, LS_STUDENTS} from "../views/App";
-import {getSchoolNameFromLS} from "../config/SearchLocalStorage";
+import {getLastResultFromLS, getSchoolNameFromLS} from "../config/SearchLocalStorage";
 import {useNavigate} from "react-router-dom";
-import moment from "moment";
 import {Table} from "reactstrap";
 
 export function StudentsList(){
@@ -70,7 +69,17 @@ export function StudentsList(){
                 }
             }
         }
+    }
 
+    function UnderTableResultConstruction(row){
+        const [result] = useState(getLastResultFromLS(row))
+        return (
+            <>
+                <td key={"dateTest"} style={{width: "10%"}} >{result.dateTest}</td>
+                <td key={"vaRe"} >{result.vaRe === "-" ? result.vaRe : Math.round(result.vaRe * 100) / 100}</td>
+                <td key={"vaLe"} >{result.vaLe === "-" ? result.vaLe : Math.round(result.vaLe * 100) / 100}</td>
+            </>
+        )
     }
 
     function TableConstruction({theadData, tbodyData}) {
@@ -108,9 +117,7 @@ export function StudentsList(){
                                     case "localIdSchool":   return <td style={{width: "20%"}} key={index}>{getSchoolNameFromLS(row)}</td>
                                     default: return}
                             })}
-                            <td key={"dateTest"} style={{width: "10%"}} >TODO: {moment(Date.now()).format('YYYY-MM-DD')}</td>
-                            <td key={"vaRe"} >TODO</td>
-                            <td key={"vaLe"} >TODO</td>
+                            {UnderTableResultConstruction(row)}
                         </tr>;
                     })}
                     </tbody>
