@@ -7,7 +7,6 @@ import {
     MAXREP, SS_WEAR_GLASSES
 } from "../views/App";
 import c from "../assets/c_picture.png";
-import moment from "moment";
 import {useNavigate} from "react-router-dom";
 
 /**
@@ -66,7 +65,7 @@ export function CImage(){
                 setNewTests([...newTests, {
                     idStudent: JSON.parse(localStorage.getItem(LS_STUDENT)).id,
                     localIdStudent: JSON.parse(localStorage.getItem(LS_STUDENT)).localId,
-                    dateTest: moment(Date.now()).format('YYYY-MM-DD'),
+                    dateTest: Date.now(),
                     correction: JSON.parse(sessionStorage.getItem(SS_WEAR_GLASSES)),
                     comprehension: false,
                     rounds: 1,

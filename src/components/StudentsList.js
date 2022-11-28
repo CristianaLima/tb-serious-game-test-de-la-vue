@@ -4,6 +4,7 @@ import {LS_NEW_STUDENTS, LS_STUDENT, LS_STUDENTS} from "../views/App";
 import {getLastResultFromLS, getSchoolNameFromLS} from "../config/SearchLocalStorage";
 import {useNavigate} from "react-router-dom";
 import {Table} from "reactstrap";
+import moment from "moment";
 
 export function StudentsList(){
     const navigate = useNavigate();
@@ -112,7 +113,7 @@ export function StudentsList(){
         const [result] = useState(getLastResultFromLS(row))
         return (
             <>
-                <td key={"dateTest"} style={{width: "10%"}}>{result.dateTest}</td>
+                <td key={"dateTest"} style={{width: "15%"}}>{moment(result.dateTest).format('YYYY-MM-DD h:mm a')}</td>
                 <td key={"vaRe"}>{result.vaRe === "-" ? result.vaRe : Math.round(result.vaRe * 100) / 100}</td>
                 <td key={"vaLe"}>{result.vaLe === "-" ? result.vaLe : Math.round(result.vaLe * 100) / 100}</td>
             </>
@@ -139,7 +140,7 @@ export function StudentsList(){
                                 case "localIdSchool":   return <th style={{width: "20%"}} key={"localIdSchool"}>School</th>;
                                 default: return}
                         })}
-                        <th key={"dateTest"} style={{width: "10%"}}>Date of last result</th>
+                        <th key={"dateTest"} style={{width: "15%"}}>Date of last result</th>
                         <th key={"vaRe"}>Last vaRe</th>
                         <th key={"vaLe"}>Last vaLe</th>
                     </tr>

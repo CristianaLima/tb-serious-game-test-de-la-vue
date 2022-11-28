@@ -6,6 +6,7 @@ import {
 } from "../views/App";
 import {getSchoolNameFromLS, getStudentFromLS} from "../config/SearchLocalStorage";
 import {Row, Table} from "reactstrap";
+import moment from "moment/moment";
 
 export function ResultsList() {
     const [tests] = useState(JSON.parse(localStorage.getItem(LS_RESULTS)));
@@ -152,7 +153,7 @@ export function ResultsList() {
                         {UnderTableStudentConstruction(row)}
                         {theadData.map((key, index) => {
                             switch(key) {
-                                case "dateTest": return <td key={index}>{row[key]}</td>;
+                                case "dateTest": return <td key={index}>{moment(row[key]).format('YYYY-MM-DD h:mm a')}</td>;
                                 case "correction":   return <td key={index}>{row[key].toString()}</td>;
                                 case "comprehension":   return <td key={index}>{row[key].toString()}</td>;
                                 case "rounds":   return <td key={index}>{row[key]}</td>;

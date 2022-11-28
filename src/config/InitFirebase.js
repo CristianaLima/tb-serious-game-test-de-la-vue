@@ -84,7 +84,7 @@ export async function getAllTests(){
                 id: doc.id,
                 idStudent: test.idStudent,
                 localIdStudent: undefined,
-                dateTest: moment(date).format('YYYY-MM-DD'),
+                dateTest: date,
                 correction: test.correction,
                 comprehension: test.comprehension,
                 rounds: test.rounds,
