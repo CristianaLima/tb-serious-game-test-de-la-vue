@@ -26,13 +26,17 @@ import moment from "moment";
 
 export function NavBar(){
     const [language, setLanguage] = useState("en");
-    const [modal, setModal] = useState(false);
+    const [modalValidation, setModalValidation] = useState(false);
+    const [modalError, setModalError] = useState(false);
     const [toast, setToast] = useState(false);
-    const toggleModal = () => setModal(!modal);
+    const toggleModalValidation = () => setModalValidation(!modalValidation);
+    const toggleModalError = () => setModalError(!modalError);
     const toggleToast = () => setToast(!toast);
-    const [collapse, setIsOpen] = useState(false);
+    const [collapse, setIsOpen] = useState(true);
 
-    const toggleNavbar = () => setIsOpen(!collapse);
+    const toggleNavbar = () => {
+        setIsOpen(!collapse);
+    }
 
     useEffect(() => {
         if (toast) {
@@ -47,13 +51,13 @@ export function NavBar(){
                 mode: 'no-cors',
             })
                 .then(() => {
-                    synchronise().then(() => toggleToast())
+                    toggleModalValidation()
                 }).catch(() => {
-                toggleModal()
+                toggleModalError()
             }  )
 
         }else{
-            toggleModal()
+            toggleModalError()
         }
     }
 
@@ -66,24 +70,26 @@ export function NavBar(){
                </NavbarBrand>
                <NavbarToggler onClick={toggleNavbar} />
                <Collapse isOpen={!collapse} navbar className="float-end text-end">
+                   <Nav className="me-auto px-3" navbar>
+                       <NavItem>
+                           <NavLink href = "/">
+                               Home
+                           </NavLink>
+                       </NavItem>
+                       <NavItem>
+                           <NavLink href = "viewResults">
+                               Results
+                           </NavLink>
+                       </NavItem>
+                       <NavItem>
+                           <NavLink href = "startGame">
+                               Game
+                           </NavLink>
+                       </NavItem>
 
-                   <Nav
-                       className="me-auto px-3"
-                       navbar
-                   >{/*
-                       <NavItem>
-                           <NavLink href = "acuityTestScreen">
-                               Test Screen
-                           </NavLink>
-                       </NavItem>
-                       <NavItem>
-                           <NavLink href = "acuityTestController" target={"_blank"}>
-                               Controller Screen
-                           </NavLink>
-                       </NavItem>
-                       <NavbarText className="text-danger"> 🡠 DONT USE SYNCHRO IS TEST CREATED WITH THIS BUTTONS</NavbarText>*/}
                    </Nav>
-                   <Nav className="float-end">
+                   <Button outline onClick={()=>tryConnection()}>Synchronise</Button>
+                   <Nav navbar>
                        <UncontrolledDropdown nav inNavbar>
                            <DropdownToggle nav caret>
                                Language
@@ -103,17 +109,32 @@ export function NavBar(){
                                }>Portugais</DropdownItem>
                            </DropdownMenu>
                        </UncontrolledDropdown>
-                       <Button onClick={tryConnection}>Synchronise</Button>
                    </Nav>
                </Collapse>
            </Navbar>
-           <Modal isOpen={modal} toggle={toggleModal}>
-               <ModalHeader toggle={toggleModal}>
+           <Modal centered={true} isOpen={modalValidation} toggle={toggleModalValidation}>
+               <ModalHeader toggle={toggleModalValidation}>
+                   Synchronisation
+               </ModalHeader>
+               <ModalBody>Synchronise now data ? </ModalBody>
+               <ModalFooter>
+                   <Button color="success" onClick={()=>synchronise().then(() => {
+                       toggleModalValidation();
+                       toggleToast();})}>
+                       Yes
+                   </Button>
+                   <Button color="danger" onClick={toggleModalValidation}>
+                       No
+                   </Button>
+               </ModalFooter>
+           </Modal>
+           <Modal centered={true} isOpen={modalError} toggle={toggleModalError}>
+               <ModalHeader toggle={toggleModalError}>
                    Error
                </ModalHeader>
                <ModalBody>No internet connection. Synchronisation impossible</ModalBody>
                <ModalFooter>
-                   <Button color="primary" onClick={toggleModal}>
+                   <Button color="primary" onClick={toggleModalError}>
                        Close
                    </Button>
                </ModalFooter>

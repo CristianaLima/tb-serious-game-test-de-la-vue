@@ -120,7 +120,7 @@ function StudentForm() {
                     </div>
                     <button type="submit" className="btn btn-primary">Let's play</button>
                 </form>
-                <Modal isOpen={modal} toggle={toggleModal}>
+                <Modal centered={true} isOpen={modal} toggle={toggleModal}>
                     <ModalHeader toggle={toggleModal}>
                         Correction
                     </ModalHeader>
