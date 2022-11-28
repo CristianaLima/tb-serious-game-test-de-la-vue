@@ -7,7 +7,6 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "bootstrap": "^5.2.2",
-    "es6-number": "^0.0.2",
     "firebase": "^9.11.0",
     "gh-pages": "^4.0.0",
     "moment": "^2.29.4",
