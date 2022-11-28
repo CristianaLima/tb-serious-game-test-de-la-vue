@@ -113,7 +113,7 @@ export function StudentsList(){
         const [result] = useState(getLastResultFromLS(row))
         return (
             <>
-                <td key={"dateTest"} style={{width: "15%"}}>{moment(result.dateTest).format('YYYY-MM-DD h:mm a')}</td>
+                <td key={"dateTest"} style={{width: "15%"}}>{result.dateTest === "-" ? result.dateTest : moment(result.dateTest).format('YYYY-MM-DD h:mm a')}</td>
                 <td key={"vaRe"}>{result.vaRe === "-" ? result.vaRe : Math.round(result.vaRe * 100) / 100}</td>
                 <td key={"vaLe"}>{result.vaLe === "-" ? result.vaLe : Math.round(result.vaLe * 100) / 100}</td>
             </>
