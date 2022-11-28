@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {
     LS_C_SELECTED,
     LS_CURRENT_THERAPIST,
-    LS_NEW_VISUALSTESTS,
+    LS_NEW_RESULTS,
     LS_STUDENT,
     MAXREP, SS_WEAR_GLASSES
 } from "../views/App";
@@ -31,11 +31,11 @@ export function CImage(){
     const [status, setStatus] = useState(0);
     const [results, setResults] = useState([]);
     const [newTests, setNewTests] = useState(() => {
-        return JSON.parse(localStorage.getItem(LS_NEW_VISUALSTESTS));
+        return JSON.parse(localStorage.getItem(LS_NEW_RESULTS));
     });
 
     useEffect(() => {
-        localStorage.setItem(LS_NEW_VISUALSTESTS, JSON.stringify(newTests));
+        localStorage.setItem(LS_NEW_RESULTS, JSON.stringify(newTests));
     }, [newTests]);
 
     /**

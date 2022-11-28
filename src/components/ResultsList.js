@@ -1,31 +1,33 @@
 import React from 'react';
 import {useState} from "react";
 import {
-    LS_NEW_VISUALSTESTS,
-    LS_VISUALSTESTS
+    LS_NEW_RESULTS,
+    LS_RESULTS
 } from "../views/App";
 import {getSchoolNameFromLS, getStudentFromLS} from "../config/SearchLocalStorage";
-import {Row} from "reactstrap";
+import {Row, Table} from "reactstrap";
 
 export function ResultsList() {
-    const [tests] = useState(JSON.parse(localStorage.getItem(LS_VISUALSTESTS)));
-    const [newTests] = useState(JSON.parse(localStorage.getItem(LS_NEW_VISUALSTESTS)));
+    const [tests] = useState(JSON.parse(localStorage.getItem(LS_RESULTS)));
+    const [newTests] = useState(JSON.parse(localStorage.getItem(LS_NEW_RESULTS)));
 
+    /**
+     * Create a csv data form a html table
+     */
     function tableToCSV() {
-
         // Variable to store the final csv data
-        var csv_data = [];
+        let csv_data = [];
 
         // Get each row data
-        var rows = document.getElementsByTagName('tr');
-        for (var i = 0; i < rows.length; i++) {
+        let rows = document.getElementsByTagName('tr');
+        for (let i = 0; i < rows.length; i++) {
 
             // Get each column data
-            var cols = rows[i].querySelectorAll('td,th');
+            let cols = rows[i].querySelectorAll('td,th');
 
             // Stores each csv row data
-            var csvrow = [];
-            for (var j = 0; j < cols.length; j++) {
+            let csvrow = [];
+            for (let j = 0; j < cols.length; j++) {
 
                 // Get the text data of each cell
                 // of a row and push it to csvrow
@@ -41,11 +43,13 @@ export function ResultsList() {
 
         // Call this function to download csv file
         downloadCSVFile(csv_data);
-
     }
 
+    /**
+     * Download csv data
+     * @param csv_data
+     */
     function downloadCSVFile(csv_data) {
-
         // Create CSV file object and feed
         // our csv_data into it
         const CSVFile = new Blob([csv_data], {
@@ -68,10 +72,11 @@ export function ResultsList() {
         // trigger download
         temp_link.click();
         document.body.removeChild(temp_link);
-
     }
 
-
+    /**
+     * First array with results in database
+     */
     function TestsFromFirebase() {
         if (tests.length > 0) {
             return <>
@@ -82,6 +87,9 @@ export function ResultsList() {
         return <div/>;
     }
 
+    /**
+     * Second array with results created on the navigator
+     */
     function NewTests() {
         if (newTests.length > 0) {
             return <>
@@ -92,25 +100,42 @@ export function ResultsList() {
         return <div/>;
     }
 
+    /**
+     * Construction of student's rows
+     * Not in return because creating a warning the <> with no key value
+     * @param row
+     */
+    function UnderTableStudentConstruction(row){
+        const student = getStudentFromLS(row);
+        return (
+            <>
+                <td style={{width: "15%"}} key={"schoolName"}>{getSchoolNameFromLS(student)}</td>
+                <td key={"class"}>{student.class}</td>
+                <td style={{width: "15%"}} key={"fullName"}>{student.fullName}</td>
+                <td key={"dob"}>{student.dob}</td>
+            </>
+        )
+    }
+
+    /**
+     * Construct the results table html with 2 list
+     * @param theadData for headers
+     * @param tbodyData for data
+     */
     function TableConstruction({theadData, tbodyData}) {
         return (
-
             <div>
                 <input type="text" id="myInput" placeholder="Search for..."
                        title="Type in a name"></input>
-            <table className="table">
+                <Table size="sm">
                 <thead>
                 <tr>
+                    <th key={"schoolName"}>School</th>
+                    <th key={"classs"}>Class</th>
+                    <th key={"fullName"}>Fullname</th>
+                    <th key={"dob"}>DOB</th>
                     {theadData.map(heading => {
                         switch(heading) {
-                            case "idStudent":
-                            case "localIdStudent":   return <>
-                                <th style={{width: "15%"}} key={"schoolName"}>School</th>
-                                <th key={"class"}>Class</th>
-                                <th style={{width: "15%"}} key={"fullName"}>Fullname</th>
-                                <th key={"dob"}>DOB</th>
-                            </>;
-                            // TODO: key warning is because of <>
                             case "dateTest":   return <th key={"dateTest"}>Date</th>;
                             case "correction":   return <th key={"correction"}>Glasses </th>;
                             case "comprehension":   return <th key={"comprehension"}>Understood </th>;
@@ -124,18 +149,9 @@ export function ResultsList() {
                 <tbody>
                 {tbodyData.map((row, index) => {
                     return <tr key={index}>
+                        {UnderTableStudentConstruction(row)}
                         {theadData.map((key, index) => {
                             switch(key) {
-                                case "idStudent":
-                                case "localIdStudent": {
-                                    const student = getStudentFromLS(row);
-                                    return <>
-                                        <td key={{index}+"schoolName"}>{getSchoolNameFromLS(student)}</td>
-                                        <td key={{index}+"class"}>{student.class}</td>
-                                        <td key={{index}+"fullName"}>{student.fullName}</td>
-                                        <td key={{index}+"dob"}>{student.dob}</td>
-                                    </>;
-                                }
                                 case "dateTest": return <td key={index}>{row[key]}</td>;
                                 case "correction":   return <td key={index}>{row[key].toString()}</td>;
                                 case "comprehension":   return <td key={index}>{row[key].toString()}</td>;
@@ -147,7 +163,7 @@ export function ResultsList() {
                     </tr>;
                 })}
                 </tbody>
-            </table>
+            </Table>
             </div>
         );
     }
