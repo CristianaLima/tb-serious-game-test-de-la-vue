@@ -7,6 +7,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "bootstrap": "^5.2.2",
+    "es6-number": "^0.0.2",
     "firebase": "^9.11.0",
     "gh-pages": "^4.0.0",
     "moment": "^2.29.4",
@@ -31,7 +32,8 @@
     "workbox-routing": "^6.5.4",
     "workbox-strategies": "^6.5.4",
     "workbox-streams": "^6.5.4",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "numeric_es6": "github:tpronk/numeric"
   },
   "scripts": {
     "start": "react-scripts start",

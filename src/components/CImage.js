@@ -8,6 +8,7 @@ import {
 } from "../views/App";
 import c from "../assets/c_picture.png";
 import {useNavigate} from "react-router-dom";
+import jsQuestPlus, {func_resp0, func_resp1} from "../algo/jsQuestPlus";
 
 /**
  *
@@ -24,7 +25,6 @@ export function CImage(){
     const [angleArray] =  useState(()=> constructAngleArray());
 
     const [response, setResponse] = useState({tour : 0, angle : 0});
-    const [answer, setAnswer] = useState(false);
     const [angle, setAngle] = useState(angleArray[0]);
     const [size, setSize] = useState(1);
     const [status, setStatus] = useState(0);
@@ -32,6 +32,19 @@ export function CImage(){
     const [newTests, setNewTests] = useState(() => {
         return JSON.parse(localStorage.getItem(LS_NEW_RESULTS));
     });
+    const [contrast_samples] = useState(jsQuestPlus.linspace (-40, 0));
+    const [threshold_samples] = useState(jsQuestPlus.linspace (-40, 0));
+    // [2, 3, 4, 5]
+    const [slope_samples] = useState(jsQuestPlus.linspace (2, 5));
+    // [0, 0.01, 0.02, 0.03, 0.04]
+    const [lapse_samples] = useState(jsQuestPlus.array (0, 0.01, 0.04));
+    // The parameter of guess is assumed as a single value.
+    const [guess] = useState([0.5]);
+    const [jsqp] = useState(new jsQuestPlus({
+        psych_func:  [func_resp0, func_resp1],
+        stim_samples: [contrast_samples],
+        psych_samples: [threshold_samples, slope_samples, guess, lapse_samples]
+    }));
 
     useEffect(() => {
         localStorage.setItem(LS_NEW_RESULTS, JSON.stringify(newTests));
@@ -60,7 +73,7 @@ export function CImage(){
         switch (response.tour){
             case 0 :
                 break;
-            case MAXREP :
+            case MAXREP+1 :
                 setStatus(2);
                 setNewTests([...newTests, {
                     idStudent: JSON.parse(localStorage.getItem(LS_STUDENT)).id,
@@ -79,25 +92,26 @@ export function CImage(){
                 // Test begins
                 setStatus(1);
 
-                setResults(results => [...results, size])
+                // https://kurokida.github.io/jsQuestPlus/
+                let stim = jsqp.getStimParams()
+                if(response.angle.toString() === angleArray[response.tour-1].toString()){
+                    jsqp.update(stim, 1)
+                } else {
+                    jsqp.update(stim, 0)
+                }
+                const stimParams = jsqp.getStimParams()
+                // stimParams: init -18, --> -40 if correct and --> 0 if false
 
-                //Change size of C depend on answer correctness
-                if(response.angle.toString() === angleArray[response.tour-1].toString()){ // not "==="
-                    setAnswer(true)
-                    if(size<0.5)
-                        setSize(size / 1.4);
-                    else
-                        setSize(size / 1.8);
-                }
-                else{
-                    setAnswer(false)
-                    if(size<1) {
-                        setSize(size * 1.8);
-                    }
-                }
+                // Algo jsQuestPLus reaction
+                setResults(results => [...results, stimParams/(40*1.3)+1])
+                setSize(stimParams/40+1)
 
                 // Rotate C
                 setAngle(angleArray[response.tour])
+
+                if (response.tour === MAXREP){
+                    setResponse({...response, tour: MAXREP+1})
+                }
             }
         }
     },[response]);
