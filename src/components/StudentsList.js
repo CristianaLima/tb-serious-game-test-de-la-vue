@@ -176,9 +176,18 @@ export function StudentsList(){
             <input type="text" className="m-3" id="inputSearch" placeholder="Search..."
                    onChange={(e) => {SelectColumnToFilter(e.target.value)}}>
             </input>
-            <input type="radio" checked={searchRadio === 'school'} className="m-1" value="school" name="search" onChange={(e)=>setSearchRadio(e.target.value)}/> School
-            <input type="radio" className="m-1" value="class" name="search" onChange={(e)=>setSearchRadio(e.target.value)} /> Class
-            <input type="radio" className="m-1" value="fullName" name="search" onChange={(e)=>setSearchRadio(e.target.value)}/> FullName
+            <label>
+                <input type="radio" checked={searchRadio === 'school'} className="m-1" value="school" name="search" onChange={(e)=>setSearchRadio(e.target.value)}/>
+                School
+            </label>
+            <label>
+                <input type="radio" className="m-1" value="class" name="search" onChange={(e)=>setSearchRadio(e.target.value)} />
+                Class
+            </label>
+            <label>
+                <input type="radio" className="m-1" value="fullName" name="search" onChange={(e)=>setSearchRadio(e.target.value)}/>
+                FullName
+            </label>
             <StudentsFromFirebase/>
             <NewStudents/>
         </>
