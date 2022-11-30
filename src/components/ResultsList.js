@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useState} from "react";
 import {
     LS_NEW_RESULTS,
@@ -12,6 +12,14 @@ export function ResultsList() {
     const [tests] = useState(JSON.parse(localStorage.getItem(LS_RESULTS)));
     const [newTests] = useState(JSON.parse(localStorage.getItem(LS_NEW_RESULTS)));
     const [searchRadio, setSearchRadio] = useState("school")
+
+    /**
+     * Refresh search each time radiobutton of search is changed
+     */
+    useEffect(() => {
+        let inputSearch = document.getElementById("inputSearch");
+        SelectColumnToFilter(inputSearch.value)
+    }, [searchRadio]);
 
     /**
      * Create a csv data form a html table
@@ -105,7 +113,6 @@ export function ResultsList() {
      * @param input of searching
      */
     function SelectColumnToFilter(input) {
-
         switch(searchRadio){
             case 'school':
                 new ColumnFilter("resultsFromFirebase",0, input);
