@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {NavBar} from "../components/NavBar";
 import {stockDataInLocalStorage} from "../config/SynchroFirebase";
 import {getTherapistById} from "../config/InitFirebase";
-import {LS_CURRENT_THERAPIST, LS_NEW_SCHOOLS, LS_NEW_STUDENTS, LS_NEW_VISUALSTESTS} from "./App";
+import {LS_CURRENT_THERAPIST, LS_NEW_SCHOOLS, LS_NEW_STUDENTS, LS_NEW_RESULTS} from "./App";
 import {useNavigate} from "react-router-dom";
 
 export function Home(){
@@ -15,7 +15,7 @@ export function Home(){
         return JSON.parse(localStorage.getItem(LS_NEW_STUDENTS));
     });
     const [newTests] = useState(() => {
-        return JSON.parse(localStorage.getItem(LS_NEW_VISUALSTESTS));
+        return JSON.parse(localStorage.getItem(LS_NEW_RESULTS));
     });
 
     useEffect(() => {
@@ -34,16 +34,13 @@ export function Home(){
         }
         // Initialize new array in local storage if first opening
         if (newSchools === null){
-            console.log("schools null")
             localStorage.setItem(LS_NEW_SCHOOLS, JSON.stringify([]));
         }
         if (newStudents === null){
-            console.log("students null")
             localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify([]));
         }
         if (newTests === null){
-            console.log("tests null")
-            localStorage.setItem(LS_NEW_VISUALSTESTS, JSON.stringify([]));
+            localStorage.setItem(LS_NEW_RESULTS, JSON.stringify([]));
         }
     }, []);
 

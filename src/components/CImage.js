@@ -2,11 +2,13 @@ import React, {useEffect, useState} from "react";
 import {
     LS_C_SELECTED,
     LS_CURRENT_THERAPIST,
-    LS_NEW_VISUALSTESTS,
+    LS_NEW_RESULTS,
     LS_STUDENT,
-    MAXREP
+    MAXREP, SS_WEAR_GLASSES
 } from "../views/App";
 import c from "../assets/c_picture.png";
+import {useNavigate} from "react-router-dom";
+import jsQuestPlus, {func_resp0, func_resp1} from "../algo/jsQuestPlus";
 
 /**
  *
@@ -19,20 +21,33 @@ import c from "../assets/c_picture.png";
  * results : array of size
  */
 export function CImage(){
+    const navigate = useNavigate();
     const [angleArray] =  useState(()=> constructAngleArray());
 
     const [response, setResponse] = useState({tour : 0, angle : 0});
-    const [answer, setAnswer] = useState(false);
     const [angle, setAngle] = useState(angleArray[0]);
     const [size, setSize] = useState(1);
     const [status, setStatus] = useState(0);
     const [results, setResults] = useState([]);
     const [newTests, setNewTests] = useState(() => {
-        return JSON.parse(localStorage.getItem(LS_NEW_VISUALSTESTS));
+        return JSON.parse(localStorage.getItem(LS_NEW_RESULTS));
     });
+    const [contrast_samples] = useState(jsQuestPlus.linspace (-40, 0));
+    const [threshold_samples] = useState(jsQuestPlus.linspace (-40, 0));
+    // [2, 3, 4, 5]
+    const [slope_samples] = useState(jsQuestPlus.linspace (2, 5));
+    // [0, 0.01, 0.02, 0.03, 0.04]
+    const [lapse_samples] = useState(jsQuestPlus.array (0, 0.01, 0.04));
+    // The parameter of guess is assumed as a single value.
+    const [guess] = useState([0.5]);
+    const [jsqp] = useState(new jsQuestPlus({
+        psych_func:  [func_resp0, func_resp1],
+        stim_samples: [contrast_samples],
+        psych_samples: [threshold_samples, slope_samples, guess, lapse_samples]
+    }));
 
     useEffect(() => {
-        localStorage.setItem(LS_NEW_VISUALSTESTS, JSON.stringify(newTests));
+        localStorage.setItem(LS_NEW_RESULTS, JSON.stringify(newTests));
     }, [newTests]);
 
     /**
@@ -40,7 +55,6 @@ export function CImage(){
      * Stock the new value in response
      */
     useEffect(() => {
-        localStorage.setItem(LS_C_SELECTED, JSON.stringify({tour: 1, angle:-1}))
         window.dispatchEvent(new Event("storage"));
         window.addEventListener("storage", () =>{
                 // Get info from local storage
@@ -59,18 +73,18 @@ export function CImage(){
         switch (response.tour){
             case 0 :
                 break;
-            case MAXREP :
+            case MAXREP+1 :
                 setStatus(2);
                 setNewTests([...newTests, {
-                    dateTest: Date.now(),
-                    comprehension: false,
-                    correction: false,
                     idStudent: JSON.parse(localStorage.getItem(LS_STUDENT)).id,
                     localIdStudent: JSON.parse(localStorage.getItem(LS_STUDENT)).localId,
-                    idTherapist: JSON.parse(localStorage.getItem(LS_CURRENT_THERAPIST)).id,
+                    dateTest: Date.now(),
+                    correction: JSON.parse(sessionStorage.getItem(SS_WEAR_GLASSES)),
+                    comprehension: false,
                     rounds: 1,
+                    vaRe: results[results.length-1],
                     vaLe: results[results.length-1],
-                    vaRe: results[results.length-1]
+                    idTherapist: JSON.parse(localStorage.getItem(LS_CURRENT_THERAPIST)).id,
                 }])
                 setSize(0); // C disappear
                 break;
@@ -78,25 +92,26 @@ export function CImage(){
                 // Test begins
                 setStatus(1);
 
-                setResults(results => [...results, size])
+                // https://kurokida.github.io/jsQuestPlus/
+                let stim = jsqp.getStimParams()
+                if(response.angle.toString() === angleArray[response.tour-1].toString()){
+                    jsqp.update(stim, 1)
+                } else {
+                    jsqp.update(stim, 0)
+                }
+                const stimParams = jsqp.getStimParams()
+                // stimParams: init -18, --> -40 if correct and --> 0 if false
 
-                //Change size of C depend on answer correctness
-                if(response.angle.toString() === angleArray[response.tour-1].toString()){ // not "==="
-                    setAnswer(true)
-                    if(size<0.5)
-                        setSize(size / 1.4);
-                    else
-                        setSize(size / 1.8);
-                }
-                else{
-                    setAnswer(false)
-                    if(size<1) {
-                        setSize(size * 1.8);
-                    }
-                }
+                // Algo jsQuestPLus reaction
+                setResults(results => [...results, stimParams/(40*1.3)+1])
+                setSize(stimParams/40+1)
 
                 // Rotate C
                 setAngle(angleArray[response.tour])
+
+                if (response.tour === MAXREP){
+                    setResponse({...response, tour: MAXREP+1})
+                }
             }
         }
     },[response]);
@@ -154,9 +169,19 @@ export function CImage(){
                             position: 'absolute', left: '47%', top: '50%',
                     }}
                     />
-                    {status === 0 ? "" : <div>Last answer was {answer.toString()}</div>}
                 </>
-                :  <div>Test Finish with result {results[results.length-1]}</div>}
+                :   <>
+                    <button type="button" className="btn btn-danger btn-lg m-5"
+                            onClick={() => navigate('/')}>
+                        Back to home
+                    </button>
+                    <button onClick={() => navigate('/viewResults')}  type="button" className="btn btn-primary btn-lg m-5">
+                        View results
+                    </button>
+                    <button onClick={() => navigate('/startGame')} type="button" className="btn btn-success btn-lg m-5">
+                        Start game
+                    </button>
+                </>}
         </div>
     );
 }

@@ -31,14 +31,13 @@ export function StartGame(){
                     </Col>
                     <Button type="button" className="btn btn-success mx-4" onClick={() => {
                         localStorage.setItem(LS_STUDENT, JSON.stringify({
-                            localId: Math.round(Date.now() / 1000).toString(),
-                            fullName: "",
-                            dob: "",
+                            idSchool: schools[0].id,
                             class: "",
-                            idSchool: schools[0].id}))
+                            fullName: "",
+                            dob: ""
+                           }))
                         navigate('/studentForm');
                     }
-
                     }>
                         New student
                     </Button>

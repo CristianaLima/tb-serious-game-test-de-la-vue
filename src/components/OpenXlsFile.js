@@ -50,9 +50,9 @@ const promise = new Promise((resolve,reject)=>{
             console.log(dateObj);
             const student = {
                 localId: Math.round(Date.now() / 1000)+i.toString(),
+                class: classNum,
                 fullName: data[i].__EMPTY_6,
-                dob: moment(dateObj).format('YYYY-MM-DD'),
-                class: classNum
+                dob: moment(dateObj).format('YYYY-MM-DD')
             }
             studentsToAdd = [...studentsToAdd,student]
         }
@@ -64,7 +64,7 @@ const promise = new Promise((resolve,reject)=>{
         if (school !== undefined){
             for (let i = 0; i < studentsToAdd.length; i++) {
                 if (studentsToAdd[i].idSchool == undefined) {
-                    studentsToAdd[i] = {...studentsToAdd[i], idSchool: school.id};
+                    studentsToAdd[i] = {idSchool: school.id, ...studentsToAdd[i]};
                 }
             }
         } else {
@@ -72,7 +72,7 @@ const promise = new Promise((resolve,reject)=>{
             localStorage.setItem(LS_NEW_SCHOOLS,JSON.stringify([...lsNewSchools,{name: schoolName, localId: localIdSchool}]));
             for (let i = 0; i < studentsToAdd.length; i++) {
                 if (studentsToAdd[i].idSchool == undefined) {
-                    studentsToAdd[i] = {...studentsToAdd[i], localIdSchool: localIdSchool};
+                    studentsToAdd[i] = {localIdSchool: localIdSchool, ...studentsToAdd[i]};
                 }
             }
         }

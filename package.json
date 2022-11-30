@@ -31,7 +31,8 @@
     "workbox-routing": "^6.5.4",
     "workbox-strategies": "^6.5.4",
     "workbox-streams": "^6.5.4",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "numeric_es6": "github:tpronk/numeric"
   },
   "scripts": {
     "start": "react-scripts start",
