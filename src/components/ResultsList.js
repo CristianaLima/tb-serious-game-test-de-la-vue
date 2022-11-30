@@ -90,7 +90,7 @@ export function ResultsList() {
     function AllResults() {
         if (tests.length > 0) {
             return <div id="results">
-                <h1>Results in database</h1>
+                <h1>All results</h1>
                 <TableConstruction theadData={Object.keys(tests[0])} tbodyData1={tests} tbodyData2={newTests}/>
             </div>;
         }
