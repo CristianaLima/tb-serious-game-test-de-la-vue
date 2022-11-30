@@ -85,29 +85,18 @@ export function ResultsList() {
     }
 
     /**
-     * First array with results in database
+     * Array with results in database
      */
-    function TestsFromFirebase() {
+    function AllResults() {
         if (tests.length > 0) {
-            return <div id="resultsFromFirebase">
+            return <div id="results">
                 <h1>Results in database</h1>
-                <TableConstruction theadData={Object.keys(tests[0])} tbodyData={tests}/>
+                <TableConstruction theadData={Object.keys(tests[0])} tbodyData1={tests} tbodyData2={newTests}/>
             </div>;
         }
         return <div/>;
     }
-    /**
-     * Second array with results created on the navigator
-     */
-    function NewTests() {
-        if (newTests.length > 0) {
-            return <div id="newTests">
-                <h1>Results not synchronised</h1>
-                <TableConstruction theadData={Object.keys(newTests[0])} tbodyData={newTests}/>
-            </div>;
-        }
-        return <div/>;
-    }
+
     /**
      * Select where apply filter based on radio button
      * @param input of searching
@@ -115,22 +104,13 @@ export function ResultsList() {
     function SelectColumnToFilter(input) {
         switch(searchRadio){
             case 'school':
-                new ColumnFilter("resultsFromFirebase",0, input);
-                if (newTests.length > 0){
-                    new ColumnFilter("newTests",0, input);
-                }
+                new ColumnFilter("results",0, input);
                 break;
             case 'class':
-                new ColumnFilter("resultsFromFirebase",1, input);
-                if (newTests.length > 0){
-                    new ColumnFilter("newTests",1, input);
-                }
+                new ColumnFilter("results",1, input);
                 break;
             case 'fullName':
-                new ColumnFilter("resultsFromFirebase",2, input);
-                if (newTests.length > 0){
-                    new ColumnFilter("newTests",2, input);
-                }
+                new ColumnFilter("results",2, input);
                 break;
             default:
                 break;
@@ -187,79 +167,96 @@ export function ResultsList() {
      * @param theadData for headers
      * @param tbodyData for data
      */
-    function TableConstruction({theadData, tbodyData}) {
+    function TableConstruction({theadData, tbodyData1, tbodyData2}) {
         return (
             <div>
 
                 <Table size="sm">
-                <thead>
-                <tr>
-                    <th key={"schoolName"}>School</th>
-                    <th key={"classs"}>Class</th>
-                    <th key={"fullName"}>Fullname</th>
-                    <th key={"dob"}>DOB</th>
-                    {theadData.map(heading => {
-                        switch(heading) {
-                            case "dateTest":   return <th key={"dateTest"}>Date</th>;
-                            case "correction":   return <th key={"correction"}>Glasses </th>;
-                            case "comprehension":   return <th key={"comprehension"}>Understood </th>;
-                            case "rounds":   return <th key={"rounds"}>Rounds </th>;
-                            case "vaRe":   return <th key={"vaRe"}>vaRe</th>;
-                            case "vaLe":   return <th key={"vaLe"}>vaLe</th>;
-                            default: return }
-                    })}
-                </tr>
-                </thead>
-                <tbody>
-                {tbodyData.map((row, index) => {
-                    return <tr key={index}>
-                        {UnderTableStudentConstruction(row)}
-                        {theadData.map((key, index) => {
-                            switch(key) {
-                                case "dateTest": return <td key={index}>{moment(row[key]).format('YYYY-MM-DD h:mm a')}</td>;
-                                case "correction":   return <td key={index}>{row[key].toString()}</td>;
-                                case "comprehension":   return <td key={index}>{row[key].toString()}</td>;
-                                case "rounds":   return <td key={index}>{row[key]}</td>;
-                                case "vaRe":   return <td key={index}>{Math.round(row[key] * 100) / 100}</td>;
-                                case "vaLe":   return <td key={index}>{Math.round(row[key] * 100) / 100}</td>;
-                                default: return}
+                    <thead>
+                    <tr>
+                        <th key={"schoolName"}>School</th>
+                        <th key={"classs"}>Class</th>
+                        <th key={"fullName"}>Fullname</th>
+                        <th key={"dob"}>DOB</th>
+                        {theadData.map(heading => {
+                            switch(heading) {
+                                case "dateTest":   return <th key={"dateTest"}>Date</th>;
+                                case "correction":   return <th key={"correction"}>Glasses </th>;
+                                case "comprehension":   return <th key={"comprehension"}>Understood </th>;
+                                case "rounds":   return <th key={"rounds"}>Rounds </th>;
+                                case "vaRe":   return <th key={"vaRe"}>vaRe</th>;
+                                case "vaLe":   return <th key={"vaLe"}>vaLe</th>;
+                                default: return }
                         })}
-                    </tr>;
-                })}
-                </tbody>
-            </Table>
+                        <th key={"synchronise"}>Synchronise</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {tbodyData1.map((row, index) => {
+                        return <tr key={index}>
+                            {UnderTableStudentConstruction(row)}
+                            {theadData.map((key, index) => {
+                                switch(key) {
+                                    case "dateTest": return <td key={index}>{moment(row[key]).format('YYYY-MM-DD h:mm a')}</td>;
+                                    case "correction":   return <td key={index}>{row[key].toString()}</td>;
+                                    case "comprehension":   return <td key={index}>{row[key].toString()}</td>;
+                                    case "rounds":   return <td key={index}>{row[key]}</td>;
+                                    case "vaRe":   return <td key={index}>{Math.round(row[key] * 100) / 100}</td>;
+                                    case "vaLe":   return <td key={index}>{Math.round(row[key] * 100) / 100}</td>;
+                                    default: return}
+                            })}
+                            <td key={index}>True</td>
+                        </tr>;
+                    })}
+                    {tbodyData2.map((row, index) => {
+                        return <tr key={index}>
+                            {UnderTableStudentConstruction(row)}
+                            {theadData.map((key, index) => {
+                                switch(key) {
+                                    case "dateTest": return <td key={index}>{moment(row[key]).format('YYYY-MM-DD h:mm a')}</td>;
+                                    case "correction":   return <td key={index}>{row[key].toString()}</td>;
+                                    case "comprehension":   return <td key={index}>{row[key].toString()}</td>;
+                                    case "rounds":   return <td key={index}>{row[key]}</td>;
+                                    case "vaRe":   return <td key={index}>{Math.round(row[key] * 100) / 100}</td>;
+                                    case "vaLe":   return <td key={index}>{Math.round(row[key] * 100) / 100}</td>;
+                                    default: return}
+                            })}
+                            <td key={index}>False</td>
+                        </tr>;
+                    })}
+                    </tbody>
+                </Table>
             </div>
         );
     }
 
 
     return(
-            <div>
-                <label>Search : </label>
-                <input type="text" className="m-3" id="inputSearch" placeholder="Search..."
-                       onChange={(e) => {SelectColumnToFilter(e.target.value)}}>
-                </input>
-                <label>
-                    <input type="radio" checked={searchRadio === 'school'} className="m-1" value="school" name="search" onChange={(e)=>setSearchRadio(e.target.value)}/>
-                        School
-                </label>
-                <label>
-                    <input type="radio" className="m-1" value="class" name="search" onChange={(e)=>setSearchRadio(e.target.value)} />
-                    Class
-                </label>
-                <label>
-                    <input type="radio" className="m-1" value="fullName" name="search" onChange={(e)=>setSearchRadio(e.target.value)}/>
-                    FullName
-                </label>
-                <Row className="row-cols-lg-auto g-3 align-items-center"
-                     style={{ display: "flex", justifyContent: "end", alignItems: "flex-end"}}>
-                    <button type="button" className="btn btn-primary" onClick={()=>tableToCSV()}>
-                        Export all results
-                    </button>
-                </Row>
+        <div>
+            <label>Search : </label>
+            <input type="text" className="m-3" id="inputSearch" placeholder="Search..."
+                   onChange={(e) => {SelectColumnToFilter(e.target.value)}}>
+            </input>
+            <label>
+                <input type="radio" checked={searchRadio === 'school'} className="m-1" value="school" name="search" onChange={(e)=>setSearchRadio(e.target.value)}/>
+                School
+            </label>
+            <label>
+                <input type="radio" className="m-1" value="class" name="search" onChange={(e)=>setSearchRadio(e.target.value)} />
+                Class
+            </label>
+            <label>
+                <input type="radio" className="m-1" value="fullName" name="search" onChange={(e)=>setSearchRadio(e.target.value)}/>
+                FullName
+            </label>
+            <Row className="row-cols-lg-auto g-3 align-items-center"
+                 style={{ display: "flex", justifyContent: "end", alignItems: "flex-end"}}>
+                <button type="button" className="btn btn-primary" onClick={()=>tableToCSV()}>
+                    Export all results
+                </button>
+            </Row>
 
-                <TestsFromFirebase/>
-                <NewTests/>
-            </div>
+            <AllResults/>
+        </div>
     )
 }
