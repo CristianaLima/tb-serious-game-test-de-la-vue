@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useState} from "react";
 import {
     LS_NEW_RESULTS,
@@ -11,6 +11,15 @@ import moment from "moment/moment";
 export function ResultsList() {
     const [tests] = useState(JSON.parse(localStorage.getItem(LS_RESULTS)));
     const [newTests] = useState(JSON.parse(localStorage.getItem(LS_NEW_RESULTS)));
+    const [searchRadio, setSearchRadio] = useState("school")
+
+    /**
+     * Refresh search each time radiobutton of search is changed
+     */
+    useEffect(() => {
+        let inputSearch = document.getElementById("inputSearch");
+        SelectColumnToFilter(inputSearch.value)
+    }, [searchRadio]);
 
     /**
      * Create a csv data form a html table
@@ -80,25 +89,80 @@ export function ResultsList() {
      */
     function TestsFromFirebase() {
         if (tests.length > 0) {
-            return <>
+            return <div id="resultsFromFirebase">
                 <h1>Results in database</h1>
                 <TableConstruction theadData={Object.keys(tests[0])} tbodyData={tests}/>
-            </>;
+            </div>;
         }
         return <div/>;
     }
-
     /**
      * Second array with results created on the navigator
      */
     function NewTests() {
         if (newTests.length > 0) {
-            return <>
+            return <div id="newTests">
                 <h1>Results not synchronised</h1>
                 <TableConstruction theadData={Object.keys(newTests[0])} tbodyData={newTests}/>
-            </>;
+            </div>;
         }
         return <div/>;
+    }
+    /**
+     * Select where apply filter based on radio button
+     * @param input of searching
+     */
+    function SelectColumnToFilter(input) {
+        switch(searchRadio){
+            case 'school':
+                new ColumnFilter("resultsFromFirebase",0, input);
+                if (newTests.length > 0){
+                    new ColumnFilter("newTests",0, input);
+                }
+                break;
+            case 'class':
+                new ColumnFilter("resultsFromFirebase",1, input);
+                if (newTests.length > 0){
+                    new ColumnFilter("newTests",1, input);
+                }
+                break;
+            case 'fullName':
+                new ColumnFilter("resultsFromFirebase",2, input);
+                if (newTests.length > 0){
+                    new ColumnFilter("newTests",2, input);
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * Hide row of column based on filter input
+     * @param table to filter
+     * @param columnNumberToFilter
+     * @param input of searching
+     * @constructor
+     */
+    function ColumnFilter(table, columnNumberToFilter, input) {
+        let i, td;
+        const inputUpperCase = input.toUpperCase();
+        const tableById = document.getElementById(table);
+        const tr = tableById.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[columnNumberToFilter];
+            for (let i = 0; i < tr.length; i++) {
+                const td = tr[i].getElementsByTagName("td")[columnNumberToFilter];
+                if (td) {
+                    const txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(inputUpperCase) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -126,8 +190,7 @@ export function ResultsList() {
     function TableConstruction({theadData, tbodyData}) {
         return (
             <div>
-                <input type="text" id="myInput" placeholder="Search for..."
-                       title="Type in a name"></input>
+
                 <Table size="sm">
                 <thead>
                 <tr>
@@ -169,14 +232,32 @@ export function ResultsList() {
         );
     }
 
+
     return(
             <div>
+                <label>Search : </label>
+                <input type="text" className="m-3" id="inputSearch" placeholder="Search..."
+                       onChange={(e) => {SelectColumnToFilter(e.target.value)}}>
+                </input>
+                <label>
+                    <input type="radio" checked={searchRadio === 'school'} className="m-1" value="school" name="search" onChange={(e)=>setSearchRadio(e.target.value)}/>
+                        School
+                </label>
+                <label>
+                    <input type="radio" className="m-1" value="class" name="search" onChange={(e)=>setSearchRadio(e.target.value)} />
+                    Class
+                </label>
+                <label>
+                    <input type="radio" className="m-1" value="fullName" name="search" onChange={(e)=>setSearchRadio(e.target.value)}/>
+                    FullName
+                </label>
                 <Row className="row-cols-lg-auto g-3 align-items-center"
                      style={{ display: "flex", justifyContent: "end", alignItems: "flex-end"}}>
                     <button type="button" className="btn btn-primary" onClick={()=>tableToCSV()}>
                         Export all results
                     </button>
                 </Row>
+
                 <TestsFromFirebase/>
                 <NewTests/>
             </div>
