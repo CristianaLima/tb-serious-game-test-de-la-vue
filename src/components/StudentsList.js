@@ -8,7 +8,6 @@ import moment from "moment";
 
 export function StudentsList(){
     const navigate = useNavigate();
-
     const [students] = useState(JSON.parse(localStorage.getItem(LS_STUDENTS)));
     const [newStudents] = useState(JSON.parse(localStorage.getItem(LS_NEW_STUDENTS)));
     const [searchRadio, setSearchRadio] = useState("school")
