@@ -7,8 +7,7 @@ import {
 import {getSchoolNameFromLS, getStudentFromLS} from "../config/SearchLocalStorage";
 import {Row, Table} from "reactstrap";
 import moment from "moment/moment";
-import {CSVDownload} from 'react-csv';
-import {render} from "@testing-library/react";
+import {CSVLink} from 'react-csv';
 
 export function ResultsList() {
     const [allResults] = useState(JSON.parse(localStorage.getItem(LS_RESULTS)).concat(JSON.parse(localStorage.getItem(LS_NEW_RESULTS))));
@@ -52,16 +51,42 @@ export function ResultsList() {
     function FilteredResults() {
         if (allResults.length > 0) {
             return <>
-                <h1>All results</h1>
+                <Row className="row-cols-lg-auto g-3 align-items-center"
+                     style={{ display: "flex", justifyContent: "end", alignItems: "flex-end"}}>
+                    <label>
+                        School:
+                        <input type="text" className="m-3" placeholder="Search..."
+                               onChange={(e) => {setFilterSchool(e.target.value)}}></input>
+                    </label>
+                    <label>
+                        Class :
+                        <input type="text" className="m-3" placeholder="Search..."
+                               onChange={(e) => {setFilterClass(e.target.value)}}>
+                        </input>
+                    </label>
+                    <label>
+                        Fullname :
+                        <input type="text" className="m-3" placeholder="Search..."
+                               onChange={(e) => {setFilterFullName(e.target.value)}}>
+                        </input>
+                    </label>
+                    <CSVLink
+                        data={filteredResults} separator={";"}
+                        filename={"Results"+ moment(Date.now()).format('YYYY-MM-DD')+".csv"}>
+                        <button
+                            type="button" className="btn btn-primary">
+                            Export results
+                        </button>
+                    </CSVLink>
+                </Row>
                 <ResultsTable tbodyData={filteredResults}></ResultsTable>
             </>;
+        } else {
+            return <p>No results</p>
         }
-        return <div/>;
     }
 
-    function ListToCSV(){
-        render(<CSVDownload data={filteredResults} separator={";"}/>)
-    }
+
 
     function ResultsTable({tbodyData}) {
         return (
@@ -101,31 +126,9 @@ export function ResultsList() {
     }
 
     return(
-        <div>
-            <label>
-                School:
-                <input type="text" className="m-3" id="inputSearchSchool" placeholder="Search..."
-                       onChange={(e) => {setFilterSchool(e.target.value)}}></input>
-            </label>
-            <label>
-                Class :
-                <input type="text" className="m-3" id="inputSearchClass" placeholder="Search..."
-                       onChange={(e) => {setFilterClass(e.target.value)}}>
-                </input>
-            </label>
-            <label>
-                Fullname :
-                <input type="text" className="m-3" id="inputSearchFullName" placeholder="Search..."
-                       onChange={(e) => {setFilterFullName(e.target.value)}}>
-                </input>
-            </label>
-            <Row className="row-cols-lg-auto g-3 align-items-center"
-                 style={{ display: "flex", justifyContent: "end", alignItems: "flex-end"}}>
-                <button type="button" className="btn btn-primary" onClick={()=>ListToCSV()}>
-                    Export results
-                </button>
-            </Row>
+        <>
+            <h1>All results</h1>
             <FilteredResults/>
-        </div>
+        </>
     )
 }

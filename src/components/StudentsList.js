@@ -36,16 +36,16 @@ export function StudentsList(){
         return newStudents.map((student) => {
             const result = getLastResultFromLS(student);
             return ({
-            'localId': student.localId,
-            'fullName': student.fullName,
-            'dob': student.dob,
-            'class': student.class,
-            'schoolName': getSchoolNameFromLS(student),
-            'dateTest': result.dateTest === "-" ? result.dateTest : moment(result.dateTest).format('YYYY-MM-DD h:mm a'),
-            'vaRe': result.vaRe === "-" ? result.vaRe : (Math.round(result.vaRe * 100) / 100),
-            'vaLe': result.vaRe === "-" ? result.vaLe : (Math.round(result.vaRe * 100) / 100)
+                'localId': student.localId,
+                'fullName': student.fullName,
+                'dob': student.dob,
+                'class': student.class,
+                'schoolName': getSchoolNameFromLS(student),
+                'dateTest': result.dateTest === "-" ? result.dateTest : moment(result.dateTest).format('YYYY-MM-DD h:mm a'),
+                'vaRe': result.vaRe === "-" ? result.vaRe : (Math.round(result.vaRe * 100) / 100),
+                'vaLe': result.vaRe === "-" ? result.vaLe : (Math.round(result.vaRe * 100) / 100)
+            })
         })
-    })
     }
 
     /**
@@ -67,12 +67,11 @@ export function StudentsList(){
      */
     function StudentsFromFirebase() {
         if (students.length > 0) {
-            return  <div id="studentsFromFirebase">
-                <h1>Students from school roster</h1>
+            return  <>
+                <h3>Students from school roster</h3>
                 <StudentTable tbodyData={studentsFiltered}></StudentTable>
-            </div>;
+            </>;
         }
-        return <div/>;
     }
 
     /**
@@ -80,19 +79,18 @@ export function StudentsList(){
      */
     function NewStudents() {
         if (newStudents.length > 0) {
-            return <div id="newStudents">
-                <h1>New students from this session</h1>
+            return <>
+                <h3>New students from this session</h3>
                 <StudentTable tbodyData={newStudentsFiltered}></StudentTable>
-            </div>;
+            </>;
         }
-        return <div/>;
     }
 
     function StudentTable({tbodyData}) {
         return (
             <div>
                 <Table size="sm" hover>
-                <thead>
+                    <thead>
                     <tr>
                         <th style={{width: "20%"}} key={"fullName"}>Fullname</th>
                         <th style={{width: "10%"}} key={"dob"}>DOB</th>
@@ -126,25 +124,33 @@ export function StudentsList(){
 
     return(
         <>
-            <label>
-                School:
-                <input type="text" className="m-3" id="inputSearchSchool" placeholder="Search..."
-                       onChange={(e) => {setFilterSchool(e.target.value)}}></input>
-            </label>
-            <label>
-                Class :
-                <input type="text" className="m-3" id="inputSearchClass" placeholder="Search..."
-                       onChange={(e) => {setFilterClass(e.target.value)}}>
-                </input>
-            </label>
-            <label>
-                Fullname :
-                <input type="text" className="m-3" id="inputSearchFullName" placeholder="Search..."
-                       onChange={(e) => {setFilterFullName(e.target.value)}}>
-                </input>
-            </label>
-            <StudentsFromFirebase/>
-            <NewStudents/>
+            <h1>Students</h1>
+            {students.length === 0 && newStudents.length === 0 ?
+                <p>No students</p>
+                :
+                <>
+                    <label>
+                        School:
+                        <input type="text" className="m-3" placeholder="Search..."
+                               onChange={(e) => {setFilterSchool(e.target.value)}}></input>
+                    </label>
+                    <label>
+                        Class :
+                        <input type="text" className="m-3" placeholder="Search..."
+                               onChange={(e) => {setFilterClass(e.target.value)}}>
+                        </input>
+                    </label>
+                    <label>
+                        Fullname :
+                        <input type="text" className="m-3" placeholder="Search..."
+                               onChange={(e) => {setFilterFullName(e.target.value)}}>
+                        </input>
+                    </label>
+                    <StudentsFromFirebase/>
+                    <NewStudents/>
+                </>
+
+            }
         </>
     )
 }
