@@ -28,7 +28,6 @@ const promise = new Promise((resolve,reject)=>{
 
 });
     promise.then((data)=>{
-        console.log(data);
         let lsNewStudents =  JSON.parse(localStorage.getItem(LS_NEW_STUDENTS));
         let lsNewSchools =  JSON.parse(localStorage.getItem(LS_NEW_SCHOOLS));
         let lsSchools =  JSON.parse(localStorage.getItem(LS_SCHOOLS));

@@ -47,7 +47,6 @@ export function ResultsList() {
             // Combine each column value with comma
             csv_data.push(csvrow.join(";"));
         }
-        console.log(csv_data);
         // Combine each row data with new line character
         csv_data = csv_data.join('\n');
 

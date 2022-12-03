@@ -196,7 +196,6 @@ class jsquest {
     }
 
     update(stim, resp){
-        console.log("update")
         const stimIdx = this.comb_stim_params.indexOf(stim)
 
         if (!Object.prototype.hasOwnProperty.call(this, 'stim_list')){
