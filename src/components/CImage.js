@@ -26,7 +26,7 @@ export function CImage(){
 
     const [response, setResponse] = useState({tour : 0, angle : 0});
     const [angle, setAngle] = useState(angleArray[0]);
-    const [size, setSize] = useState(1);
+    const [size, setSize] = useState(100);
     const [status, setStatus] = useState(0);
     const [results, setResults] = useState([]);
     const [newTests, setNewTests] = useState(() => {
@@ -80,7 +80,7 @@ export function CImage(){
                     localIdStudent: JSON.parse(localStorage.getItem(LS_STUDENT)).localId,
                     dateTest: Date.now(),
                     correction: JSON.parse(sessionStorage.getItem(SS_WEAR_GLASSES)),
-                    comprehension: false,
+                    comprehension: true,
                     rounds: 1,
                     vaRe: results[results.length-1],
                     vaLe: results[results.length-1],
@@ -104,7 +104,7 @@ export function CImage(){
 
                 // Algo jsQuestPLus reaction
                 setResults(results => [...results, stimParams/(40*1.3)+1])
-                setSize(stimParams/40+1)
+                setSize((stimParams/40+1)*100)
 
                 // Rotate C
                 setAngle(angleArray[response.tour])
@@ -160,13 +160,12 @@ export function CImage(){
                 <>
                     <img
                         id="image"
-                        className="carteImg"
                         alt="C landolt"
                         src={c}
                         style={{
-                            width: `${size*100}px` ,
+                            width: `${size}px` ,
                             transform: `rotate(${angle}deg)`,
-                            position: 'absolute', left: '47%', top: '50%',
+                            position: 'absolute', left: '50%', top: '50%',
                     }}
                     />
                 </>
