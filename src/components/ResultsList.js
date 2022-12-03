@@ -18,18 +18,22 @@ export function ResultsList() {
     const [filteredResults, setFilteredResults] = useState(filterResults());
 
     function filterResults(){
-        return allResults.map((element) => ({
-            'schoolName': getSchoolNameFromLS(getStudentFromLS(element)),
-            'class': getStudentFromLS(element).class,
-            'fullName': getStudentFromLS(element).fullName,
-            'dob': getStudentFromLS(element).dob,
-            'dateTest': moment(element.dateTest).format('YYYY-MM-DD h:mm a'),
-            'correction': element.correction.toString(),
-            'comprehension': element.comprehension.toString(),
-            'rounds': element.rounds,
-            'vaRe': Math.round(element.vaRe * 100) / 100,
-            'vaLe': Math.round(element.vaLe * 100) / 100,
-            'synchronise': element.id == null ? "False" : "True"}))
+        return allResults.map((result) => {
+            const student = getStudentFromLS(result);
+            return ({
+            'schoolName': getSchoolNameFromLS(student),
+            'class': student.class,
+            'fullName': student.fullName,
+            'dob': student.dob,
+            'dateTest': moment(result.dateTest).format('YYYY-MM-DD h:mm a'),
+            'correction': result.correction.toString(),
+            'comprehension': result.comprehension.toString(),
+            'rounds': result.rounds,
+            'vaRe': Math.round(result.vaRe * 100) / 100,
+            'vaLe': Math.round(result.vaLe * 100) / 100,
+            'synchronised': result.id == null ? "false" : "true"
+            })
+        })
     }
 
     /**
@@ -47,10 +51,10 @@ export function ResultsList() {
      */
     function FilteredResults() {
         if (allResults.length > 0) {
-            return <div id="results">
+            return <>
                 <h1>All results</h1>
-                <NewTableConstruction tbodyData={filteredResults}></NewTableConstruction>
-            </div>;
+                <ResultsTable tbodyData={filteredResults}></ResultsTable>
+            </>;
         }
         return <div/>;
     }
@@ -59,15 +63,15 @@ export function ResultsList() {
         render(<CSVDownload data={filteredResults} separator={";"}/>)
     }
 
-    function NewTableConstruction({tbodyData}) {
+    function ResultsTable({tbodyData}) {
         return (
             <div>
                 <Table size="sm">
                     <thead>
                     <tr>
-                        <th key={"schoolName"}>School</th>
-                        <th key={"classs"}>Class</th>
-                        <th key={"fullName"}>Fullname</th>
+                        <th style={{width: "15%"}} key={"schoolName"}>School</th>
+                        <th key={"class"}>Class</th>
+                        <th style={{width: "15%"}} key={"fullName"}>Fullname</th>
                         <th key={"dob"}>DOB</th>
                         <th key={"dateTest"}>Date</th>
                         <th key={"correction"}>Glasses </th>
@@ -75,19 +79,17 @@ export function ResultsList() {
                         <th key={"rounds"}>Rounds </th>
                         <th key={"vaRe"}>vaRe</th>
                         <th key={"vaLe"}>vaLe</th>
-                        <th key={"synchronise"}>Synchronise</th>
+                        <th key={"synchronised"}>Synchronised</th>
                     </tr>
                     </thead>
                     <tbody>
                     {
-                        tbodyData.map(item => {
+                        tbodyData.map((item, index) => {
                             return (
-                                <tr>
-                                    {
-                                        Object.values(item).map(value => {
-                                            return (<td>{value}</td>)
-                                        })
-                                    }
+                                <tr key={index}>
+                                    {Object.values(item).map((value, index) => {
+                                            return (<td key={index}>{value}</td>)
+                                        })}
                                 </tr>
                             );
                         })
