@@ -110,7 +110,7 @@ export function StudentsList(){
                             }}>
                                 {Object.values(item).map((value, index) => {
                                     switch(index) {
-                                        case 0: return <></>;
+                                        case 0: return;
                                         default: return <td key={index}>{value}</td>}
                                 })}
                             </tr>

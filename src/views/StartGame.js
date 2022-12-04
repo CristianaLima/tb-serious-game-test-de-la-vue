@@ -26,10 +26,7 @@ export function StartGame(){
                         navigate('/studentForm');}}>
                         Add new student
                     </Button>
-                    <Label
-                        for="xlsxClassList"
-                        sm={2}
-                    >
+                    <Label for="xlsxClassList" sm={2}>
                         or Import Excel file :
                     </Label>
                     <Col>
