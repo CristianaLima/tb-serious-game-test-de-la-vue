@@ -6,6 +6,10 @@ import React, {useState} from "react";
 import {StudentsList} from "../components/StudentsList";
 import {useNavigate} from "react-router-dom";
 
+function CustomInput(props: { label: string, type: string, id: string, name: string }) {
+    return null;
+}
+
 export function StartGame(){
     const [schools] = useState(JSON.parse(localStorage.getItem(LS_SCHOOLS)));
     const navigate = useNavigate();
@@ -36,6 +40,7 @@ export function StartGame(){
                             window.location.reload();
                             window.alert("File "+file.name.toString()+" uploaded")
                         }}/>
+
                     </Col>
                 </Row>
                 <StudentsList/>
