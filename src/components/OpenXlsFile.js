@@ -45,8 +45,6 @@ const promise = new Promise((resolve,reject)=>{
             const y = date.slice(6,10);
             const dateObj = new Date(y, m, d);
 
-            console.log(date);
-            console.log(dateObj);
             const student = {
                 localId: Math.round(Date.now() / 1000)+i.toString(),
                 class: classNum,
