@@ -92,10 +92,7 @@ function StudentForm() {
         <>
             <NavBar/>
             <div  className="px-3 m-auto w-75 my-2">
-                <button type="button" className="btn btn-danger btn-lg m-5"
-                        onClick={() => navigate('/startGame')}>
-                    Back to student list
-                </button>
+                <h1>{student.id !== undefined || student.localId !== undefined ? "Ready?" : "New student" }</h1>
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="school">School</label>
@@ -118,7 +115,10 @@ function StudentForm() {
                         {/* need format YYYY-MM-DD, display depends on browser language*/}
                         <input disabled={student.id !== undefined || student.localId !== undefined} required id="dob" type="date" className="form-control"  value={student.dob === "" ? "" : moment(student.dob).format('YYYY-MM-DD')} onChange={handleChangeDateOfBirth} />
                     </div>
-                    <button type="submit" className="btn btn-primary">Let's play</button>
+                    <Button className="m-5" color="danger" onClick={() => navigate('/startGame')}>
+                        Back to student list
+                    </Button>
+                    <Button className="m-5" color="primary" type="submit">Let's play</Button>
                 </form>
                 <Modal centered={true} isOpen={modal} toggle={toggleModal}>
                     <ModalHeader toggle={toggleModal}>

@@ -5,7 +5,7 @@ import {
     LS_RESULTS
 } from "../views/App";
 import {getSchoolNameFromLS, getStudentFromLS} from "../config/SearchLocalStorage";
-import {Row, Table} from "reactstrap";
+import {Button, Row, Table} from "reactstrap";
 import moment from "moment/moment";
 import {CSVLink} from 'react-csv';
 
@@ -73,10 +73,9 @@ export function ResultsList() {
                     <CSVLink
                         data={filteredResults} separator={";"}
                         filename={"Results"+ moment(Date.now()).format('YYYY-MM-DD')+".csv"}>
-                        <button
-                            type="button" className="btn btn-primary">
+                        <Button color="primary">
                             Export results
-                        </button>
+                        </Button>
                     </CSVLink>
                 </Row>
                 <ResultsTable tbodyData={filteredResults}></ResultsTable>

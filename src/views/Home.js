@@ -61,12 +61,12 @@ export function Home(){
                     <NavBar/>
                     <div className="px-3 m-auto w-75 my-2 text-center">
                         <h1>Welcome [Therapist name]</h1>
-                        <button onClick={() => navigate('/viewResults')}  type="button" className="btn btn-primary btn-lg m-5">
+                        <Button className="m-5" size="lg" color="primary" onClick={() => navigate('/viewResults')}>
                             View results
-                        </button>
-                        <button onClick={() => navigate('/startGame')} type="button" className="btn btn-success btn-lg m-5">
+                        </Button>
+                        <Button className="m-5" size="lg" color="success" onClick={() => navigate('/startGame')}>
                             Start game
-                        </button>
+                        </Button>
                     </div>
                 </div>
                 :

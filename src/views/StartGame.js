@@ -1,5 +1,5 @@
 import {NavBar} from "../components/NavBar";
-import {Button, Col, Input, Row} from "reactstrap";
+import {Button, Col, Input, Label, Row} from "reactstrap";
 import {OpenXlsFile} from "../components/OpenXlsFile";
 import {LS_SCHOOLS, LS_STUDENT} from "./App";
 import React, {useState} from "react";
@@ -16,26 +16,30 @@ export function StartGame(){
             <div  className="m-auto w-75 my-2">
                 <Row className="row-cols-lg-auto g-3 align-items-center"
                      style={{display: "flex", justifyContent: "end", alignItems: "flex-end"}}>
-                    <Col>
-                        <Input  label='Upload' type="file" name="file" id="xlsxClassList"  onChange={(e)=>{
-                            const file = e.target.files[0];
-                            OpenXlsFile(file);
-                            window.location.reload();
-                            window.alert("File "+file.name.toString()+" uploaded")
-                        }}/>
-                    </Col>
-                    <Button type="button" className="btn btn-success mx-4" onClick={() => {
+                    <Button color="success" onClick={() => {
                         localStorage.setItem(LS_STUDENT, JSON.stringify({
                             idSchool: schools[0].id,
                             class: "",
                             fullName: "",
                             dob: ""
-                           }))
-                        navigate('/studentForm');
-                    }
-                    }>
-                        New student
+                        }))
+                        navigate('/studentForm');}}>
+                        Add new student
                     </Button>
+                    <Label
+                        for="xlsxClassList"
+                        sm={2}
+                    >
+                        or Import Excel file :
+                    </Label>
+                    <Col>
+                        <Input  label='Upload' type="file" name="file" id="xlsxClassList"  onChange={(e)=>{
+                            const file = e.target.files[0];
+                            new OpenXlsFile(file);
+                            window.location.reload();
+                            window.alert("File "+file.name.toString()+" uploaded")
+                        }}/>
+                    </Col>
                 </Row>
                 <StudentsList/>
             </div>

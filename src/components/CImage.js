@@ -9,6 +9,7 @@ import {
 import c from "../assets/c_picture.png";
 import {useNavigate} from "react-router-dom";
 import jsQuestPlus, {func_resp0, func_resp1} from "../algo/jsQuestPlus";
+import {Button} from "reactstrap";
 
 /**
  *
@@ -170,16 +171,15 @@ export function CImage(){
                     />
                 </>
                 :   <>
-                    <button type="button" className="btn btn-danger btn-lg m-5"
-                            onClick={() => navigate('/')}>
+                    <Button className="m-5" size="lg" color="danger" onClick={() => navigate('/')}>
                         Back to home
-                    </button>
-                    <button onClick={() => navigate('/viewResults')}  type="button" className="btn btn-primary btn-lg m-5">
+                    </Button>
+                    <Button className="m-5" size="lg" color="primary" onClick={() => navigate('/viewResults')}>
                         View results
-                    </button>
-                    <button onClick={() => navigate('/startGame')} type="button" className="btn btn-success btn-lg m-5">
+                    </Button>
+                    <Button className="m-5" size="lg" color="success"  onClick={() => navigate('/startGame')}>
                         Start game
-                    </button>
+                    </Button>
                 </>}
         </div>
     );
