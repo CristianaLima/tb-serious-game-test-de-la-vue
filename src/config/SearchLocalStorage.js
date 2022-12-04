@@ -53,11 +53,10 @@ export function getStudentFromLS(result){
  * @returns {{vaLe: string, vaRe: string, dateTest: string}|*}
  */
 export function getLastResultFromLS(student){
-    const newResults = JSON.parse(localStorage.getItem(LS_NEW_RESULTS));
-    const results = JSON.parse(localStorage.getItem(LS_RESULTS));
+    const results = JSON.parse(localStorage.getItem(LS_RESULTS)).concat(JSON.parse(localStorage.getItem(LS_NEW_RESULTS)));
     let filtered;
     if (student.localId !== undefined){
-        filtered = newResults.filter(r => {
+        filtered = results.filter(r => {
             return r.localIdStudent === student.localId;
         })
     } else {
