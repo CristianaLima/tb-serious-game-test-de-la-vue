@@ -80,7 +80,7 @@ export function CImage(){
                     idStudent: JSON.parse(localStorage.getItem(LS_STUDENT)).id,
                     localIdStudent: JSON.parse(localStorage.getItem(LS_STUDENT)).localId,
                     dateTest: Date.now(),
-                    correction: JSON.parse(sessionStorage.getItem(SS_WEAR_GLASSES)),
+                    correction: sessionStorage.getItem(SS_WEAR_GLASSES),
                     comprehension: true,
                     rounds: 1,
                     vaRe: results[results.length-1],
