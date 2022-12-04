@@ -1,10 +1,14 @@
 import {NavBar} from "../components/NavBar";
-import {Button, Col, Input, Row} from "reactstrap";
+import {Button, Col, FormGroup, Input, Label, Row} from "reactstrap";
 import {OpenXlsFile} from "../components/OpenXlsFile";
 import {LS_SCHOOLS, LS_STUDENT} from "./App";
 import React, {useState} from "react";
 import {StudentsList} from "../components/StudentsList";
 import {useNavigate} from "react-router-dom";
+
+function CustomInput(props: { label: string, type: string, id: string, name: string }) {
+    return null;
+}
 
 export function StartGame(){
     const [schools] = useState(JSON.parse(localStorage.getItem(LS_SCHOOLS)));
@@ -23,6 +27,7 @@ export function StartGame(){
                             window.location.reload();
                             window.alert("File "+file.name.toString()+" uploaded")
                         }}/>
+
                     </Col>
                     <Button type="button" className="btn btn-success mx-4" onClick={() => {
                         localStorage.setItem(LS_STUDENT, JSON.stringify({
