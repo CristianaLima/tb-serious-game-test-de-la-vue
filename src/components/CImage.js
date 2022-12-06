@@ -154,6 +154,40 @@ export function CImage(){
         return array
     }
 
+    function showValuesForDev() {
+        return (
+            <div>
+                <h5>Last param : {jsqp.getStimParams()} (scaled
+                    : {(jsqp.getStimParams() / (40 * 1.3) + 1).toPrecision(2)})</h5>
+
+                <table align={'center'}>
+                    <th colSpan={5}>Estimates :</th>
+                    <tr>
+                        <td>Mode</td>
+                        {jsqp.getEstimates().map(value => {
+                            return <td>{value}</td>
+                        })}
+                    </tr>
+                    <tr>
+                        <td>Mean</td>
+                        {jsqp.getEstimates('mean').map(value => {
+                            return <td>{value}</td>
+                        })}
+                    </tr>
+                </table>
+
+                <table align={'center'}>
+                    <thead>
+                    <th>Standard Deviations :</th>
+                    </thead>
+                    {jsqp.getSDs().map((value) => {
+                        return <tr>{value}</tr>
+                    })}
+                </table>
+            </div>
+        );
+    }
+
     return (
         <div>
             {status<=1 ?
@@ -169,7 +203,11 @@ export function CImage(){
                             position: 'absolute', left: '47%', top: '50%',
                     }}
                     />
+
+                    <>{showValuesForDev()}</>
+
                 </>
+
                 :   <>
                     <button type="button" className="btn btn-danger btn-lg m-5"
                             onClick={() => navigate('/')}>
