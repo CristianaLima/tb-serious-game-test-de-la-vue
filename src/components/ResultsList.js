@@ -45,48 +45,6 @@ export function ResultsList() {
             .filter(r => (r.fullName).toUpperCase().includes(filterFullName.toUpperCase())));
     }, [filterSchool, filterClass, filterFullName]);
 
-    /**
-     * Array with results in database
-     */
-    function FilteredResults() {
-        if (allResults.length > 0) {
-            return <>
-                <Row className="row-cols-lg-auto g-3 align-items-center"
-                     style={{ display: "flex", justifyContent: "end", alignItems: "flex-end"}}>
-                    <label>
-                        School:
-                        <input type="text" className="m-3" placeholder="Search..."
-                               onChange={(e) => {setFilterSchool(e.target.value)}}></input>
-                    </label>
-                    <label>
-                        Class :
-                        <input type="text" className="m-3" placeholder="Search..."
-                               onChange={(e) => {setFilterClass(e.target.value)}}>
-                        </input>
-                    </label>
-                    <label>
-                        Fullname :
-                        <input type="text" className="m-3" placeholder="Search..."
-                               onChange={(e) => {setFilterFullName(e.target.value)}}>
-                        </input>
-                    </label>
-                    <CSVLink
-                        data={filteredResults} separator={";"}
-                        filename={"Results"+ moment(Date.now()).format('YYYY-MM-DD')+".csv"}>
-                        <Button color="primary">
-                            Export results
-                        </Button>
-                    </CSVLink>
-                </Row>
-                <ResultsTable tbodyData={filteredResults}></ResultsTable>
-            </>;
-        } else {
-            return <p>No results</p>
-        }
-    }
-
-
-
     function ResultsTable({tbodyData}) {
         return (
             <div>
@@ -127,7 +85,40 @@ export function ResultsList() {
     return(
         <>
             <h1>All results</h1>
-            <FilteredResults/>
+            {allResults.length > 0 ?
+                <>
+                    <Row className="row-cols-lg-auto g-3 align-items-center"
+                         style={{ display: "flex", justifyContent: "end", alignItems: "flex-end"}}>
+                        <label>
+                            School:
+                            <input type="text" className="m-3" placeholder="Search..."
+                                   onChange={(e) => {setFilterSchool(e.target.value)}}></input>
+                        </label>
+                        <label>
+                            Class :
+                            <input type="text" className="m-3" placeholder="Search..."
+                                   onChange={(e) => {setFilterClass(e.target.value)}}>
+                            </input>
+                        </label>
+                        <label>
+                            Fullname :
+                            <input type="text" className="m-3" placeholder="Search..."
+                                   onChange={(e) => {setFilterFullName(e.target.value)}}>
+                            </input>
+                        </label>
+                        <CSVLink
+                            data={filteredResults} separator={";"}
+                            filename={"Results"+ moment(Date.now()).format('YYYY-MM-DD')+".csv"}>
+                            <Button color="primary">
+                                Export results
+                            </Button>
+                        </CSVLink>
+                    </Row>
+                    <ResultsTable tbodyData={filteredResults}></ResultsTable>
+                </>
+                :
+                <p>No results</p>
+            }
         </>
     )
 }
