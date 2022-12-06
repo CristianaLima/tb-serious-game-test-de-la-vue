@@ -26,6 +26,14 @@ export function AcuityTestController(){
         return () => clearTimeout(timer);
     }, [CClicked]);
 
+    useEffect(() => {
+        //mousePosList.map(value => {console.log("Tour " + tour + " : X: " + value.x + "   Y: " + value.y)})
+        if(mousePosList.length>0){
+            //TODO clicks position are only display in console for now, must be implemented
+            console.log("Tour " + tour + " : X: " + mousePosList[mousePosList.length-1].x + "   Y: " + mousePosList[mousePosList.length-1].y)
+        }
+    }, [mousePosList]);
+
 
     function getWindowDimensions() {
         const { innerWidth: width, innerHeight: height } = window;
@@ -42,8 +50,7 @@ export function AcuityTestController(){
      */
     function handleMouseClickLocal(event) {
         setMouseList([...mousePosList,{ x: event.clientX - event.currentTarget.offsetLeft, y: event.clientY - event.currentTarget.offsetTop }]);
-        console.log('Coords clicked in the black area : ');
-        console.log(mousePosList);
+
         //If a click occur outside the buttons, reset the CClicked variable
         if(event.target.className === "btns-background"){
             setCClicked('-1');
