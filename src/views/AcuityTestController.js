@@ -42,6 +42,8 @@ export function AcuityTestController(){
      */
     function handleMouseClickLocal(event) {
         setMouseList([...mousePosList,{ x: event.clientX - event.currentTarget.offsetLeft, y: event.clientY - event.currentTarget.offsetTop }]);
+        console.log('Coords clicked in the black area : ');
+        console.log(mousePosList);
         //If a click occur outside the buttons, reset the CClicked variable
         if(event.target.className === "btns-background"){
             setCClicked('-1');
@@ -75,7 +77,6 @@ export function AcuityTestController(){
     function blockClick(){
         setLockedDisplay(true);
         setTimeout(() => {
-            console.log('Timer!');
             setLockedDisplay(false);
         }, 1000);
     }
