@@ -28,7 +28,6 @@ const promise = new Promise((resolve,reject)=>{
 
 });
     promise.then((data)=>{
-        console.log(data);
         let lsNewStudents =  JSON.parse(localStorage.getItem(LS_NEW_STUDENTS));
         let lsNewSchools =  JSON.parse(localStorage.getItem(LS_NEW_SCHOOLS));
         let lsSchools =  JSON.parse(localStorage.getItem(LS_SCHOOLS));
@@ -46,8 +45,6 @@ const promise = new Promise((resolve,reject)=>{
             const y = date.slice(6,10);
             const dateObj = new Date(y, m, d);
 
-            console.log(date);
-            console.log(dateObj);
             const student = {
                 localId: Math.round(Date.now() / 1000)+i.toString(),
                 class: classNum,

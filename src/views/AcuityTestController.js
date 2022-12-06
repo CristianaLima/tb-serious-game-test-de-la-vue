@@ -75,7 +75,6 @@ export function AcuityTestController(){
     function blockClick(){
         setLockedDisplay(true);
         setTimeout(() => {
-            console.log('Timer!');
             setLockedDisplay(false);
         }, 1000);
     }

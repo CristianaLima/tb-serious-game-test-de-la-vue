@@ -9,6 +9,7 @@ import {
 import c from "../assets/c_picture.png";
 import {useNavigate} from "react-router-dom";
 import jsQuestPlus, {func_resp0, func_resp1} from "../algo/jsQuestPlus";
+import {Button} from "reactstrap";
 
 /**
  *
@@ -26,7 +27,7 @@ export function CImage(){
 
     const [response, setResponse] = useState({tour : 0, angle : 0});
     const [angle, setAngle] = useState(angleArray[0]);
-    const [size, setSize] = useState(1);
+    const [size, setSize] = useState(100);
     const [status, setStatus] = useState(0);
     const [results, setResults] = useState([]);
     const [newTests, setNewTests] = useState(() => {
@@ -79,8 +80,8 @@ export function CImage(){
                     idStudent: JSON.parse(localStorage.getItem(LS_STUDENT)).id,
                     localIdStudent: JSON.parse(localStorage.getItem(LS_STUDENT)).localId,
                     dateTest: Date.now(),
-                    correction: JSON.parse(sessionStorage.getItem(SS_WEAR_GLASSES)),
-                    comprehension: false,
+                    correction: sessionStorage.getItem(SS_WEAR_GLASSES),
+                    comprehension: true,
                     rounds: 1,
                     vaRe: results[results.length-1],
                     vaLe: results[results.length-1],
@@ -104,7 +105,7 @@ export function CImage(){
 
                 // Algo jsQuestPLus reaction
                 setResults(results => [...results, stimParams/(40*1.3)+1])
-                setSize(stimParams/40+1)
+                setSize((stimParams/40+1)*100)
 
                 // Rotate C
                 setAngle(angleArray[response.tour])
@@ -160,27 +161,25 @@ export function CImage(){
                 <>
                     <img
                         id="image"
-                        className="carteImg"
                         alt="C landolt"
                         src={c}
                         style={{
-                            width: `${size*100}px` ,
+                            width: `${size}px` ,
                             transform: `rotate(${angle}deg)`,
-                            position: 'absolute', left: '47%', top: '50%',
+                            position: 'absolute', left: '50%', top: '50%',
                     }}
                     />
                 </>
                 :   <>
-                    <button type="button" className="btn btn-danger btn-lg m-5"
-                            onClick={() => navigate('/')}>
+                    <Button className="m-5" size="lg" color="danger" onClick={() => navigate('/')}>
                         Back to home
-                    </button>
-                    <button onClick={() => navigate('/viewResults')}  type="button" className="btn btn-primary btn-lg m-5">
+                    </Button>
+                    <Button className="m-5" size="lg" color="primary" onClick={() => navigate('/viewResults')}>
                         View results
-                    </button>
-                    <button onClick={() => navigate('/startGame')} type="button" className="btn btn-success btn-lg m-5">
+                    </Button>
+                    <Button className="m-5" size="lg" color="success"  onClick={() => navigate('/startGame')}>
                         Start game
-                    </button>
+                    </Button>
                 </>}
         </div>
     );
