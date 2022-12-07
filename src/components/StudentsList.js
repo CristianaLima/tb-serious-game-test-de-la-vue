@@ -5,57 +5,65 @@ import {useNavigate} from "react-router-dom";
 import {Table} from "reactstrap";
 import moment from "moment";
 
+/**
+ * Show 2 table: one with students in LS_STUDENTS, the other with LS_NEW_STUDENTS
+ *
+ * navigate : to move from one page to another
+ * students : raw data from LS_STUDENTS (with id of the attached data)
+ * newStudents : raw data from LS_NEW_STUDENTS (with id of the attached data)
+ * studentsCompleted : students map with string data
+ * newStudentsCompleted : newStudents map with string data
+ * filterSchool : contains the character string typed by the user in "School search" field
+ * filterClass : contains the character string typed by the user in "Class search" field
+ * filterFullName : contains the character string typed by the user in "Fullname search" field
+ * studentsFiltered : data from studentsCompleted after the filters (school, class, fullname) applied
+ * newStudentsFiltered : data from newStudentsCompleted after the filters (school, class, fullname) applied
+ */
 export function StudentsList(){
     const navigate = useNavigate();
     const [students] = useState(JSON.parse(localStorage.getItem(LS_STUDENTS)));
     const [newStudents] = useState(JSON.parse(localStorage.getItem(LS_NEW_STUDENTS)));
-    const [studentsFiltered, setStudentsFiltered] = useState(filterStudents());
-    const [newStudentsFiltered, setNewStudentsFiltered] = useState(filterNewStudents());
+    const studentsCompleted = students.map((student) => {
+        const result = getLastResultFromLS(student);
+        return ({
+            'id': student.id,
+            'fullName': student.fullName,
+            'dob': student.dob,
+            'class': student.class,
+            'schoolName': getSchoolNameFromLS(student),
+            'dateTest': result.dateTest === "-" ? result.dateTest : moment(result.dateTest).format('YYYY-MM-DD h:mm a'),
+            'vaRe': result.vaRe === "-" ? result.vaRe : Math.round(result.vaRe * 100) / 100,
+            'vaLe': result.vaRe === "-" ? result.vaLe : Math.round(result.vaRe * 100) / 100
+        })
+    });
+    const newStudentsCompleted = newStudents.map((student) => {
+        const result = getLastResultFromLS(student);
+        return ({
+            'localId': student.localId,
+            'fullName': student.fullName,
+            'dob': student.dob,
+            'class': student.class,
+            'schoolName': getSchoolNameFromLS(student),
+            'dateTest': result.dateTest === "-" ? result.dateTest : moment(result.dateTest).format('YYYY-MM-DD h:mm a'),
+            'vaRe': result.vaRe === "-" ? result.vaRe : (Math.round(result.vaRe * 100) / 100),
+            'vaLe': result.vaRe === "-" ? result.vaLe : (Math.round(result.vaRe * 100) / 100)
+        })
+    })
     const [filterSchool, setFilterSchool] = useState("");
     const [filterClass, setFilterClass] = useState("");
     const [filterFullName, setFilterFullName] = useState("");
-
-    function filterStudents(){
-        return students.map((student) => {
-            const result = getLastResultFromLS(student);
-            return ({
-                'id': student.id,
-                'fullName': student.fullName,
-                'dob': student.dob,
-                'class': student.class,
-                'schoolName': getSchoolNameFromLS(student),
-                'dateTest': result.dateTest === "-" ? result.dateTest : moment(result.dateTest).format('YYYY-MM-DD h:mm a'),
-                'vaRe': result.vaRe === "-" ? result.vaRe : Math.round(result.vaRe * 100) / 100,
-                'vaLe': result.vaRe === "-" ? result.vaLe : Math.round(result.vaRe * 100) / 100
-            })
-        })
-    }
-
-    function filterNewStudents(){
-        return newStudents.map((student) => {
-            const result = getLastResultFromLS(student);
-            return ({
-                'localId': student.localId,
-                'fullName': student.fullName,
-                'dob': student.dob,
-                'class': student.class,
-                'schoolName': getSchoolNameFromLS(student),
-                'dateTest': result.dateTest === "-" ? result.dateTest : moment(result.dateTest).format('YYYY-MM-DD h:mm a'),
-                'vaRe': result.vaRe === "-" ? result.vaRe : (Math.round(result.vaRe * 100) / 100),
-                'vaLe': result.vaRe === "-" ? result.vaLe : (Math.round(result.vaRe * 100) / 100)
-            })
-        })
-    }
+    const [studentsFiltered, setStudentsFiltered] = useState(studentsCompleted);
+    const [newStudentsFiltered, setNewStudentsFiltered] = useState(newStudentsCompleted);
 
     /**
-     * Refresh search each time search inputs change
+     * Refreshes filteredResults and newStudentsFiltered each time a user types in one of the search fields
      */
     useEffect(() => {
-        setStudentsFiltered(filterStudents()
+        setStudentsFiltered(studentsCompleted
             .filter(s => (s.schoolName).toUpperCase().includes(filterSchool.toUpperCase()))
             .filter(s => (s.class).toUpperCase().includes(filterClass.toUpperCase()))
             .filter(s => (s.fullName).toUpperCase().includes(filterFullName.toUpperCase())));
-        setNewStudentsFiltered(filterNewStudents()
+        setNewStudentsFiltered(newStudentsCompleted
             .filter(s => (s.schoolName).toUpperCase().includes(filterSchool.toUpperCase()))
             .filter(s => (s.class).toUpperCase().includes(filterClass.toUpperCase()))
             .filter(s => (s.fullName).toUpperCase().includes(filterFullName.toUpperCase())));
@@ -74,7 +82,7 @@ export function StudentsList(){
     }
 
     /**
-     * Second array with students created on the navigator
+     * Second array with students created on this navigator
      */
     function NewStudents() {
         if (newStudents.length > 0) {
@@ -85,6 +93,12 @@ export function StudentsList(){
         }
     }
 
+    /**
+     * Construction of a html table to show 7 columns :
+     * Student's fullname, student's date of birth (DOB), student's class, school's name,
+     * date of last test, last value Right eyes, last value Left eyes (if available)
+     * @param tbodyData
+     */
     function StudentTable({tbodyData}) {
         return (
             <div>
@@ -121,11 +135,15 @@ export function StudentsList(){
         );
     }
 
+    /**
+     * Show two tables of students with 3 search fields if there is data
+     * If not (in both), indicates "No student"
+     */
     return(
         <>
             <h1>Students</h1>
             {students.length === 0 && newStudents.length === 0 ?
-                <p>No students</p>
+                <p>No student</p>
                 :
                 <>
                     <label>
@@ -148,7 +166,6 @@ export function StudentsList(){
                     <StudentsFromFirebase/>
                     <NewStudents/>
                 </>
-
             }
         </>
     )

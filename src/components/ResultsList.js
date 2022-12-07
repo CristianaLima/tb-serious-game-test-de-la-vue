@@ -8,14 +8,14 @@ import {CSVLink} from 'react-csv';
 /**
  * The list of visual acuity test results is construct with data in local storage (LS_RESULTS and LS_NEW_RESULTS)
  *
- * allResults is the concatenation of the local storage data (LS_RESULTS and LS_NEW_RESULTS).
+ * allResults : the concatenation of the local storage data (LS_RESULTS and LS_NEW_RESULTS).
  *            The data is raw (id of the attached data)
- * allResultsCompleted is data of allResults completed with student info (class, fullname, dob) and school name
+ * allResultsCompleted : data of allResults completed with student info (class, fullname, dob) and school name
  *            to allow search (string comparison)
- * filterSchool contains the character string typed by the user in "School search" field
- * filterClass contains the character string typed by the user in "Class search" field
- * filterFullName contains the character string typed by the user in "Fullname search" field
- * filteredResults is the "allResultsCompleted" after the filters (school, class, fullname) applied
+ * filterSchool : contains the character string typed by the user in "School search" field
+ * filterClass : contains the character string typed by the user in "Class search" field
+ * filterFullName : contains the character string typed by the user in "Fullname search" field
+ * resultsFiltered : data from allResultsCompleted after the filters (school, class, fullname) applied
  */
 export function ResultsList() {
     const [allResults] = useState(JSON.parse(localStorage.getItem(LS_RESULTS)).concat(JSON.parse(localStorage.getItem(LS_NEW_RESULTS))));
@@ -38,13 +38,13 @@ export function ResultsList() {
     const [filterSchool, setFilterSchool] = useState("");
     const [filterClass, setFilterClass] = useState("");
     const [filterFullName, setFilterFullName] = useState("");
-    const [filteredResults, setFilteredResults] = useState(allResultsCompleted);
+    const [resultsFiltered, setResultsFiltered] = useState(allResultsCompleted);
 
     /**
      * Refreshes filteredResults each time a user types in one of the search fields
      */
     useEffect(() => {
-        setFilteredResults(allResultsCompleted
+        setResultsFiltered(allResultsCompleted
             .filter(r => (r.schoolName).toUpperCase().includes(filterSchool.toUpperCase()))
             .filter(r => (r.class).toUpperCase().includes(filterClass.toUpperCase()))
             .filter(r => (r.fullName).toUpperCase().includes(filterFullName.toUpperCase())));
@@ -91,7 +91,7 @@ export function ResultsList() {
     }
 
     /**
-     * Show the table of results with search bar and "Export results" buttons if there is data
+     * Show the table of results with 3 search fields and "Export results" buttons if there is data
      * If not indicates "No result"
      */
     return(
@@ -119,14 +119,14 @@ export function ResultsList() {
                             </input>
                         </label>
                         <CSVLink
-                            data={filteredResults} separator={";"}
+                            data={resultsFiltered} separator={";"}
                             filename={"Results"+ moment(Date.now()).format('YYYY-MM-DD')+".csv"}>
                             <Button color="primary">
                                 Export results
                             </Button>
                         </CSVLink>
                     </Row>
-                    <ResultsTable tbodyData={filteredResults}></ResultsTable>
+                    <ResultsTable tbodyData={resultsFiltered}></ResultsTable>
                 </>
                 :
                 <p>No result</p>
