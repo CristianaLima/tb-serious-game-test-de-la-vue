@@ -5,17 +5,23 @@ import {Button, Row, Table} from "reactstrap";
 import moment from "moment/moment";
 import {CSVLink} from 'react-csv';
 
+/**
+ * The list of visual acuity test results is construct with data in local storage (LS_RESULTS and LS_NEW_RESULTS)
+ *
+ * allResults is the concatenation of the local storage data (LS_RESULTS and LS_NEW_RESULTS).
+ *            The data is raw (id of the attached data)
+ * allResultsCompleted is data of allResults completed with student info (class, fullname, dob) and school name
+ *            to allow search (string comparison)
+ * filterSchool contains the character string typed by the user in "School search" field
+ * filterClass contains the character string typed by the user in "Class search" field
+ * filterFullName contains the character string typed by the user in "Fullname search" field
+ * filteredResults is the "allResultsCompleted" after the filters (school, class, fullname) applied
+ */
 export function ResultsList() {
     const [allResults] = useState(JSON.parse(localStorage.getItem(LS_RESULTS)).concat(JSON.parse(localStorage.getItem(LS_NEW_RESULTS))));
-    const [filterSchool, setFilterSchool] = useState("");
-    const [filterClass, setFilterClass] = useState("");
-    const [filterFullName, setFilterFullName] = useState("");
-    const [filteredResults, setFilteredResults] = useState(filterResults());
-
-    function filterResults(){
-        return allResults.map((result) => {
-            const student = getStudentFromLS(result);
-            return ({
+    const allResultsCompleted = allResults.map((result) => {
+        const student = getStudentFromLS(result);
+        return ({
             'schoolName': getSchoolNameFromLS(student),
             'class': student.class,
             'fullName': student.fullName,
@@ -27,20 +33,30 @@ export function ResultsList() {
             'vaRe': Math.round(result.vaRe * 100) / 100,
             'vaLe': Math.round(result.vaLe * 100) / 100,
             'synchronised': result.id == null ? "false" : "true"
-            })
         })
-    }
+    });
+    const [filterSchool, setFilterSchool] = useState("");
+    const [filterClass, setFilterClass] = useState("");
+    const [filterFullName, setFilterFullName] = useState("");
+    const [filteredResults, setFilteredResults] = useState(allResultsCompleted);
 
     /**
-     * Refresh search each time search inputs change
+     * Refreshes filteredResults each time a user types in one of the search fields
      */
     useEffect(() => {
-        setFilteredResults(filterResults()
+        setFilteredResults(allResultsCompleted
             .filter(r => (r.schoolName).toUpperCase().includes(filterSchool.toUpperCase()))
             .filter(r => (r.class).toUpperCase().includes(filterClass.toUpperCase()))
             .filter(r => (r.fullName).toUpperCase().includes(filterFullName.toUpperCase())));
     }, [filterSchool, filterClass, filterFullName]);
 
+    /**
+     * Construction of a html table to show 11 columns :
+     * School's name, student's class, student's fullname, student's date of birth (DOB), test's date, wear glasses,
+     * results of the comprehension test (true/false), rounds of the comprehension test played, Value Righ eyes,
+     * Vale Left eyes, synchronised or not
+     * @param tbodyData
+     */
     function ResultsTable({tbodyData}) {
         return (
             <div>
@@ -61,23 +77,23 @@ export function ResultsList() {
                     </tr>
                     </thead>
                     <tbody>
-                    {
-                        tbodyData.map((item, index) => {
-                            return (
-                                <tr key={index}>
-                                    {Object.values(item).map((value, index) => {
-                                            return (<td key={index}>{value}</td>)
-                                        })}
-                                </tr>
-                            );
-                        })
-                    }
+                    {tbodyData.map((item, index) => { return (
+                        <tr key={index}>
+                            {Object.values(item).map((value, index) => {
+                                return (<td key={index}>{value}</td>)
+                            })}
+                        </tr>
+                    ); })}
                     </tbody>
                 </Table>
             </div>
         );
     }
 
+    /**
+     * Show the table of results with search bar and "Export results" buttons if there is data
+     * If not indicates "No result"
+     */
     return(
         <>
             <h1>All results</h1>
@@ -113,7 +129,7 @@ export function ResultsList() {
                     <ResultsTable tbodyData={filteredResults}></ResultsTable>
                 </>
                 :
-                <p>No results</p>
+                <p>No result</p>
             }
         </>
     )

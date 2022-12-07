@@ -23,27 +23,43 @@ import {
 import {synchronise} from "../config/SynchroFirebase";
 import moment from "moment";
 
-
+/**
+ * The navigation bar contains :
+ * - a title linked to home page
+ * - 3 items to navigate quickly trough application (Home, Results, Game)
+ * - a button "Synchronise"
+ * - a dropdown menu for Language (not implemented)
+ *
+ * language : use to select language of the application
+ * TODO: language is not implemented and not linked with "moment" for date and time display
+ * modalValidation : modal for validate synchronisation
+ * modalError : modal for error message (no internet connection)
+ * toast : toast at the end of synchronisation
+ * collapse : allows to see the menu in a responsive way
+ */
 export function NavBar(){
     const [language, setLanguage] = useState("en");
     const [modalValidation, setModalValidation] = useState(false);
-    const [modalError, setModalError] = useState(false);
-    const [toast, setToast] = useState(false);
     const toggleModalValidation = () => setModalValidation(!modalValidation);
+    const [modalError, setModalError] = useState(false);
     const toggleModalError = () => setModalError(!modalError);
+    const [toast, setToast] = useState(false);
     const toggleToast = () => setToast(!toast);
     const [collapse, setIsOpen] = useState(true);
 
-    const toggleNavbar = () => {
-        setIsOpen(!collapse);
-    }
-
+    /**
+     * Defines the display time of the toast
+     */
     useEffect(() => {
         if (toast) {
             setTimeout(() => toggleToast(), 3000)
         }
     }, [toast])
 
+    /**
+     * The function tryConnection allows you to test the internet connection when clicking on the "Synchronise" button.
+     * In case of success, it displays the modal for validation. If not, it displays the error mode.
+     */
     function tryConnection(){
         let condition = navigator.onLine ? 'online' : 'offline';
         if (condition === 'online') {
@@ -61,14 +77,13 @@ export function NavBar(){
         }
     }
 
-
    return (
-       <div>
+       <>
            <Navbar color="light" light  expand="md">
                <NavbarBrand href = "/">
                    Visual Acuity (VA) Screening App
                </NavbarBrand>
-               <NavbarToggler onClick={toggleNavbar} />
+               <NavbarToggler onClick={()=>setIsOpen(!collapse)} />
                <Collapse isOpen={!collapse} navbar className="float-end text-end">
                    <Nav className="me-auto px-3" navbar>
                        <NavItem>
@@ -86,7 +101,6 @@ export function NavBar(){
                                Game
                            </NavLink>
                        </NavItem>
-
                    </Nav>
                    <Button outline onClick={()=>tryConnection()}>Synchronise</Button>
                    <Nav navbar>
@@ -112,6 +126,7 @@ export function NavBar(){
                    </Nav>
                </Collapse>
            </Navbar>
+           {/** Modal and Toast zone */}
            <Modal centered={true} isOpen={modalValidation} toggle={toggleModalValidation}>
                <ModalHeader toggle={toggleModalValidation}>
                    Synchronisation
@@ -149,6 +164,6 @@ export function NavBar(){
                </ToastBody>
            </Toast>
            </div>
-       </div>
+       </>
    )
 }

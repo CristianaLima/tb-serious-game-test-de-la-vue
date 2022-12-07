@@ -14,6 +14,15 @@ import {
 import {useNavigate} from "react-router-dom";
 import {Button} from "reactstrap";
 
+/**
+ * Home page allows to initialize the local storage and display 2 buttons (View results and Start game)
+ *
+ * navigate : to move from one page to another
+ * newSchools : used to initialize LS_NEW_SCHOOLS if is null
+ * newStudents : used to initialize LS_NEW_STUDENTS if is null
+ * newTests : used to initialize LS_NEW_RESULTS if is null
+ * online : used to display error page if no internet connection
+ */
 export function Home(){
     const navigate = useNavigate();
     // Load local storage if exist or initialise it
@@ -28,10 +37,36 @@ export function Home(){
     });
     const [online, setOnline] = useState(navigator.onLine);
 
+    /**
+     * If no data exists already, initializes with an empty array the local storage values used for the data generated
+     * on this browser (LS_NEW_SCHOOLS, LS_NEW_STUDENTS, LS_NEW_RESULTS)
+     */
+    if (newSchools === null){
+        localStorage.setItem(LS_NEW_SCHOOLS, JSON.stringify([]));
+    }
+    if (newStudents === null){
+        localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify([]));
+    }
+    if (newTests === null){
+        localStorage.setItem(LS_NEW_RESULTS, JSON.stringify([]));
+    }
+
+    /**
+     * Called at page load, this useEffect retrieves data from the database if there is an internet connection.
+     *
+     * TODO
+     * The TO DO indicates that currently the only therapist in the database is loaded in the local storage
+     * (LS_CURRENT_THERAPIST). The id of the current therapist is used when creating a test.
+     * This value should be replaced by the id of the connected therapist once the connection is added to the app.
+     *
+     * WARNING
+     * If one of the values of the local storage has not been initialized by an empty array, it generates errors.
+     * The value "online" allows the user to be redirected to a page inviting him to try again.
+     * Without this, the application cannot work.
+     */
     useEffect(() => {
-        // If internet connection, load data from Firebase
         if (online === true) {
-            fetch('https://www.google.com/', { // Check for internet connectivity
+            fetch('https://www.google.com/', {
                 mode: 'no-cors',
             })
                 .then(() => {
@@ -44,18 +79,12 @@ export function Home(){
                     }
             }  )
         }
-        // Initialize new array in local storage if first opening
-        if (newSchools === null){
-            localStorage.setItem(LS_NEW_SCHOOLS, JSON.stringify([]));
-        }
-        if (newStudents === null){
-            localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify([]));
-        }
-        if (newTests === null){
-            localStorage.setItem(LS_NEW_RESULTS, JSON.stringify([]));
-        }
     }, []);
 
+    /**
+     * Shows a page with the navbar and 2 buttons if there were no problems loading the data.
+     * If not, shows the user a single button (Retry) to allow the data to load properly.
+     */
     return(
         <>
             {online ?
