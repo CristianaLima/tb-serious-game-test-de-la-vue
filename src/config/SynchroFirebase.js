@@ -4,10 +4,11 @@ import {addSchool, addStudent, addTest, getAllSchools, getAllStudents, getAllTes
 /**
  * Main method for synchronise data in local storage to Firebase
  */
-export async function synchronise(){
+export async function synchronise() {
     // Synchronise schools, students and tests then clear local storage from pushed data
-   await synchroniseSchools().then(sc => synchroniseStudents(sc).then(st => synchroniseTests(st)).then(() => {clearLocalStorage()}));
-
+    await synchroniseSchools().then(sc => synchroniseStudents(sc).then(st => synchroniseTests(st)).then(() => {
+        clearLocalStorage()
+    }));
     // Refresh data
     await stockDataInLocalStorage();
 }
@@ -15,7 +16,7 @@ export async function synchronise(){
 /**
  * Clear NEW values (schools, students, visual tests) in local storage
  */
-function clearLocalStorage () {
+function clearLocalStorage() {
     localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify([]));
     localStorage.setItem(LS_NEW_RESULTS, JSON.stringify([]));
     localStorage.setItem(LS_NEW_SCHOOLS, JSON.stringify([]));
@@ -29,11 +30,9 @@ export async function stockDataInLocalStorage() {
         localStorage.setItem(LS_SCHOOLS, JSON.stringify(schools))
         getAllStudents().then(students => {
             localStorage.setItem(LS_STUDENTS, JSON.stringify(students))
-            getAllTests(students).then(tests => localStorage.setItem(LS_RESULTS, JSON.stringify(tests)));
+            getAllTests().then(tests => localStorage.setItem(LS_RESULTS, JSON.stringify(tests)));
         });
     });
-
-    //TODO: if empty, error handling
 }
 
 /**
@@ -49,7 +48,7 @@ async function synchroniseSchools() {
             await addSchool({
                 name: newSchools[i].name
             }).then(r => { // Set idStudent from Firebase
-                newSchools[i]={...newSchools[i], id : r.id};
+                newSchools[i] = {...newSchools[i], id: r.id};
                 console.log("School " + newSchools[i].id + " added to Firebase");
             });
         }
@@ -67,7 +66,7 @@ async function synchroniseStudents(newSchoolsEdited) {
     if (newStudents != null) {
         for (let i = 0; i < newStudents.length; i++) {
             // Edit idSchool if it was a new school (from excel import)
-            if (newStudents[i].idSchool === undefined){
+            if (newStudents[i].idSchool === undefined) {
                 newStudents[i].idSchool = newSchoolsEdited.find((s) => {
                     return s.localId === newStudents[i].localIdSchool
                 }).id
@@ -79,8 +78,8 @@ async function synchroniseStudents(newSchoolsEdited) {
                 dob: newStudents[i].dob,
                 idSchool: newStudents[i].idSchool
             }).then(r => { // Set idStudent from Firebase
-                newStudents[i]={...newStudents[i], id : r.id};
-                console.log("Student " + newStudents[i].id + " added to Firebase")
+                newStudents[i] = {...newStudents[i], id: r.id};
+                console.log("Student " + newStudents[i].id + " added to Firebase");
             });
         }
     }
@@ -90,21 +89,21 @@ async function synchroniseStudents(newSchoolsEdited) {
 /**
  * Push new tests from local storage to Firebase
  */
-async function synchroniseTests(newStudentsEdited){
+async function synchroniseTests(newStudentsEdited) {
     //Get value in local storage
     const newTests = JSON.parse(localStorage.getItem(LS_NEW_RESULTS));
 
-    if (newTests != null){
+    if (newTests != null) {
         for (let i = 0; i < newTests.length; i++) {
             // Edit idStudent if it was a new student (from form)
-            if (newTests[i].idStudent === undefined){
+            if (newTests[i].idStudent === undefined) {
                 newTests[i].idStudent = newStudentsEdited.find((s) => {
                     return s.localId === newTests[i].localIdStudent
                 }).id
             }
             // Add new test to Firebase
-            await addTest( {
-                comprehension : newTests[i].comprehension,
+            await addTest({
+                comprehension: newTests[i].comprehension,
                 correction: newTests[i].correction,
                 vaLe: newTests[i].vaLe,
                 vaRe: newTests[i].vaRe,
@@ -114,10 +113,9 @@ async function synchroniseTests(newStudentsEdited){
                 idStudent: newTests[i].idStudent
             }).then(
                 r => { //
-                    newTests[i]={...newTests[i], id : r.id};
-                    console.log("Test " + newTests[i].id + " added to Firebase")
+                    newTests[i] = {...newTests[i], id: r.id};
+                    console.log("Test " + newTests[i].id + " added to Firebase");
                 });
         }
     }
-
 }

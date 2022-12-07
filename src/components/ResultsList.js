@@ -6,6 +6,7 @@ import moment from "moment/moment";
 import {CSVLink} from 'react-csv';
 
 export default ResultsList;
+
 /**
  * The list of visual acuity test results is construct with data in local storage (LS_RESULTS and LS_NEW_RESULTS)
  *
@@ -69,22 +70,24 @@ function ResultsList() {
                         <th style={{width: "15%"}} key={"fullName"}>Fullname</th>
                         <th key={"dob"}>DOB</th>
                         <th key={"dateTest"}>Date</th>
-                        <th key={"correction"}>Glasses </th>
-                        <th key={"comprehension"}>Understood </th>
-                        <th key={"rounds"}>Rounds </th>
+                        <th key={"correction"}>Glasses</th>
+                        <th key={"comprehension"}>Understood</th>
+                        <th key={"rounds"}>Rounds</th>
                         <th key={"vaRe"}>vaRe</th>
                         <th key={"vaLe"}>vaLe</th>
                         <th key={"synchronised"}>Synchronised</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {tbodyData.map((item, index) => { return (
-                        <tr key={index}>
-                            {Object.values(item).map((value, index) => {
-                                return (<td key={index}>{value}</td>)
-                            })}
-                        </tr>
-                    ); })}
+                    {tbodyData.map((item, index) => {
+                        return (
+                            <tr key={index}>
+                                {Object.values(item).map((value, index) => {
+                                    return (<td key={index}>{value}</td>)
+                                })}
+                            </tr>
+                        );
+                    })}
                     </tbody>
                 </Table>
             </div>
@@ -95,33 +98,39 @@ function ResultsList() {
      * Show the table of results with 3 search fields and "Export results" buttons if there is data
      * If not indicates "No result"
      */
-    return(
+    return (
         <>
             <h1>All results</h1>
             {allResults.length > 0 ?
                 <>
                     <Row className="row-cols-lg-auto g-3 align-items-center"
-                         style={{ display: "flex", justifyContent: "end", alignItems: "flex-end"}}>
+                         style={{display: "flex", justifyContent: "end", alignItems: "flex-end"}}>
                         <label>
                             School:
                             <input type="text" className="m-3" placeholder="Search..."
-                                   onChange={(e) => {setFilterSchool(e.target.value)}}></input>
+                                   onChange={(e) => {
+                                       setFilterSchool(e.target.value)
+                                   }}></input>
                         </label>
                         <label>
                             Class :
                             <input type="text" className="m-3" placeholder="Search..."
-                                   onChange={(e) => {setFilterClass(e.target.value)}}>
+                                   onChange={(e) => {
+                                       setFilterClass(e.target.value)
+                                   }}>
                             </input>
                         </label>
                         <label>
                             Fullname :
                             <input type="text" className="m-3" placeholder="Search..."
-                                   onChange={(e) => {setFilterFullName(e.target.value)}}>
+                                   onChange={(e) => {
+                                       setFilterFullName(e.target.value)
+                                   }}>
                             </input>
                         </label>
                         <CSVLink
                             data={resultsFiltered} separator={";"}
-                            filename={"Results"+ moment(Date.now()).format('YYYY-MM-DD')+".csv"}>
+                            filename={"Results" + moment(Date.now()).format('YYYY-MM-DD') + ".csv"}>
                             <Button color="primary">
                                 Export results
                             </Button>
@@ -133,5 +142,5 @@ function ResultsList() {
                 <p>No result</p>
             }
         </>
-    )
+    );
 }

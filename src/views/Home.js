@@ -15,6 +15,7 @@ import {useNavigate} from "react-router-dom";
 import {Button} from "reactstrap";
 
 export default Home;
+
 /**
  * Home page allows to initialize the local storage and display 2 buttons (View results and Start game)
  *
@@ -24,7 +25,7 @@ export default Home;
  * newTests : used to initialize LS_NEW_RESULTS if is null
  * online : used to display error page if no internet connection
  */
-function Home(){
+function Home() {
     const navigate = useNavigate();
     // Load local storage if exist or initialise it
     const [newSchools] = useState(() => {
@@ -42,13 +43,13 @@ function Home(){
      * If no data exists already, initializes with an empty array the local storage values used for the data generated
      * on this browser (LS_NEW_SCHOOLS, LS_NEW_STUDENTS, LS_NEW_RESULTS)
      */
-    if (newSchools === null){
+    if (newSchools === null) {
         localStorage.setItem(LS_NEW_SCHOOLS, JSON.stringify([]));
     }
-    if (newStudents === null){
+    if (newStudents === null) {
         localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify([]));
     }
-    if (newTests === null){
+    if (newTests === null) {
         localStorage.setItem(LS_NEW_RESULTS, JSON.stringify([]));
     }
 
@@ -71,14 +72,14 @@ function Home(){
                 mode: 'no-cors',
             })
                 .then(() => {
-                    //TODO: adapt when login
+                    //TODO: adapt when login implemented
                     getTherapistById("X6ITtB97ZhCqf4Uw3yhH").then(t => localStorage.setItem(LS_CURRENT_THERAPIST, JSON.stringify(t)));
-                    stockDataInLocalStorage().then(() => console.log("Data load"))
+                    stockDataInLocalStorage().then(() => console.log("Data load"));
                 }).catch(() => {
-                    if (localStorage.getItem(LS_RESULTS)===null || localStorage.getItem(LS_STUDENTS)===null || localStorage.getItem(LS_SCHOOLS)===null){
-                        setOnline(false)
-                    }
-            }  )
+                if (localStorage.getItem(LS_RESULTS) === null || localStorage.getItem(LS_STUDENTS) === null || localStorage.getItem(LS_SCHOOLS) === null) {
+                    setOnline(false);
+                }
+            })
         }
     }, []);
 
@@ -86,7 +87,7 @@ function Home(){
      * Shows a page with the navbar and 2 buttons if there were no problems loading the data.
      * If not, shows the user a single button (Retry) to allow the data to load properly.
      */
-    return(
+    return (
         <>
             {online ?
                 <div className="Home">
@@ -112,5 +113,5 @@ function Home(){
                 </div>
             }
         </>
-    )
+    );
 }

@@ -27,20 +27,20 @@ export const SS_WEAR_GLASSES = "wearGlasses";
 export const MAXREP = 8;
 
 export default App;
+
 /**
  * All accessible page urls
  */
 function App() {
-
     return (
         <div className="App">
             <Routes>
-                <Route path="/" element={<Home />}/>
-                <Route path="/viewResults" element={<ViewResults />}/>
-                <Route path="/startGame" element={<StartGame />}/>
-                <Route path="/studentForm" element={<StudentForm />}/>
-                <Route path="/acuityTestController" element={<AcuityTestController />}/>
-                <Route path="/acuityTestScreen" element={<AcuityTestScreen />}/>
+                <Route path="/" element={<Home/>}/>
+                <Route path="/viewResults" element={<ViewResults/>}/>
+                <Route path="/startGame" element={<StartGame/>}/>
+                <Route path="/studentForm" element={<StudentForm/>}/>
+                <Route path="/acuityTestController" element={<AcuityTestController/>}/>
+                <Route path="/acuityTestScreen" element={<AcuityTestScreen/>}/>
             </Routes>
         </div>
     );

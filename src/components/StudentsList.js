@@ -6,6 +6,7 @@ import {Table} from "reactstrap";
 import moment from "moment";
 
 export default StudentsList;
+
 /**
  * Show 2 table: one with students in LS_STUDENTS, the other with LS_NEW_STUDENTS
  *
@@ -20,7 +21,7 @@ export default StudentsList;
  * studentsFiltered : data from studentsCompleted after the filters (school, class, fullname) applied
  * newStudentsFiltered : data from newStudentsCompleted after the filters (school, class, fullname) applied
  */
-function StudentsList(){
+function StudentsList() {
     const navigate = useNavigate();
     const [students] = useState(JSON.parse(localStorage.getItem(LS_STUDENTS)));
     const [newStudents] = useState(JSON.parse(localStorage.getItem(LS_NEW_STUDENTS)));
@@ -75,7 +76,7 @@ function StudentsList(){
      */
     function StudentsFromFirebase() {
         if (students.length > 0) {
-            return  <>
+            return <>
                 <h3>Students from school roster</h3>
                 <StudentTable tbodyData={studentsFiltered}></StudentTable>
             </>;
@@ -123,9 +124,12 @@ function StudentsList(){
                                 navigate('/studentForm');
                             }}>
                                 {Object.values(item).map((value, index) => {
-                                    switch(index) {
-                                        case 0: return;
-                                        default: return <td key={index}>{value}</td>}
+                                    switch (index) {
+                                        case 0:
+                                            return;
+                                        default:
+                                            return <td key={index}>{value}</td>
+                                    }
                                 })}
                             </tr>
                         );
@@ -140,7 +144,7 @@ function StudentsList(){
      * Show two tables of students with 3 search fields if there is data
      * If not (in both), indicates "No student"
      */
-    return(
+    return (
         <>
             <h1>Students</h1>
             {students.length === 0 && newStudents.length === 0 ?
@@ -150,18 +154,24 @@ function StudentsList(){
                     <label>
                         School:
                         <input type="text" className="m-3" placeholder="Search..."
-                               onChange={(e) => {setFilterSchool(e.target.value)}}></input>
+                               onChange={(e) => {
+                                   setFilterSchool(e.target.value)
+                               }}></input>
                     </label>
                     <label>
                         Class :
                         <input type="text" className="m-3" placeholder="Search..."
-                               onChange={(e) => {setFilterClass(e.target.value)}}>
+                               onChange={(e) => {
+                                   setFilterClass(e.target.value)
+                               }}>
                         </input>
                     </label>
                     <label>
                         Fullname :
                         <input type="text" className="m-3" placeholder="Search..."
-                               onChange={(e) => {setFilterFullName(e.target.value)}}>
+                               onChange={(e) => {
+                                   setFilterFullName(e.target.value)
+                               }}>
                         </input>
                     </label>
                     <StudentsFromFirebase/>

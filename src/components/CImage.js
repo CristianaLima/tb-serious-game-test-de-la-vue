@@ -6,6 +6,7 @@ import jsQuestPlus, {func_resp0, func_resp1} from "../algo/jsQuestPlus";
 import {Button} from "reactstrap";
 
 export default CImage;
+
 /**
  * CImage is called by AcuityTestScreen to display the Landolt C and the results of the test
  *
@@ -51,7 +52,7 @@ function CImage() {
     useEffect(() => {
         window.dispatchEvent(new Event("storage"));
         window.addEventListener("storage", () => {
-                setResponse(JSON.parse(localStorage.getItem(LS_C_SELECTED)))
+                setResponse(JSON.parse(localStorage.getItem(LS_C_SELECTED)));
             }
         );
     }, []);
@@ -81,10 +82,10 @@ function CImage() {
                     localIdStudent: JSON.parse(localStorage.getItem(LS_STUDENT)).localId,
                     dateTest: Date.now(),
                     correction: sessionStorage.getItem(SS_WEAR_GLASSES),
-                    comprehension: true,
+                    comprehension: true, //TODO: to be implemented when Comprehension Test is available
                     rounds: 1,
                     vaRe: vaEyes[vaEyes.length - 1],
-                    vaLe: vaEyes[vaEyes.length - 1],
+                    vaLe: vaEyes[vaEyes.length - 1], // TODO: to be implemented when the test is performed twice per person (specifying the eye)
                     idTherapist: JSON.parse(localStorage.getItem(LS_CURRENT_THERAPIST)).id,
                 }])
                 setSize(0); // C disappear
@@ -92,22 +93,22 @@ function CImage() {
             default : {
                 const stim = jsqp.getStimParams()
                 if (response.angle.toString() === angleArray[response.tour - 1].toString()) {
-                    jsqp.update(stim, 1) // true response
+                    jsqp.update(stim, 1); // true response
                 } else {
-                    jsqp.update(stim, 0) // false response
+                    jsqp.update(stim, 0); // false response
                 }
-                const stimParams = jsqp.getStimParams() // init -18, --> -40 if correct and --> 0 if false
+                const stimParams = jsqp.getStimParams(); // init -18, --> -40 if correct and --> 0 if false
 
                 // Algo jsQuestPLus reaction
-                setVaEyes(vaEyes => [...vaEyes, stimParams / (40 * 1.3) + 1])
-                setParams(params => [...params, stimParams]) // for ShowValuesForDev()
+                setVaEyes(vaEyes => [...vaEyes, stimParams / (40 * 1.3) + 1]);
+                setParams(params => [...params, stimParams]); // for ShowValuesForDev()
 
                 // Next size and angle
-                setSize((stimParams / 40 + 1) * 100)
-                setAngle(angleArray[response.tour])
+                setSize((stimParams / 40 + 1) * 100);
+                setAngle(angleArray[response.tour]);
 
                 if (response.tour === MAXREP) {
-                    setResponse({...response, tour: MAXREP + 1})
+                    setResponse({...response, tour: MAXREP + 1});
                 }
             }
         }
@@ -153,7 +154,7 @@ function CImage() {
                 }
             }
         }
-        return array
+        return array;
     }
 
     /**
@@ -165,22 +166,22 @@ function CImage() {
      */
     function ShowValuesForDev() {
         return (
-            <div className="border"  style={{width: '500px', margin: 'auto'}}>
+            <div className="border" style={{width: '500px', margin: 'auto'}}>
                 <h5>Last result : </h5> <p><b>Origin </b> {jsqp.getStimParams()} <br/><b> Scaled </b>
-                    {(jsqp.getStimParams() / (40 * 1.3) + 1).toPrecision(2)}</p>
+                {(jsqp.getStimParams() / (40 * 1.3) + 1).toPrecision(2)}</p>
                 <h5>Last estimates :</h5>
                 <table align={'center'}>
                     <tbody>
                     <tr>
                         <td className="fw-bold">Mode</td>
                         {jsqp.getEstimates().map((value, index) => {
-                            return <td key={'mode'+index} style={{width: '50px'}}>{value}</td>
+                            return <td key={'mode' + index} style={{width: '50px'}}>{value}</td>
                         })}
                     </tr>
                     <tr>
                         <td className="fw-bold">Mean</td>
                         {jsqp.getEstimates('mean').map((value, index) => {
-                            return <td key={'mean'+index} style={{width: '50px'}}>{value}</td>
+                            return <td key={'mean' + index} style={{width: '50px'}}>{value}</td>
                         })}
                     </tr>
                     </tbody>
@@ -190,7 +191,7 @@ function CImage() {
                     <tbody>
                     <tr>
                         {jsqp.getSDs().map((value, index) => {
-                            return <td key={'deviation'+index} style={{width: '100px'}}>{value.toPrecision(6)}</td>
+                            return <td key={'deviation' + index} style={{width: '100px'}}>{value.toPrecision(6)}</td>
                         })}
                     </tr>
                     </tbody>
@@ -201,19 +202,19 @@ function CImage() {
                     <tr>
                         <td className="fw-bold">Turn</td>
                         {params.map((value, index) => {
-                            return <td key={'turn'+index} style={{width: '50px'}}>{index}</td>
+                            return <td key={'turn' + index} style={{width: '50px'}}>{index}</td>
                         })}
                     </tr>
                     <tr>
                         <td className="fw-bold">Origin</td>
                         {params.map((value, index) => {
-                            return <td key={'origin'+index} style={{width: '50px'}}>{value.toPrecision(2)}</td>
+                            return <td key={'origin' + index} style={{width: '50px'}}>{value.toPrecision(2)}</td>
                         })}
                     </tr>
                     <tr>
                         <td className="fw-bold">Scaled</td>
                         {vaEyes.map((value, index) => {
-                            return <td key={'origin'+index} style={{width: '50px'}}>{value.toPrecision(2)}</td>
+                            return <td key={'origin' + index} style={{width: '50px'}}>{value.toPrecision(2)}</td>
                         })}
                     </tr>
                     </tbody>

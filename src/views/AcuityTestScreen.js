@@ -4,6 +4,7 @@ import CImage from "../components/CImage";
 import {LS_STUDENT} from "./App";
 
 export default AcuityTestScreen;
+
 /**
  * The page ./acuityTestScreen display the navbar and ...
  * During the test: the student's name + cImage (he results of the algorithm and the C of landolt)
@@ -12,7 +13,7 @@ export default AcuityTestScreen;
  *
  * student : student displayed at the top of the page
  */
-function AcuityTestScreen(){
+function AcuityTestScreen() {
     const [student, setStudent] = useState({
         fullName: "",
         class: ""
@@ -25,10 +26,10 @@ function AcuityTestScreen(){
         setStudent(JSON.parse(localStorage.getItem(LS_STUDENT)))
     }, []);
 
-    return(
+    return (
         <>
             <NavBar/>
-            {student == null ? <></> :  <div>Fullname: {student.fullName} - Class: {student.class} </div>}
+            {student == null ? <></> : <div>Fullname: {student.fullName} - Class: {student.class} </div>}
             <CImage/>
         </>
     )

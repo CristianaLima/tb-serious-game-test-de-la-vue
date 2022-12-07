@@ -6,6 +6,7 @@ import moment from "moment/moment";
 import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 
 export default StudentForm;
+
 /**
  * The page ./studentForm display the navbar and the student form, locked if it exists otherwise editable
  *
@@ -26,7 +27,7 @@ function StudentForm() {
      * Update local storage each time newStudents gets updated
      */
     useEffect(() => {
-            localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify(newStudents));
+        localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify(newStudents));
     }, [newStudents]);
 
     /**
@@ -42,7 +43,7 @@ function StudentForm() {
      */
     function handleSubmit(e) {
         e.preventDefault(); // prevents browser refresh
-        setModal(!modal)
+        setModal(!modal);
     }
 
     /**
@@ -50,13 +51,13 @@ function StudentForm() {
      * Then go to test screen
      * @param wearGlasses
      */
-    function startGame(wearGlasses){
+    function startGame(wearGlasses) {
         if (student.id === undefined && student.localId === undefined) {
-            setStudent({...student,  localId: Math.round(Date.now() / 1000).toString()});
-            addStudentToArray({...student,  localId: Math.round(Date.now() / 1000).toString()})
+            setStudent({...student, localId: Math.round(Date.now() / 1000).toString()});
+            addStudentToArray({...student, localId: Math.round(Date.now() / 1000).toString()});
         }
         sessionStorage.setItem(SS_WEAR_GLASSES, wearGlasses);
-        window.open('/acuityTestScreen', '_self')
+        window.open('/acuityTestScreen', '_self');
         window.open('/acuityTestController', '_blank');
     }
 
@@ -66,7 +67,7 @@ function StudentForm() {
      */
     function addStudentToArray(student) {
         const exist = newStudents.some(c => (c.localId === student.localId));
-        if (exist===false && !newStudents.includes(student)){
+        if (exist === false && !newStudents.includes(student)) {
             setNewStudents([...newStudents, student]);
         }
     }
@@ -75,27 +76,31 @@ function StudentForm() {
      *  Handle change in form
      */
     function handleChangeSchool(e) {
-        setStudent({...student, idSchool: e.target.value })
+        setStudent({...student, idSchool: e.target.value});
     }
+
     function handleChangeFullName(e) {
-        setStudent({...student, fullName: e.target.value })
+        setStudent({...student, fullName: e.target.value});
     }
+
     function handleChangeClass(e) {
-        setStudent({...student, class: e.target.value })
+        setStudent({...student, class: e.target.value});
     }
+
     function handleChangeDateOfBirth(e) {
-        setStudent({...student, dob: e.target.value })
+        setStudent({...student, dob: e.target.value});
     }
 
     return (
         <>
             <NavBar/>
-            <div  className="px-3 m-auto w-75 my-2">
-                <h1>{student.id !== undefined || student.localId !== undefined ? "Ready?" : "New student" }</h1>
+            <div className="px-3 m-auto w-75 my-2">
+                <h1>{student.id !== undefined || student.localId !== undefined ? "Ready?" : "New student"}</h1>
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="school">School</label>
-                        <select disabled={student.id !== undefined || student.localId !== undefined} className="form-control" id="school" onChange={handleChangeSchool}>
+                        <select disabled={student.id !== undefined || student.localId !== undefined}
+                                className="form-control" id="school" onChange={handleChangeSchool}>
                             {schools.map((s) => (
                                 <option key={s.id} value={s.id}>{s.name}</option>
                             ))}
@@ -103,16 +108,22 @@ function StudentForm() {
                     </div>
                     <div className="form-group">
                         <label htmlFor="fullName">Full name</label>
-                        <input disabled={student.id !== undefined || student.localId !== undefined} required id="fullName" type="text" className="form-control" value={student.fullName} onChange={handleChangeFullName} />
+                        <input disabled={student.id !== undefined || student.localId !== undefined} required
+                               id="fullName" type="text" className="form-control" value={student.fullName}
+                               onChange={handleChangeFullName}/>
                     </div>
                     <div className="form-group">
                         <label htmlFor="class">Class</label>
-                        <input disabled={student.id !== undefined || student.localId !== undefined} required id="class" type="text" className="form-control" value={student.class} onChange={handleChangeClass} />
+                        <input disabled={student.id !== undefined || student.localId !== undefined} required id="class"
+                               type="text" className="form-control" value={student.class} onChange={handleChangeClass}/>
                     </div>
                     <div className="form-group">
                         <label htmlFor="dob">Date of birth</label>
                         {/* need format YYYY-MM-DD, display depends on browser language*/}
-                        <input disabled={student.id !== undefined || student.localId !== undefined} required id="dob" type="date" className="form-control"  value={student.dob === "" ? "" : moment(student.dob).format('YYYY-MM-DD')} onChange={handleChangeDateOfBirth} />
+                        <input disabled={student.id !== undefined || student.localId !== undefined} required id="dob"
+                               type="date" className="form-control"
+                               value={student.dob === "" ? "" : moment(student.dob).format('YYYY-MM-DD')}
+                               onChange={handleChangeDateOfBirth}/>
                     </div>
                     <Button className="m-5" color="danger" onClick={() => navigate('/startGame')}>
                         Back to student list
@@ -126,10 +137,10 @@ function StudentForm() {
                     </ModalHeader>
                     <ModalBody>Is the patient wearing prescription glasses now ?</ModalBody>
                     <ModalFooter>
-                        <Button color="success" onClick={()=>startGame(true)}>
+                        <Button color="success" onClick={() => startGame(true)}>
                             Yes
                         </Button>
-                        <Button color="danger" onClick={()=>startGame(false)}>
+                        <Button color="danger" onClick={() => startGame(false)}>
                             No
                         </Button>
                     </ModalFooter>

@@ -14,46 +14,71 @@ export const firebaseApp = firebase.initializeApp(firebaseConfig);
 export const firestore = getFirestore();
 
 const db = getFirestore(firebaseApp);
-
 const studentsDbRef = collection(db, "students")
 const therapistDbRef = collection(db, "therapists")
 const schoolsDbRef = collection(db, "schools")
 const testsDbRef = collection(db, "tests")
 
+/**
+ * Transform date stringified in local storage to a date for Firebase
+ * @param timeToChange
+ * @returns {Date}
+ */
 function dateConverter(timeToChange) {
     let date;
-    date=(new Date(timeToChange))
+    date = (new Date(timeToChange))
     return date;
 }
 
-//Add Student
-export async function addSchool(e){
+/**
+ * Add school in Firebase
+ * @param e
+ * @returns {Promise<DocumentReference<DocumentData>>}
+ */
+export async function addSchool(e) {
     return await addDoc(schoolsDbRef, e);
-    //TODO: error handling
 }
 
-//Add Student
-export async function addStudent(e){
+/**
+ * Add student in Firebase
+ * @param e
+ * @returns {Promise<DocumentReference<DocumentData>>}
+ */
+export async function addStudent(e) {
     e.dob = dateConverter(e.dob);
     return await addDoc(studentsDbRef, e);
-    //TODO: error handling
 }
 
-//Get all schools
-export async function getAllSchools(){
-        const docsSnap = await getDocs(schoolsDbRef);
-        let schools = [];
-        docsSnap.forEach(doc => {
-                const school = { ...doc.data(), id: doc.id}
-                schools.push(school);
-            }
-        );
-        return schools;
-    //TODO: error handling
+/**
+ * Add test/result in Firebase
+ * @param e
+ * @returns {Promise<DocumentReference<DocumentData>>}
+ */
+export async function addTest(e) {
+    e.dateTest = dateConverter(e.dateTest);
+    return await addDoc(testsDbRef, e);
 }
 
-//Get all students
-export async function getAllStudents(){
+/**
+ * Get all schools from Firebase
+ * @returns {Promise<*[]>}
+ */
+export async function getAllSchools() {
+    const docsSnap = await getDocs(schoolsDbRef);
+    let schools = [];
+    docsSnap.forEach(doc => {
+            const school = {...doc.data(), id: doc.id}
+            schools.push(school);
+        }
+    );
+    return schools;
+}
+
+/**
+ * Get all Students from Firebase
+ * @returns {Promise<*[]>}
+ */
+export async function getAllStudents() {
     const docsSnap = await getDocs(studentsDbRef);
     let students = [];
     docsSnap.forEach(doc => {
@@ -64,21 +89,23 @@ export async function getAllStudents(){
                 class: student.class,
                 fullName: student.fullName,
                 dob: moment(dob).format('YYYY-MM-DD')
-                };
-            const studentWithId = { ...completeStudent, id: doc.id}
+            };
+            const studentWithId = {...completeStudent, id: doc.id}
             students.push(studentWithId);
         }
     );
     return students;
-    //TODO: error handling
 }
 
-//Get all tests
-export async function getAllTests(){
+/**
+ * Get all tests/results from Firebase
+ * @returns {Promise<*[]>}
+ */
+export async function getAllTests() {
     const docsSnap = await getDocs(testsDbRef);
     let tests = [];
     docsSnap.forEach(doc => {
-            const test =  doc.data();
+            const test = doc.data();
             const date = test.dateTest.toDate();
             const testWithId = {
                 id: doc.id,
@@ -90,60 +117,62 @@ export async function getAllTests(){
                 rounds: test.rounds,
                 vaRe: test.vaRe,
                 vaLe: test.vaLe,
-                idTherapist: test.idTherapist};
+                idTherapist: test.idTherapist
+            };
             tests.push(testWithId);
         }
     );
     return tests;
-    //TODO: error handling
 }
 
-export async function addTest(e){
-    e.dateTest = dateConverter(e.dateTest);
-    return await addDoc(testsDbRef, e);
-    //TODO: error handlling
-}
-
-export async function getTestsById(id){
+/**
+ * Get test/result information by ID from Firebase
+ * @param id
+ * @returns {Promise<{[p: string]: any, id: string}>}
+ */
+export async function getTestsById(id) {
     const docRef = doc(testsDbRef, id);
     const docSnap = await getDoc(docRef);
-    if(docSnap.exists()) {
+    if (docSnap.exists()) {
         return {...docSnap.data(), id: docSnap.id};
-    } else {
-        console.log("Document does not exist")
-        //TODO: error handlling
     }
 }
 
-export async function getStudentById(id){
-        const docRef = doc(studentsDbRef, id);
-        const docSnap = await getDoc(docRef);
-        if(docSnap.exists()) {
-            return {...docSnap.data(), id: docSnap.id};
-        } else {
-            console.log("Document does not exist")
-            //TODO: error handlling
-        }
+/**
+ * Get student information by ID from Firebase
+ * @param id
+ * @returns {Promise<{[p: string]: any, id: string}>}
+ */
+export async function getStudentById(id) {
+    const docRef = doc(studentsDbRef, id);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+        return {...docSnap.data(), id: docSnap.id};
+    }
 }
 
-export async function getTherapistById(id){
+/**
+ * Get therapist information by ID from Firebase
+ * @param id
+ * @returns {Promise<{[p: string]: any, id: string}>}
+ */
+export async function getTherapistById(id) {
     const docRef = doc(therapistDbRef, id);
     const docSnap = await getDoc(docRef);
-    if(docSnap.exists()) {
+    if (docSnap.exists()) {
         return {...docSnap.data(), id: docSnap.id};
-    } else {
-        console.log("Document does not exist")
-        //TODO: error handlling
     }
 }
 
-export async function getSchoolById(id){
+/**
+ * Get school information by ID from Firebase
+ * @param id
+ * @returns {Promise<{[p: string]: any, id: string}>}
+ */
+export async function getSchoolById(id) {
     const docRef = doc(schoolsDbRef, id);
     const docSnap = await getDoc(docRef);
-    if(docSnap.exists()) {
+    if (docSnap.exists()) {
         return {...docSnap.data(), id: docSnap.id};
-    } else {
-        console.log("Document does not exist")
-        //TODO: error handlling
     }
 }
