@@ -101,7 +101,7 @@ export function CImage() {
 
                 // Algo jsQuestPLus reaction
                 setResults(results => [...results, stimParams / (40 * 1.3) + 1])
-                setParams(params => [...params, stimParams])
+                setParams(params => [...params, stimParams]) //this line if for ShowValuesForDev()
                 setSize((stimParams / 40 + 1) * 100)
 
                 // Rotate C
@@ -157,6 +157,11 @@ export function CImage() {
         return array
     }
 
+    /**
+     * This method is not for the app on itself, but it is a help for the devs who work on the algorithm, showing the results and parameters
+     * The function can be added or removed in the return part of CImage.js
+     * In the actual state, the algo works with all their default params, and the results are scaled from (-40;0) to (-0.3;1)
+     */
     function ShowValuesForDev() {
         return (
             <div>
@@ -165,7 +170,7 @@ export function CImage() {
 
 
                 <table align={'center'}>
-                    <th colSpan={8}>All values :</th>
+                    <th colSpan={8}>All results :</th>
                     <tbody>
                     <tr>
                         <td>Turn</td>
@@ -205,12 +210,12 @@ export function CImage() {
                 </table>
 
                 <table align={'center'}>
-                    <thead>
-                    <th>Standard Deviations :</th>
-                    </thead>
-                    {jsqp.getSDs().map((value) => {
-                        return <tr>{value}</tr>
-                    })}
+                    <th colSpan={8}>Standard Deviations :</th>
+                    <tr>
+                        {jsqp.getSDs().map((value) => {
+                            return <td style={{width: '100px'}}>{value.toPrecision(6)}</td>
+                        })}
+                    </tr>
                 </table>
             </div>
         );
