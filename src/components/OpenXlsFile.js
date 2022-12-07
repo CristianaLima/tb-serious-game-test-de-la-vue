@@ -29,7 +29,7 @@ function OpenXlsFile(file){
     promise.then((data)=>{
         let lsNewStudents =  JSON.parse(localStorage.getItem(LS_NEW_STUDENTS));
         let lsNewSchools =  JSON.parse(localStorage.getItem(LS_NEW_SCHOOLS));
-        let lsSchools =  JSON.parse(localStorage.getItem(LS_SCHOOLS)).concat(JSON.parse(localStorage.getItem(LS_NEW_SCHOOLS)));
+        let allLsSchools =  JSON.parse(localStorage.getItem(LS_SCHOOLS)).concat(lsNewSchools);
         let studentsToAdd = [];
 
         const classNum = data[3].__EMPTY_19;// get the class number
@@ -55,7 +55,7 @@ function OpenXlsFile(file){
 
         /** Add information of the school */
         // If a school already exists with the same name in the database, retrieve its id
-        const school = lsSchools.find((s) => {
+        const school = allLsSchools.find((s) => {
             return s.name === schoolName;
         });
         if (school !== undefined){
@@ -68,7 +68,7 @@ function OpenXlsFile(file){
                     }
                 }
             }
-        // If not
+        // If not, create a new schools
         } else {
             let localIdSchool = Math.round(Date.now() / 1000);
             localStorage.setItem(LS_NEW_SCHOOLS,JSON.stringify([...lsNewSchools,{name: schoolName, localId: localIdSchool}]));
