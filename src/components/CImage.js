@@ -164,13 +164,34 @@ export function CImage() {
      */
     function ShowValuesForDev() {
         return (
-            <div>
-                <h5>Last param : {jsqp.getStimParams()} (scaled
-                    : {(jsqp.getStimParams() / (40 * 1.3) + 1).toPrecision(2)})</h5>
-
-
+            <div className="border"  style={{width: '500px', margin: 'auto'}}>
+                <h5>Last result : </h5> <p>Origin: {jsqp.getStimParams()} <br/>Scaled
+                    : {(jsqp.getStimParams() / (40 * 1.3) + 1).toPrecision(2)}</p>
                 <table align={'center'}>
-                    <th colSpan={8}>All results :</th>
+                    <th colSpan={5}><h5>Last estimates :</h5></th>
+                    <tr>
+                        <td>Mode</td>
+                        {jsqp.getEstimates().map(value => {
+                            return <td style={{width: '50px'}}>{value}</td>
+                        })}
+                    </tr>
+                    <tr>
+                        <td>Mean</td>
+                        {jsqp.getEstimates('mean').map(value => {
+                            return <td style={{width: '50px'}}>{value}</td>
+                        })}
+                    </tr>
+                </table>
+                <table align={'center'}>
+                    <th colSpan={8}><h5>Last standard Deviations :</h5></th>
+                    <tr>
+                        {jsqp.getSDs().map((value) => {
+                            return <td style={{width: '100px'}}>{value.toPrecision(6)}</td>
+                        })}
+                    </tr>
+                </table>
+                <h5>All results :</h5>
+                <table align={'center'}>
                     <tbody>
                     <tr>
                         <td>Turn</td>
@@ -192,31 +213,6 @@ export function CImage() {
                     </tr>
                     </tbody>
                 </table>
-
-                <table align={'center'}>
-                    <th colSpan={5}>Estimates :</th>
-                    <tr>
-                        <td>Mode</td>
-                        {jsqp.getEstimates().map(value => {
-                            return <td style={{width: '50px'}}>{value}</td>
-                        })}
-                    </tr>
-                    <tr>
-                        <td>Mean</td>
-                        {jsqp.getEstimates('mean').map(value => {
-                            return <td style={{width: '50px'}}>{value}</td>
-                        })}
-                    </tr>
-                </table>
-
-                <table align={'center'}>
-                    <th colSpan={8}>Standard Deviations :</th>
-                    <tr>
-                        {jsqp.getSDs().map((value) => {
-                            return <td style={{width: '100px'}}>{value.toPrecision(6)}</td>
-                        })}
-                    </tr>
-                </table>
             </div>
         );
     }
@@ -235,11 +231,7 @@ export function CImage() {
                             position: 'absolute', left: '50%', top: '50%',
                         }}
                     />
-
-                    <ShowValuesForDev/>
-
                 </>
-
                 : <>
                     <Button className="m-5" size="lg" color="danger" onClick={() => navigate('/')}>
                         Back to home
@@ -251,6 +243,7 @@ export function CImage() {
                         Start game
                     </Button>
                 </>}
+            <ShowValuesForDev/>
         </div>
     );
 }
