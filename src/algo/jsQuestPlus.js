@@ -1,4 +1,9 @@
-// Taken on TODO
+// Taken on https://github.com/kurokida/jsQuestPlus
+/*
+Kuroki, D., & Pronk, T. (2022). jsQuestPlus: A JavaScript implementation of the QUEST+ method for estimating
+psychometric function parameters in online experiments.
+Behavior Research Methods. https://doi.org/10.3758/s13428-022-01948-8
+ */
 // This project is inspired by the following two projects.
 //  https://github.com/petejonze/QuestPlus
 //  https://github.com/BrainardLab/mQUESTPlus

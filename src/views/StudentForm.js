@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {LS_STUDENT, LS_SCHOOLS, LS_NEW_STUDENTS, SS_WEAR_GLASSES} from "./App";
+import {LS_NEW_STUDENTS, LS_SCHOOLS, LS_STUDENT, SS_WEAR_GLASSES} from "./App";
 import {useNavigate} from "react-router-dom";
 import {NavBar} from "../components/NavBar";
 import moment from "moment/moment";

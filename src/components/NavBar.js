@@ -1,24 +1,24 @@
 import React, {useEffect, useState} from 'react';
 import {
-    Navbar,
-    NavbarBrand,
-    DropdownMenu,
-    DropdownItem,
-    DropdownToggle,
     Button,
+    Collapse,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    Modal,
+    ModalBody,
     ModalFooter,
     ModalHeader,
-    ModalBody,
-    Modal,
-    Toast,
-    ToastHeader,
-    ToastBody,
     Nav,
-    UncontrolledDropdown,
-    Collapse,
+    Navbar,
+    NavbarBrand,
     NavbarToggler,
+    NavItem,
     NavLink,
-    NavItem, NavbarText
+    Toast,
+    ToastBody,
+    ToastHeader,
+    UncontrolledDropdown
 } from "reactstrap";
 import {synchronise} from "../config/SynchroFirebase";
 import moment from "moment";

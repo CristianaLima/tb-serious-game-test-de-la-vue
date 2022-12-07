@@ -1,9 +1,5 @@
-import React, {useEffect} from 'react';
-import {useState} from "react";
-import {
-    LS_NEW_RESULTS,
-    LS_RESULTS
-} from "../views/App";
+import React, {useEffect, useState} from 'react';
+import {LS_NEW_RESULTS, LS_RESULTS} from "../views/App";
 import {getSchoolNameFromLS, getStudentFromLS} from "../config/SearchLocalStorage";
 import {Button, Row, Table} from "reactstrap";
 import moment from "moment/moment";

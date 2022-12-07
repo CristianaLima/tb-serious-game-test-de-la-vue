@@ -2,13 +2,7 @@ import React, {useEffect, useState} from "react";
 import {NavBar} from "../components/NavBar";
 import {stockDataInLocalStorage} from "../config/SynchroFirebase";
 import {getTherapistById} from "../config/InitFirebase";
-import {
-    LS_CURRENT_THERAPIST,
-    LS_NEW_SCHOOLS,
-    LS_NEW_STUDENTS,
-    LS_NEW_RESULTS,
-    LS_RESULTS,
-} from "./App";
+import {LS_CURRENT_THERAPIST, LS_NEW_RESULTS, LS_NEW_SCHOOLS, LS_NEW_STUDENTS, LS_RESULTS,} from "./App";
 import {useNavigate} from "react-router-dom";
 import {Button} from "reactstrap";
 

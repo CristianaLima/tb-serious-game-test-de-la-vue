@@ -1,5 +1,4 @@
-import React, {useEffect} from 'react';
-import {useState} from "react";
+import React, {useEffect, useState} from 'react';
 import {LS_NEW_STUDENTS, LS_STUDENT, LS_STUDENTS} from "../views/App";
 import {getLastResultFromLS, getSchoolNameFromLS} from "../config/SearchLocalStorage";
 import {useNavigate} from "react-router-dom";
