@@ -124,7 +124,7 @@ function StudentForm() {
                     <ModalHeader toggle={toggleModal}>
                         Correction
                     </ModalHeader>
-                    <ModalBody>Does the patient wear prescription glasses?</ModalBody>
+                    <ModalBody>Is the patient wearing prescription glasses now ?</ModalBody>
                     <ModalFooter>
                         <Button color="success" onClick={()=>startGame(true)}>
                             Yes
