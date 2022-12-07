@@ -1,30 +1,29 @@
 import React, {useEffect, useState} from 'react';
 import {LS_NEW_STUDENTS, LS_SCHOOLS, LS_STUDENT, SS_WEAR_GLASSES} from "./App";
 import {useNavigate} from "react-router-dom";
-import {NavBar} from "../components/NavBar";
+import NavBar from "../components/NavBar";
 import moment from "moment/moment";
 import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 
 export default StudentForm;
-
 /**
- * Form which allow to start a test with a student not on list charged
+ * The page ./studentForm display the navbar and the student form, locked if it exists otherwise editable
+ *
+ * navigate : to move from one page to another
+ * modal : modal to ask if student wear prescription glasses
+ * newStudents : LS_NEW_STUDENTS data
+ * schools : LS_SCHOOLS data for drop-down list
+ * student : student selected/edited un form (link to LS_STUDENT)
  */
 function StudentForm() {
     const navigate = useNavigate();
-
     const [modal, setModal] = useState(false);
-    const toggleModal = () => setModal(!modal);
-    const [newStudents, setNewStudents] = useState(() => {
-        return JSON.parse(localStorage.getItem(LS_NEW_STUDENTS));
-    });
+    const [newStudents, setNewStudents] = useState(JSON.parse(localStorage.getItem(LS_NEW_STUDENTS)));
     const [schools] = useState(JSON.parse(localStorage.getItem(LS_SCHOOLS)));
-    const [student, setStudent] = useState(() => {
-        return JSON.parse(localStorage.getItem(LS_STUDENT));
-    });
+    const [student, setStudent] = useState(JSON.parse(localStorage.getItem(LS_STUDENT)));
 
     /**
-     * Update local storage each time new students gets updated
+     * Update local storage each time newStudents gets updated
      */
     useEffect(() => {
             localStorage.setItem(LS_NEW_STUDENTS, JSON.stringify(newStudents));
@@ -43,11 +42,11 @@ function StudentForm() {
      */
     function handleSubmit(e) {
         e.preventDefault(); // prevents browser refresh
-        toggleModal();
+        setModal(!modal)
     }
 
     /**
-     * After modal (wearGlasses) response, stock student in new_students list if it's new
+     * After modal (wearGlasses) response, stock student in new_students list if it's a new
      * Then go to test screen
      * @param wearGlasses
      */
@@ -62,7 +61,7 @@ function StudentForm() {
     }
 
     /**
-     * Add student in array of students if not already in
+     * Add student in array of newStudents if not already in
      * @param student
      */
     function addStudentToArray(student) {
@@ -120,8 +119,9 @@ function StudentForm() {
                     </Button>
                     <Button className="m-5" color="primary" type="submit">Let's play</Button>
                 </form>
-                <Modal centered={true} isOpen={modal} toggle={toggleModal}>
-                    <ModalHeader toggle={toggleModal}>
+                {/** Modal zone */}
+                <Modal centered={true} isOpen={modal} toggle={() => setModal(!modal)}>
+                    <ModalHeader toggle={() => setModal(!modal)}>
                         Correction
                     </ModalHeader>
                     <ModalBody>Is the patient wearing prescription glasses now ?</ModalBody>

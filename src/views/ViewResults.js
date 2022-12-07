@@ -1,11 +1,12 @@
 import React from "react";
-import {NavBar} from "../components/NavBar";
-import {ResultsList} from "../components/ResultsList";
+import NavBar from "../components/NavBar";
+import ResultsList from "../components/ResultsList";
 
+export default ViewResults;
 /**
  * The page ./viewResults display the navbar and the list of visual acuity test results
  */
-export function ViewResults() {
+function ViewResults() {
     return (
         <>
             <NavBar/>

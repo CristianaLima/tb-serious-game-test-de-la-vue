@@ -5,6 +5,7 @@ import {Button, Row, Table} from "reactstrap";
 import moment from "moment/moment";
 import {CSVLink} from 'react-csv';
 
+export default ResultsList;
 /**
  * The list of visual acuity test results is construct with data in local storage (LS_RESULTS and LS_NEW_RESULTS)
  *
@@ -17,7 +18,7 @@ import {CSVLink} from 'react-csv';
  * filterFullName : contains the character string typed by the user in "Fullname search" field
  * resultsFiltered : data from allResultsCompleted after the filters (school, class, fullname) applied
  */
-export function ResultsList() {
+function ResultsList() {
     const [allResults] = useState(JSON.parse(localStorage.getItem(LS_RESULTS)).concat(JSON.parse(localStorage.getItem(LS_NEW_RESULTS))));
     const allResultsCompleted = allResults.map((result) => {
         const student = getStudentFromLS(result);

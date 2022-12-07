@@ -3,17 +3,29 @@ import {Button} from "reactstrap";
 import c from "../assets/c_picture.png";
 import {LS_C_SELECTED, MAXREP} from "./App";
 
-export function AcuityTestController(){
+export default AcuityTestController;
+/**
+ * The page ./acuityTestController display 4 buttons to response
+ *
+ * tour : number of response given
+ * mousePosList: all position of click
+ * lockedDisplay : if true, enable to click on the button,
+ * windowDimensions : dimension of the windows to adapt button
+ * CClicked : value of angle of last button double clicked
+ *
+ */
+function AcuityTestController(){
     const [tour, setTour] = useState(0);
     const [mousePosList, setMouseList] = useState([]);
-    const [lockedDisplay, setLockedDisplay]  =useState(true); // enable to click on the button after answer
+    const [lockedDisplay, setLockedDisplay]  =useState(true);
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
-
-    //Storage button value (angle) and add a colour to the selective buttons
     const [CClicked, setCClicked] = useState('-1');
 
+    /**
+     * When the page loads, the buttons are disabled, a listener is set on the window size to be responsive
+     */
     useEffect(() => {
-        blockClick(); // button locked when start
+        blockClick();
         function handleResize() {
             setWindowDimensions(getWindowDimensions());
         }
@@ -21,20 +33,29 @@ export function AcuityTestController(){
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    /**
+     * Each time CClicked changes, it triggers the timer. After 1 second, the CClicked is deselected
+     */
     useEffect(() => {
         const timer = setTimeout(() => setCClicked('-1'), 1000);
         return () => clearTimeout(timer);
     }, [CClicked]);
 
+    /**
+     * Each time a click is made, the position is displayed in the browser console.
+     * TODO: to be used for further implementation
+     */
     useEffect(() => {
-        //mousePosList.map(value => {console.log("Tour " + tour + " : X: " + value.x + "   Y: " + value.y)})
         if(mousePosList.length>0){
-            //TODO clicks position are only display in console for now, must be implemented
             console.log("Tour " + tour + " : X: " + mousePosList[mousePosList.length-1].x + "   Y: " + mousePosList[mousePosList.length-1].y)
         }
     }, [mousePosList]);
 
 
+    /**
+     * Get the windows size
+     * @returns {{width: number, height: number}}
+     */
     function getWindowDimensions() {
         const { innerWidth: width, innerHeight: height } = window;
         return {
@@ -44,21 +65,20 @@ export function AcuityTestController(){
     }
 
     /**
-     * Position handling (MH) :
-     * Function to track cursor on click in the div.
-     * The data is stored in an array and can be use later
+     * Position handling (MH) : Function to track cursor on click in the div
+     * If a click occur outside the buttons, reset the CClicked variable
      */
     function handleMouseClickLocal(event) {
         setMouseList([...mousePosList,{ x: event.clientX - event.currentTarget.offsetLeft, y: event.clientY - event.currentTarget.offsetTop }]);
-
-        //If a click occur outside the buttons, reset the CClicked variable
         if(event.target.className === "btns-background"){
             setCClicked('-1');
         }
     }
 
     /**
-     * CClicked stock button selected and after 1s the value returns to -1
+     * Call each time a button is pressed
+     * if the click occurs on the same button a new round is launched
+     * if not, set CClicked
      * @param e
      */
     function C_selected (e) {
@@ -70,7 +90,9 @@ export function AcuityTestController(){
     }
 
     /**
-     * Add the value of C orientation in local storage.
+     * Add the value of C orientation in local storage
+     * Initialise the next tour
+     * All buttons cannot be pressed for 1 second
      * @param e
      */
     function startNewRound(e){
@@ -79,7 +101,7 @@ export function AcuityTestController(){
         blockClick();
     }
     /**
-     * Load Function is to wait before we can click for the second test
+     * Creates a timer of 1 second, at the end the buttons are unlocked
      */
     function blockClick(){
         setLockedDisplay(true);

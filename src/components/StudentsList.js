@@ -5,6 +5,7 @@ import {useNavigate} from "react-router-dom";
 import {Table} from "reactstrap";
 import moment from "moment";
 
+export default StudentsList;
 /**
  * Show 2 table: one with students in LS_STUDENTS, the other with LS_NEW_STUDENTS
  *
@@ -19,7 +20,7 @@ import moment from "moment";
  * studentsFiltered : data from studentsCompleted after the filters (school, class, fullname) applied
  * newStudentsFiltered : data from newStudentsCompleted after the filters (school, class, fullname) applied
  */
-export function StudentsList(){
+function StudentsList(){
     const navigate = useNavigate();
     const [students] = useState(JSON.parse(localStorage.getItem(LS_STUDENTS)));
     const [newStudents] = useState(JSON.parse(localStorage.getItem(LS_NEW_STUDENTS)));

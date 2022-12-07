@@ -5,73 +5,77 @@ import {useNavigate} from "react-router-dom";
 import jsQuestPlus, {func_resp0, func_resp1} from "../algo/jsQuestPlus";
 import {Button} from "reactstrap";
 
+export default CImage;
 /**
+ * CImage is called by AcuityTestScreen to display the Landolt C and the results of the test
  *
- * response: stock tour and angle given by the controller screen
- * answer: true or false depend on real angle and the response
- * angleArray : list of angle calculated at beginning
+ * navigate : to move from one page to another
+ * angleArray : list of angle calculated at beginning (to avoid repetition)
+ * response: stock tour and angle given by the controller screen (from local storage)
  * angle : actual angle of C displayed
  * size : actual size of C displayed
- * status : 0 = not begins, 1 = begins, 2 = finish
- * results : array of size
+ * testFinsh :
+ * newTests :
+ * contrast_samples, threshold_samples, slope_samples [2, 3, 4, 5], lapse_samples [0, 0.01, 0.02, 0.03, 0.04],
+ *         guess : jsQuestPlus parameters
+ * jsqp : jsQuestPLus object
+ * vaEyes : value of the eyes given by algorithm and scaled to be between (-0.3;1)
+ * params : value of the eyes given by algorithm (-40;0)
  */
-export function CImage() {
+function CImage() {
     const navigate = useNavigate();
     const [angleArray] = useState(() => constructAngleArray());
-
     const [response, setResponse] = useState({tour: 0, angle: 0});
     const [angle, setAngle] = useState(angleArray[0]);
     const [size, setSize] = useState(100);
-    const [status, setStatus] = useState(0);
+    const [testFinish, setTestFinish] = useState(false);
     const [newTests, setNewTests] = useState(() => {
         return JSON.parse(localStorage.getItem(LS_NEW_RESULTS));
     });
     const [contrast_samples] = useState(jsQuestPlus.linspace(-40, 0));
     const [threshold_samples] = useState(jsQuestPlus.linspace(-40, 0));
-    // [2, 3, 4, 5]
     const [slope_samples] = useState(jsQuestPlus.linspace(2, 5));
-    // [0, 0.01, 0.02, 0.03, 0.04]
     const [lapse_samples] = useState(jsQuestPlus.array(0, 0.01, 0.04));
-    // The parameter of guess is assumed as a single value.
     const [guess] = useState([0.5]);
     const [jsqp] = useState(new jsQuestPlus({
         psych_func: [func_resp0, func_resp1],
         stim_samples: [contrast_samples],
         psych_samples: [threshold_samples, slope_samples, guess, lapse_samples]
     }));
-    const [results, setResults] = useState([jsqp.getStimParams() / (40 * 1.3) + 1]);
+    const [vaEyes, setVaEyes] = useState([jsqp.getStimParams() / (40 * 1.3) + 1]);
     const [params, setParams] = useState([jsqp.getStimParams()]);
 
-
-    useEffect(() => {
-        localStorage.setItem(LS_NEW_RESULTS, JSON.stringify(newTests));
-    }, [newTests]);
-
     /**
-     * Add a listener on local storage
-     * Stock the new value in response
+     * Add a listener on local storage LS_C_SELECTED : each time a new C is selected, stock the new value in response
      */
     useEffect(() => {
         window.dispatchEvent(new Event("storage"));
         window.addEventListener("storage", () => {
-                // Get info from local storage
                 setResponse(JSON.parse(localStorage.getItem(LS_C_SELECTED)))
             }
         );
     }, []);
 
     /**
-     * Each time response is changed, this use effect can
+     * Each time newTests changes, update LS_NEW_RESULTS
+     */
+    useEffect(() => {
+        localStorage.setItem(LS_NEW_RESULTS, JSON.stringify(newTests));
+    }, [newTests]);
+
+    /**
+     * Each time response is changed, this use effect
      * - do nothing if first tour
      * - set result if test is finish
-     * - change size and angle of next C on other case
+     * - change size and angle of next C on other case (based on jsQuestPlus)
+     * https://kurokida.github.io/jsQuestPlus/
      */
     useEffect(() => {
         switch (response.tour) {
             case 0 :
                 break;
             case MAXREP + 1 :
-                setStatus(2);
+                setTestFinish(true);
                 setNewTests([...newTests, {
                     idStudent: JSON.parse(localStorage.getItem(LS_STUDENT)).id,
                     localIdStudent: JSON.parse(localStorage.getItem(LS_STUDENT)).localId,
@@ -79,32 +83,27 @@ export function CImage() {
                     correction: sessionStorage.getItem(SS_WEAR_GLASSES),
                     comprehension: true,
                     rounds: 1,
-                    vaRe: results[results.length - 1],
-                    vaLe: results[results.length - 1],
+                    vaRe: vaEyes[vaEyes.length - 1],
+                    vaLe: vaEyes[vaEyes.length - 1],
                     idTherapist: JSON.parse(localStorage.getItem(LS_CURRENT_THERAPIST)).id,
                 }])
                 setSize(0); // C disappear
                 break;
             default : {
-                // Test begins
-                setStatus(1);
-
-                // https://kurokida.github.io/jsQuestPlus/
-                let stim = jsqp.getStimParams()
+                const stim = jsqp.getStimParams()
                 if (response.angle.toString() === angleArray[response.tour - 1].toString()) {
-                    jsqp.update(stim, 1)
+                    jsqp.update(stim, 1) // true response
                 } else {
-                    jsqp.update(stim, 0)
+                    jsqp.update(stim, 0) // false response
                 }
-                const stimParams = jsqp.getStimParams()
-                // stimParams: init -18, --> -40 if correct and --> 0 if false
+                const stimParams = jsqp.getStimParams() // init -18, --> -40 if correct and --> 0 if false
 
                 // Algo jsQuestPLus reaction
-                setResults(results => [...results, stimParams / (40 * 1.3) + 1])
-                setParams(params => [...params, stimParams]) //this line if for ShowValuesForDev()
-                setSize((stimParams / 40 + 1) * 100)
+                setVaEyes(vaEyes => [...vaEyes, stimParams / (40 * 1.3) + 1])
+                setParams(params => [...params, stimParams]) // for ShowValuesForDev()
 
-                // Rotate C
+                // Next size and angle
+                setSize((stimParams / 40 + 1) * 100)
                 setAngle(angleArray[response.tour])
 
                 if (response.tour === MAXREP) {
@@ -158,9 +157,11 @@ export function CImage() {
     }
 
     /**
-     * This method is not for the app on itself, but it is a help for the devs who work on the algorithm, showing the results and parameters
+     * This method is not for the app on itself, but it is a help for the devs who work on the algorithm,
+     * showing the results and parameters
      * The function can be added or removed in the return part of CImage.js
-     * In the actual state, the algo works with all their default params, and the results are scaled from (-40;0) to (-0.3;1)
+     * In the actual state, the algo works with all their default params,
+     * and the results are scaled from (-40;0) to (-0.3;1)
      */
     function ShowValuesForDev() {
         return (
@@ -211,7 +212,7 @@ export function CImage() {
                     </tr>
                     <tr>
                         <td className="fw-bold">Scaled</td>
-                        {results.map((value, index) => {
+                        {vaEyes.map((value, index) => {
                             return <td key={'origin'+index} style={{width: '50px'}}>{value.toPrecision(2)}</td>
                         })}
                     </tr>
@@ -221,9 +222,13 @@ export function CImage() {
         );
     }
 
+    /**
+     * Display next C if test not finish
+     * otherwise display 3 buttons (Back to home, Views results, Start game)
+     */
     return (
-        <div>
-            {status <= 1 ?
+        <>
+            {testFinish === false ?
                 <>
                     <img
                         id="image"
@@ -249,8 +254,6 @@ export function CImage() {
                     </Button>
                 </>}
             <ShowValuesForDev/>
-        </div>
+        </>
     );
 }
-
-export default CImage

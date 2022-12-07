@@ -1,12 +1,12 @@
 import React from 'react';
 import '../css/App.css';
 import {Route, Routes} from "react-router-dom";
-import {Home} from "./Home";
-import {AcuityTestScreen} from "./AcuityTestScreen";
-import {AcuityTestController} from "./AcuityTestController";
+import Home from "./Home";
+import AcuityTestController from "./AcuityTestController";
 import StudentForm from "./StudentForm";
-import {StartGame} from "./StartGame";
-import {ViewResults} from "./ViewResults";
+import StartGame from "./StartGame";
+import ViewResults from "./ViewResults";
+import AcuityTestScreen from "./AcuityTestScreen";
 
 /**
  * Constants string for key value in
@@ -26,10 +26,12 @@ export const LS_C_SELECTED = "Cselected";
 export const SS_WEAR_GLASSES = "wearGlasses";
 export const MAXREP = 8;
 
+export default App;
+/**
+ * All accessible page urls
+ */
 function App() {
-    /**
-     * All accessible page urls
-     */
+
     return (
         <div className="App">
             <Routes>
@@ -43,5 +45,3 @@ function App() {
         </div>
     );
 }
-
-export default App;

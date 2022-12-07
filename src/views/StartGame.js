@@ -1,11 +1,12 @@
-import {NavBar} from "../components/NavBar";
+import NavBar from "../components/NavBar";
 import {Button, Col, Input, Label, Row} from "reactstrap";
-import {OpenXlsFile} from "../components/OpenXlsFile";
+import OpenXlsFile from "../components/OpenXlsFile";
 import {LS_SCHOOLS, LS_STUDENT} from "./App";
 import React, {useState} from "react";
-import {StudentsList} from "../components/StudentsList";
+import StudentsList from "../components/StudentsList";
 import {useNavigate} from "react-router-dom";
 
+export default StartGame;
 /**
  * The page ./startGame display the navbar, "Add new student" button, file chooser and list of students
  *
@@ -13,7 +14,7 @@ import {useNavigate} from "react-router-dom";
  *           in drop-down list when clicking on new student
  * navigate : to move from one page to another
  */
-export function StartGame(){
+function StartGame(){
     const [schools] = useState(JSON.parse(localStorage.getItem(LS_SCHOOLS)));
     const navigate = useNavigate();
 
@@ -41,7 +42,7 @@ export function StartGame(){
                         <Input  label='Upload' type="file" name="file" id="xlsxClassList"  onChange={(e)=>{
                             const file = e.target.files[0];
                             new OpenXlsFile(file);
-                            window.location.reload();
+                            //window.location.reload();
                             window.alert("File "+file.name.toString()+" uploaded")
                         }}/>
                     </Col>

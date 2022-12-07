@@ -23,6 +23,7 @@ import {
 import {synchronise} from "../config/SynchroFirebase";
 import moment from "moment";
 
+export default NavBar;
 /**
  * The navigation bar contains :
  * - a title linked to home page
@@ -37,7 +38,7 @@ import moment from "moment";
  * toast : toast at the end of synchronisation
  * collapse : allows to see the menu in a responsive way
  */
-export function NavBar(){
+function NavBar(){
     const [language, setLanguage] = useState("en");
     const [modalValidation, setModalValidation] = useState(false);
     const toggleModalValidation = () => setModalValidation(!modalValidation);

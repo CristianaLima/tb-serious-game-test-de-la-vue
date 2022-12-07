@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {NavBar} from "../components/NavBar";
+import NavBar from "../components/NavBar";
 import {stockDataInLocalStorage} from "../config/SynchroFirebase";
 import {getTherapistById} from "../config/InitFirebase";
 import {
@@ -14,6 +14,7 @@ import {
 import {useNavigate} from "react-router-dom";
 import {Button} from "reactstrap";
 
+export default Home;
 /**
  * Home page allows to initialize the local storage and display 2 buttons (View results and Start game)
  *
@@ -23,7 +24,7 @@ import {Button} from "reactstrap";
  * newTests : used to initialize LS_NEW_RESULTS if is null
  * online : used to display error page if no internet connection
  */
-export function Home(){
+function Home(){
     const navigate = useNavigate();
     // Load local storage if exist or initialise it
     const [newSchools] = useState(() => {
