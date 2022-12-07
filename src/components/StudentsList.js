@@ -36,7 +36,7 @@ function StudentsList(){
             'vaRe': result.vaRe === "-" ? result.vaRe : Math.round(result.vaRe * 100) / 100,
             'vaLe': result.vaRe === "-" ? result.vaLe : Math.round(result.vaRe * 100) / 100
         })
-    });
+    }).sort((a, b) => a.fullName.toUpperCase() > b.fullName.toUpperCase() ? 1 : -1);
     const newStudentsCompleted = newStudents.map((student) => {
         const result = getLastResultFromLS(student);
         return ({
@@ -49,7 +49,7 @@ function StudentsList(){
             'vaRe': result.vaRe === "-" ? result.vaRe : (Math.round(result.vaRe * 100) / 100),
             'vaLe': result.vaRe === "-" ? result.vaLe : (Math.round(result.vaRe * 100) / 100)
         })
-    })
+    }).sort((a, b) => a.fullName.toUpperCase() > b.fullName.toUpperCase() ? 1 : -1);
     const [filterSchool, setFilterSchool] = useState("");
     const [filterClass, setFilterClass] = useState("");
     const [filterFullName, setFilterFullName] = useState("");
