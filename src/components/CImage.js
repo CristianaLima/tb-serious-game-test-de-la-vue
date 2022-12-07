@@ -1,15 +1,9 @@
 import React, {useEffect, useState} from "react";
-import {
-    LS_C_SELECTED,
-    LS_CURRENT_THERAPIST,
-    LS_NEW_RESULTS,
-    LS_STUDENT,
-    MAXREP, SS_WEAR_GLASSES
-} from "../views/App";
+import {LS_C_SELECTED, LS_CURRENT_THERAPIST, LS_NEW_RESULTS, LS_STUDENT, MAXREP, SS_WEAR_GLASSES} from "../views/App";
 import c from "../assets/c_picture.png";
 import {useNavigate} from "react-router-dom";
 import jsQuestPlus, {func_resp0, func_resp1} from "../algo/jsQuestPlus";
-import {Button, Table} from "reactstrap";
+import {Button} from "reactstrap";
 
 /**
  *

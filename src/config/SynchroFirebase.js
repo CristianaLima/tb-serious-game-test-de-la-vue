@@ -1,19 +1,5 @@
-import {
-    LS_NEW_SCHOOLS,
-    LS_NEW_STUDENTS,
-    LS_NEW_RESULTS,
-    LS_SCHOOLS,
-    LS_STUDENTS,
-    LS_RESULTS
-} from "../views/App";
-import {
-    addSchool,
-    addStudent,
-    addTest,
-    getAllSchools,
-    getAllStudents,
-    getAllTests,
-} from "./InitFirebase";
+import {LS_NEW_RESULTS, LS_NEW_SCHOOLS, LS_NEW_STUDENTS, LS_RESULTS, LS_SCHOOLS, LS_STUDENTS} from "../views/App";
+import {addSchool, addStudent, addTest, getAllSchools, getAllStudents, getAllTests,} from "./InitFirebase";
 
 /**
  * Main method for synchronise data in local storage to Firebase

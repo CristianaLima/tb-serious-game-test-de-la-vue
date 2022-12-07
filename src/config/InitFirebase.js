@@ -1,6 +1,6 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore"
-import {addDoc, doc, getDoc, collection, getFirestore, getDocs} from "firebase/firestore";
+import {addDoc, collection, doc, getDoc, getDocs, getFirestore} from "firebase/firestore";
 import moment from "moment";
 
 const firebaseConfig = {

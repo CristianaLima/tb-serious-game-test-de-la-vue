@@ -1,10 +1,4 @@
-import {
-    LS_NEW_RESULTS,
-    LS_NEW_SCHOOLS,
-    LS_NEW_STUDENTS, LS_RESULTS,
-    LS_SCHOOLS,
-    LS_STUDENTS
-} from "../views/App";
+import {LS_NEW_RESULTS, LS_NEW_SCHOOLS, LS_NEW_STUDENTS, LS_RESULTS, LS_SCHOOLS, LS_STUDENTS} from "../views/App";
 import React from "react";
 
 /** Get school name from localIdSchool or idSchool in student if existing
