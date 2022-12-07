@@ -165,50 +165,54 @@ export function CImage() {
     function ShowValuesForDev() {
         return (
             <div className="border"  style={{width: '500px', margin: 'auto'}}>
-                <h5>Last result : </h5> <p>Origin: {jsqp.getStimParams()} <br/>Scaled
-                    : {(jsqp.getStimParams() / (40 * 1.3) + 1).toPrecision(2)}</p>
+                <h5>Last result : </h5> <p><b>Origin </b> {jsqp.getStimParams()} <br/><b> Scaled </b>
+                    {(jsqp.getStimParams() / (40 * 1.3) + 1).toPrecision(2)}</p>
+                <h5>Last estimates :</h5>
                 <table align={'center'}>
-                    <th colSpan={5}><h5>Last estimates :</h5></th>
+                    <tbody>
                     <tr>
-                        <td>Mode</td>
-                        {jsqp.getEstimates().map(value => {
-                            return <td style={{width: '50px'}}>{value}</td>
+                        <td className="fw-bold">Mode</td>
+                        {jsqp.getEstimates().map((value, index) => {
+                            return <td key={'mode'+index} style={{width: '50px'}}>{value}</td>
                         })}
                     </tr>
                     <tr>
-                        <td>Mean</td>
-                        {jsqp.getEstimates('mean').map(value => {
-                            return <td style={{width: '50px'}}>{value}</td>
+                        <td className="fw-bold">Mean</td>
+                        {jsqp.getEstimates('mean').map((value, index) => {
+                            return <td key={'mean'+index} style={{width: '50px'}}>{value}</td>
                         })}
                     </tr>
+                    </tbody>
                 </table>
+                <h5>Last standard Deviations :</h5>
                 <table align={'center'}>
-                    <th colSpan={8}><h5>Last standard Deviations :</h5></th>
+                    <tbody>
                     <tr>
-                        {jsqp.getSDs().map((value) => {
-                            return <td style={{width: '100px'}}>{value.toPrecision(6)}</td>
+                        {jsqp.getSDs().map((value, index) => {
+                            return <td key={'deviation'+index} style={{width: '100px'}}>{value.toPrecision(6)}</td>
                         })}
                     </tr>
+                    </tbody>
                 </table>
                 <h5>All results :</h5>
                 <table align={'center'}>
                     <tbody>
                     <tr>
-                        <td>Turn</td>
+                        <td className="fw-bold">Turn</td>
                         {params.map((value, index) => {
-                            return <td style={{width: '50px'}}>{index}</td>
+                            return <td key={'turn'+index} style={{width: '50px'}}>{index}</td>
                         })}
                     </tr>
                     <tr>
-                        <td>Origin</td>
-                        {params.map((value) => {
-                            return <td style={{width: '50px'}}>{value.toPrecision(2)}</td>
+                        <td className="fw-bold">Origin</td>
+                        {params.map((value, index) => {
+                            return <td key={'origin'+index} style={{width: '50px'}}>{value.toPrecision(2)}</td>
                         })}
                     </tr>
                     <tr>
-                        <td>Scaled</td>
-                        {results.map((value) => {
-                            return <td style={{width: '50px'}}>{value.toPrecision(2)}</td>
+                        <td className="fw-bold">Scaled</td>
+                        {results.map((value, index) => {
+                            return <td key={'origin'+index} style={{width: '50px'}}>{value.toPrecision(2)}</td>
                         })}
                     </tr>
                     </tbody>
