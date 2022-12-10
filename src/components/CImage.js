@@ -3,7 +3,7 @@ import {LS_C_SELECTED, LS_CURRENT_THERAPIST, LS_NEW_RESULTS, LS_STUDENT, MAXREP,
 import c from "../assets/c_picture.png";
 import {useNavigate} from "react-router-dom";
 import jsQuestPlus, {func_resp0, func_resp1} from "../algo/jsQuestPlus";
-import {Button} from "reactstrap";
+import {Button, FormGroup, Input, Label} from "reactstrap";
 
 export default CImage;
 
@@ -22,6 +22,7 @@ export default CImage;
  * jsqp : jsQuestPLus object
  * vaEyes : value of the eyes given by algorithm and scaled to be between (-0.3;1)
  * params : value of the eyes given by algorithm (-40;0)
+ * showValueAlgo : management of the switch for displaying the algorithm's values
  */
 function CImage() {
     const navigate = useNavigate();
@@ -45,6 +46,7 @@ function CImage() {
     }));
     const [vaEyes, setVaEyes] = useState([jsqp.getStimParams() / (40 * 1.3) + 1]);
     const [params, setParams] = useState([jsqp.getStimParams()]);
+    const [showValueAlgo, setShowValueAlgo] = useState(true);
 
     /**
      * Add a listener on local storage LS_C_SELECTED : each time a new C is selected, stock the new value in response
@@ -226,6 +228,13 @@ function CImage() {
      */
     return (
         <>
+            <FormGroup switch style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                <Input
+                    type="switch"
+                    checked={showValueAlgo}
+                    onChange={() => setShowValueAlgo(!showValueAlgo)}/>
+                <Label check style={{marginLeft:'5px'}}>{ showValueAlgo ? 'Hide value of algo ' : 'Show value of algo ' }</Label>
+            </FormGroup>
             {testFinish === false ?
                 <>
                     <img
@@ -251,7 +260,7 @@ function CImage() {
                         Start game
                     </Button>
                 </>}
-            <ShowValuesForDev/>
+            {showValueAlgo === true ? <ShowValuesForDev/> : <></>}
         </>
     );
 }
