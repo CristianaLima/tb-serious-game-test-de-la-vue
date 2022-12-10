@@ -1,4 +1,9 @@
-// Taken on TODO
+// Taken on https://github.com/kurokida/jsQuestPlus
+/*
+Kuroki, D., & Pronk, T. (2022). jsQuestPlus: A JavaScript implementation of the QUEST+ method for estimating
+psychometric function parameters in online experiments.
+Behavior Research Methods. https://doi.org/10.3758/s13428-022-01948-8
+ */
 // This project is inspired by the following two projects.
 //  https://github.com/petejonze/QuestPlus
 //  https://github.com/BrainardLab/mQUESTPlus
@@ -7,17 +12,18 @@
 
 import numeric from "numeric_es6";
 
-export function func_resp0 (stim, threshold, slope, guess, lapse) {
-    const tmp = slope * (stim - threshold)/20
-    return lapse - (guess + lapse -1) * Math.exp ( -Math.pow (10, tmp))
+export function func_resp0(stim, threshold, slope, guess, lapse) {
+    const tmp = slope * (stim - threshold) / 20
+    return lapse - (guess + lapse - 1) * Math.exp(-Math.pow(10, tmp))
 }
+
 export function func_resp1(stim, threshold, slope, guess, lapse) {
     return 1 - func_resp0(stim, threshold, slope, guess, lapse)
 }
 
 class jsquest {
     // PF menas Psychometric Functions
-    constructor(settings){
+    constructor(settings) {
         const PF = settings.psych_func
         const stim_params = settings.stim_samples
         const PF_params = settings.psych_samples
@@ -26,7 +32,7 @@ class jsquest {
 
         this.PF = PF
 
-        stim_params.forEach(param =>{
+        stim_params.forEach(param => {
             if (!Array.isArray(param)) {
                 alert('The stimulus parameters must be specified as an array.')
                 this.nAlerts++
@@ -34,7 +40,7 @@ class jsquest {
         })
 
         const num_of_psy_samples = []
-        PF_params.forEach(param =>{
+        PF_params.forEach(param => {
             num_of_psy_samples.push(param.length)
 
             if (!Array.isArray(param)) {
@@ -53,7 +59,7 @@ class jsquest {
 
 
         let prior_data
-        if (typeof settings.priors === 'undefined'){
+        if (typeof settings.priors === 'undefined') {
             prior_data = jsquest.set_prior(num_of_psy_samples)
         } else {
             prior_data = settings.priors
@@ -68,7 +74,7 @@ class jsquest {
         this.normalized_priors = prior_data.normalized_priors
         this.normalized_posteriors = this.normalized_priors
         this.posteriors = prior_data // This can be used as the prior distribution of the next condition.
-        this.responses = numeric.linspace(0, PF.length-1, PF.length)
+        this.responses = numeric.linspace(0, PF.length - 1, PF.length)
 
         // Precompute outcome proportions (likelihoods)
         // response x stimulus (row) x PF parameters (column)
@@ -84,7 +90,7 @@ class jsquest {
                         alert('Psychometric function has returned negative probability for an outcome')
                         this.nAlerts++
                     }
-                    if (p > 1){
+                    if (p > 1) {
                         alert('Psychometric function has returned probability that exceeds one for an outcome')
                         this.nAlerts++
                     }
@@ -101,7 +107,7 @@ class jsquest {
 
     // This is similar to the QuestSd function
     // http://psychtoolbox.org/docs/QuestSd 
-    getSDs(){
+    getSDs() {
         const params = numeric.transpose(this.comb_PF_params)
         const sd = []
         params.forEach(data => {
@@ -130,8 +136,8 @@ class jsquest {
     }
 
     // Same as the getParamEsts()
-    getEstimates(thresholdingRule = 'mode', roundStimuliToDomain = true){
-        switch (thresholdingRule){
+    getEstimates(thresholdingRule = 'mode', roundStimuliToDomain = true) {
+        switch (thresholdingRule) {
             case 'mean': {
                 const params = numeric.transpose(this.comb_PF_params)
                 const estimates_mean = []
@@ -147,7 +153,7 @@ class jsquest {
                     const dev_matrix = numeric.transpose(deviation)
                     const tmp_array = []
                     dev_matrix.forEach(data => {
-                        const avg = numeric.sum(data)/data.length
+                        const avg = numeric.sum(data) / data.length
                         tmp_array.push(Math.sqrt(avg))
                     })
                     const idx_mean = jsquest.find_min_index(tmp_array)
@@ -179,15 +185,14 @@ class jsquest {
     }
 
 
-
-    getStimParams(num){
+    getStimParams(num) {
         // Arrange the entropies in ascending order and return the parameters of the stimuli in the specified position.
 
         let index
-        if (typeof num === 'undefined' || num === 1){
+        if (typeof num === 'undefined' || num === 1) {
             index = jsquest.find_min_index(this.expected_entropies_by_stim)
         } else {
-            const tmp_array = numeric.linspace(0, this.expected_entropies_by_stim.length-1)
+            const tmp_array = numeric.linspace(0, this.expected_entropies_by_stim.length - 1)
             tmp_array.sort((a, b) => this.expected_entropies_by_stim[a] - this.expected_entropies_by_stim[b])
             index = tmp_array[num - 1]
         }
@@ -195,11 +200,10 @@ class jsquest {
         return stim
     }
 
-    update(stim, resp){
-        console.log("update")
+    update(stim, resp) {
         const stimIdx = this.comb_stim_params.indexOf(stim)
 
-        if (!Object.prototype.hasOwnProperty.call(this, 'stim_list')){
+        if (!Object.prototype.hasOwnProperty.call(this, 'stim_list')) {
             this.stim_list = [stim]
             this.resp_list = [resp]
             this.stim_index_list = [stimIdx]
@@ -220,11 +224,11 @@ class jsquest {
         this.expected_entropies_by_stim = jsquest.update_entropy_by_stim(this)
     }
 
-    static set_prior(prior_array, norm_flag){
+    static set_prior(prior_array, norm_flag) {
         const priors = []
         prior_array.forEach(prob_array => {
-            if (Array.isArray(prob_array)){ // prob_array is an array of probabilities
-                if (typeof norm_flag === 'undefined' || norm_flag){
+            if (Array.isArray(prob_array)) { // prob_array is an array of probabilities
+                if (typeof norm_flag === 'undefined' || norm_flag) {
                     if (Math.abs(numeric.sum(prob_array) - 1) > 0.01) alert(`set_prior Error: The sum of the probability array is not 1. The sum is ${numeric.sum(prob_array)}.`)
                 }
                 priors.push(prob_array)
@@ -241,7 +245,7 @@ class jsquest {
         const comb_priors = priors.reduce(jsquest.combvec)
 
         let mulitiplied_priors = []
-        if (Array.isArray(comb_priors[0])){
+        if (Array.isArray(comb_priors[0])) {
             comb_priors.forEach(element => {
                 mulitiplied_priors.push(element.reduce(jsquest.multiply_reducer))
             })
@@ -264,7 +268,7 @@ class jsquest {
         }
     }
 
-    static update_entropy_by_stim(data){
+    static update_entropy_by_stim(data) {
         const EH_array = numeric.rep([data.comb_stim_params.length], 0)
         data.precomputed_outcome_proportions.forEach(proportions_at_stim_params => { // For each response
             proportions_at_stim_params.forEach((proportions_at_PF_params, index) => { // For each stimulus domain
@@ -277,7 +281,7 @@ class jsquest {
                 const posterior = numeric.div(posterior_times_proportions, expected_outcomes)
                 // const tmp_entropy = numeric.mul(posterior, numeric.log(posterior)) // Note that log2 is used in qpArrayEntropy
                 const tmp_entropy = numeric.mul(posterior, jsquest.log2(posterior))
-                const H = (-1) * tmp_entropy.reduce((a,b) => a + (isNaN(b) ? 0: b), 0) // nansum function 
+                const H = (-1) * tmp_entropy.reduce((a, b) => a + (isNaN(b) ? 0 : b), 0) // nansum function
                 // https://stackoverflow.com/questions/50956086/javascript-equivalent-of-nansum-from-matlab
 
                 //  Compute the expected entropy for each stimulus by averaging entropies over each outcome
@@ -289,64 +293,84 @@ class jsquest {
 
     // Wrappers for the numeric.js
     static linspace = numeric.linspace
+
     static abs(a) {
         return numeric.abs(a)
     }
-    static add(a, b){
+
+    static add(a, b) {
         return numeric.add(a, b)
     }
-    static cos(a){
+
+    static cos(a) {
         return numeric.cos(a)
     }
-    static dim(a){
+
+    static dim(a) {
         return numeric.dim(a)
     }
+
     static div(a, b) {
         return numeric.div(a, b)
     }
+
     static dot = numeric.dot
-    static exp(a){
+
+    static exp(a) {
         return numeric.exp(a)
     }
-    static floor(a){
+
+    static floor(a) {
         return numeric.floor(a)
     }
-    static isFinite(a){
+
+    static isFinite(a) {
         return numeric.isFinite(a)
     }
-    static isNaN(a){
+
+    static isNaN(a) {
         return numeric.isNaN(a)
     }
-    static log(a){
+
+    static log(a) {
         return numeric.log(a)
     }
-    static mod(a, b){
+
+    static mod(a, b) {
         return numeric.mod(a, b)
     }
-    static mul(a, b){
+
+    static mul(a, b) {
         return numeric.mul(a, b)
     }
-    static pow(a, b){
+
+    static pow(a, b) {
         return numeric.pow(a, b)
     }
-    static round(a){
+
+    static round(a) {
         return numeric.round(a)
     }
-    static sin(a){
+
+    static sin(a) {
         return numeric.sin(a)
     }
-    static sqrt(a){
+
+    static sqrt(a) {
         return numeric.sqrt(a)
     }
-    static sub(a, b){
+
+    static sub(a, b) {
         return numeric.sub(a, b)
     }
-    static sum(a){
+
+    static sum(a) {
         return numeric.sum(a)
     }
+
     static transpose = numeric.transpose
 
-    static log2(array){
+    static log2(array) {
         const length = array.length
         const output = []
         for (let i = 0; i < length; i++) output.push(Math.log2(array[i]))
@@ -355,21 +379,20 @@ class jsquest {
 
     // It is similar to the combvec function in MATLAB.
     // https://jp.mathworks.com/help/deeplearning/ref/combvec.html?lang=en
-    static combvec(a, b, divide_flag){
+    static combvec(a, b, divide_flag) {
         if (divide_flag === "undefined") divide_flag = true
         let output = []
-        if (Array.isArray(a) && divide_flag){
+        if (Array.isArray(a) && divide_flag) {
             divide_flag = false
             a.forEach(element => {
                 const res = jsquest.combvec(element, b, divide_flag)
                 output = output.concat(res)
             })
-        } else if (Array.isArray(b)){
+        } else if (Array.isArray(b)) {
             b.forEach(element => {
                 output.push(jsquest.combvec(a, element, divide_flag))
             })
-        }
-        else {
+        } else {
             if (!Array.isArray(a)) a = [a]
             return a.concat(b)
         }
@@ -381,16 +404,16 @@ class jsquest {
     }
 
     // This is the same as the cumusm function of MATLAB
-    static cumsum(array){
+    static cumsum(array) {
         const output = [array[0]]
-        for (let i = 1; i < array.length; i++){
+        for (let i = 1; i < array.length; i++) {
             const tmp = output[output.length - 1] + array[i]
             output.push(tmp)
         }
         return output
     }
 
-    static find_min_index(array){
+    static find_min_index(array) {
         const min = array.reduce(min_reducer)
         return array.indexOf(min)
 
@@ -399,7 +422,7 @@ class jsquest {
         }
     }
 
-    static find_max_index(array){
+    static find_max_index(array) {
         const max = array.reduce(max_reducer)
         return array.indexOf(max)
 
@@ -412,48 +435,47 @@ class jsquest {
     // ただし引数の順番を変更して、一番目をxとしている
     // erf関数を使用する方法もあるようだ
     static normcdf(x, mean, sigma) {
-        const z = (x-mean)/Math.sqrt(2*sigma*sigma);
-        const t = 1/(1+0.3275911*Math.abs(z));
-        const a1 =  0.254829592;
+        const z = (x - mean) / Math.sqrt(2 * sigma * sigma);
+        const t = 1 / (1 + 0.3275911 * Math.abs(z));
+        const a1 = 0.254829592;
         const a2 = -0.284496736;
-        const a3 =  1.421413741;
+        const a3 = 1.421413741;
         const a4 = -1.453152027;
-        const a5 =  1.061405429;
-        const erf = 1-(((((a5*t + a4)*t) + a3)*t + a2)*t + a1)*t*Math.exp(-z*z);
+        const a5 = 1.061405429;
+        const erf = 1 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-z * z);
         let sign = 1;
-        if(z < 0)
-        {
+        if (z < 0) {
             sign = -1;
         }
-        return (1/2)*(1+sign*erf);
+        return (1 / 2) * (1 + sign * erf);
     }
 
     static weibull(stim, threshold, slope, guess, lapse) {
-        const tmp = slope * (stim - threshold)/20
-        return lapse - (guess + lapse -1)*Math.exp(-Math.pow(10, tmp))
+        const tmp = slope * (stim - threshold) / 20
+        return lapse - (guess + lapse - 1) * Math.exp(-Math.pow(10, tmp))
     }
 
-    static simulate_weibull_two_resp(current_intensity, true_threshold, true_slope, true_guess, true_lapse){
-        if (Math.random() > jsquest.weibull(current_intensity, true_threshold, true_slope, true_guess, true_lapse)){
+    static simulate_weibull_two_resp(current_intensity, true_threshold, true_slope, true_guess, true_lapse) {
+        if (Math.random() > jsquest.weibull(current_intensity, true_threshold, true_slope, true_guess, true_lapse)) {
             return 1 // yes
         } else {
             return 0 // no
         }
     }
 
-    static array(start, interval, end){
-        const tmp = Math.floor((end-start)/interval)
+    static array(start, interval, end) {
+        const tmp = Math.floor((end - start) / interval)
         const adjusted_end = start + interval * tmp
-        return numeric.linspace(start, adjusted_end, tmp+1)
+        return numeric.linspace(start, adjusted_end, tmp + 1)
     }
 
     // exp((-1/2) * ((x_array - mean)/sd)^2)
-    static gauss(x_array, mean, sd, norm_flag){
+    static gauss(x_array, mean, sd, norm_flag) {
         const tmp1 = numeric.div(numeric.sub(x_array, mean), sd)
         const tmp2 = numeric.pow(tmp1, 2)
         const tmp3 = numeric.exp(numeric.mul(-0.5, tmp2))
 
-        if (typeof norm_flag === 'undefined' || norm_flag){
+        if (typeof norm_flag === 'undefined' || norm_flag) {
             return numeric.div(tmp3, numeric.sum(tmp3))
         } else {
             return tmp3

@@ -1,195 +1,186 @@
-import React, {useEffect} from 'react';
-import {useState} from "react";
+import React, {useEffect, useState} from 'react';
 import {LS_NEW_STUDENTS, LS_STUDENT, LS_STUDENTS} from "../views/App";
 import {getLastResultFromLS, getSchoolNameFromLS} from "../config/SearchLocalStorage";
 import {useNavigate} from "react-router-dom";
 import {Table} from "reactstrap";
 import moment from "moment";
 
-export function StudentsList(){
-    const navigate = useNavigate();
+export default StudentsList;
 
+/**
+ * Show 2 table: one with students in LS_STUDENTS, the other with LS_NEW_STUDENTS
+ *
+ * navigate : to move from one page to another
+ * students : raw data from LS_STUDENTS (with id of the attached data)
+ * newStudents : raw data from LS_NEW_STUDENTS (with id of the attached data)
+ * studentsCompleted : students map with string data
+ * newStudentsCompleted : newStudents map with string data
+ * filterSchool : contains the character string typed by the user in "School search" field
+ * filterClass : contains the character string typed by the user in "Class search" field
+ * filterFullName : contains the character string typed by the user in "Fullname search" field
+ * studentsFiltered : data from studentsCompleted after the filters (school, class, fullname) applied
+ * newStudentsFiltered : data from newStudentsCompleted after the filters (school, class, fullname) applied
+ */
+function StudentsList() {
+    const navigate = useNavigate();
     const [students] = useState(JSON.parse(localStorage.getItem(LS_STUDENTS)));
     const [newStudents] = useState(JSON.parse(localStorage.getItem(LS_NEW_STUDENTS)));
-    const [searchRadio, setSearchRadio] = useState("school")
+    const studentsCompleted = students.map((student) => {
+        const result = getLastResultFromLS(student);
+        return ({
+            'id': student.id,
+            'idSchool': student.idSchool,
+            'fullName': student.fullName,
+            'dob': student.dob,
+            'class': student.class,
+            'schoolName': getSchoolNameFromLS(student),
+            'dateTest': result.dateTest === "-" ? result.dateTest : moment(result.dateTest).format('YYYY-MM-DD h:mm a'),
+            'vaRe': result.vaRe === "-" ? result.vaRe : Math.round(result.vaRe * 100) / 100,
+            'vaLe': result.vaRe === "-" ? result.vaLe : Math.round(result.vaRe * 100) / 100
+        })
+    }).sort((a, b) => a.fullName.toUpperCase() > b.fullName.toUpperCase() ? 1 : -1);
+    const newStudentsCompleted = newStudents.map((student) => {
+        const result = getLastResultFromLS(student);
+        return ({
+            'localId': student.localId,
+            'idSchool': student.idSchool,
+            'fullName': student.fullName,
+            'dob': student.dob,
+            'class': student.class,
+            'schoolName': getSchoolNameFromLS(student),
+            'dateTest': result.dateTest === "-" ? result.dateTest : moment(result.dateTest).format('YYYY-MM-DD h:mm a'),
+            'vaRe': result.vaRe === "-" ? result.vaRe : (Math.round(result.vaRe * 100) / 100),
+            'vaLe': result.vaRe === "-" ? result.vaLe : (Math.round(result.vaRe * 100) / 100)
+        })
+    }).sort((a, b) => a.fullName.toUpperCase() > b.fullName.toUpperCase() ? 1 : -1);
+    const [filterSchool, setFilterSchool] = useState("");
+    const [filterClass, setFilterClass] = useState("");
+    const [filterFullName, setFilterFullName] = useState("");
+    const [studentsFiltered, setStudentsFiltered] = useState(studentsCompleted);
+    const [newStudentsFiltered, setNewStudentsFiltered] = useState(newStudentsCompleted);
 
     /**
-     * Refresh search each time radiobutton of search is changed
+     * Refreshes filteredResults and newStudentsFiltered each time a user types in one of the search fields
      */
     useEffect(() => {
-        let inputSearch = document.getElementById("inputSearch");
-        SelectColumnToFilter(inputSearch.value)
-    }, [searchRadio]);
+        setStudentsFiltered(studentsCompleted
+            .filter(s => (s.schoolName).toUpperCase().includes(filterSchool.toUpperCase()))
+            .filter(s => (s.class).toUpperCase().includes(filterClass.toUpperCase()))
+            .filter(s => (s.fullName).toUpperCase().includes(filterFullName.toUpperCase())));
+        setNewStudentsFiltered(newStudentsCompleted
+            .filter(s => (s.schoolName).toUpperCase().includes(filterSchool.toUpperCase()))
+            .filter(s => (s.class).toUpperCase().includes(filterClass.toUpperCase()))
+            .filter(s => (s.fullName).toUpperCase().includes(filterFullName.toUpperCase())));
+    }, [filterSchool, filterClass, filterFullName]);
 
     /**
      * First array with students in database
      */
     function StudentsFromFirebase() {
         if (students.length > 0) {
-            return  <div id="studentsFromFirebase">
-                <h1>Students from school roster</h1>
-                <TableConstruction theadData={Object.keys(students[0])} tbodyData={students}/>
-            </div>;
+            return <>
+                <h3>Students from school roster</h3>
+                <StudentTable tbodyData={studentsFiltered}></StudentTable>
+            </>;
         }
-        return <div/>;
     }
 
     /**
-     * Second array with students created on the navigator
+     * Second array with students created on this navigator
      */
     function NewStudents() {
         if (newStudents.length > 0) {
-            return <div id="newStudents">
-                <h1>New students from this session</h1>
-                <TableConstruction theadData={Object.keys(newStudents[0])} tbodyData={newStudents}/>
-            </div>;
-        }
-        return <div/>;
-    }
-
-    /**
-     * Select where apply filter based on radio button
-     * @param input of searching
-     */
-    function SelectColumnToFilter(input) {
-        switch(searchRadio){
-            case 'school':
-                new ColumnFilter("studentsFromFirebase",0, input);
-                if (newStudents.length > 0){
-                    new ColumnFilter("newStudents",0, input);
-                }
-                break;
-            case 'class':
-                new ColumnFilter("studentsFromFirebase",1, input);
-                if (newStudents.length > 0){
-                    new ColumnFilter("newStudents",1, input);
-                }
-                break;
-            case 'fullName':
-                new ColumnFilter("studentsFromFirebase",2, input);
-                if (newStudents.length > 0){
-                    new ColumnFilter("newStudents",2, input);
-                }
-                break;
-            default:
-                break;
+            return <>
+                <h3>New students from this session</h3>
+                <StudentTable tbodyData={newStudentsFiltered}></StudentTable>
+            </>;
         }
     }
 
     /**
-     * Hide row of column based on filter input
-     * @param table to filter
-     * @param columnNumberToFilter
-     * @param input of searching
-     * @constructor
+     * Construction of a html table to show 7 columns :
+     * Student's fullname, student's date of birth (DOB), student's class, school's name,
+     * date of last test, last value Right eyes, last value Left eyes (if available)
+     * @param tbodyData
      */
-    function ColumnFilter(table, columnNumberToFilter, input) {
-        let i, td;
-        const inputUpperCase = input.toUpperCase();
-        const tableById = document.getElementById(table);
-        const tr = tableById.getElementsByTagName("tr");
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[columnNumberToFilter];
-            for (let i = 0; i < tr.length; i++) {
-                const td = tr[i].getElementsByTagName("td")[columnNumberToFilter];
-                if (td) {
-                    const txtValue = td.textContent || td.innerText;
-                    if (txtValue.toUpperCase().indexOf(inputUpperCase) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Construction of last result rows of the student
-     * Not in return because creating a warning the <> with no key value
-     * @param row
-     */
-    function UnderTableResultConstruction(row) {
-        const [result] = useState(getLastResultFromLS(row))
-        return (
-            <>
-                <td key={"dateTest"} style={{width: "15%"}}>{result.dateTest === "-" ? result.dateTest : moment(result.dateTest).format('YYYY-MM-DD h:mm a')}</td>
-                <td key={"vaRe"}>{result.vaRe === "-" ? result.vaRe : Math.round(result.vaRe * 100) / 100}</td>
-                <td key={"vaLe"}>{result.vaLe === "-" ? result.vaLe : Math.round(result.vaLe * 100) / 100}</td>
-            </>
-        )
-    }
-
-    /**
-     * Construct the students table html with 2 list
-     * @param theadData for headers
-     * @param tbodyData for data
-     */
-    function TableConstruction({theadData, tbodyData}) {
+    function StudentTable({tbodyData}) {
         return (
             <div>
                 <Table size="sm" hover>
                     <thead>
                     <tr>
-                        {theadData.map(heading => {
-                            switch(heading) {
-                                case "fullName":   return <th style={{width: "20%"}} key={"fullName"}>Full name</th>;
-                                case "dob":   return <th style={{width: "10%"}} key={"dob"}>DOB</th>;
-                                case "class":   return <th style={{width: "10%"}} key={"class"}>Class</th>;
-                                case "idSchool":   return <th style={{width: "20%"}} key={"idSchool"}>School</th>;
-                                case "localIdSchool":   return <th style={{width: "20%"}} key={"localIdSchool"}>School</th>;
-                                default: return}
-                        })}
-                        <th key={"dateTest"} style={{width: "15%"}}>Date of last result</th>
-                        <th key={"vaRe"}>Last vaRe</th>
-                        <th key={"vaLe"}>Last vaLe</th>
+                        <th style={{width: "20%"}} key={"fullName"}>Fullname</th>
+                        <th style={{width: "10%"}} key={"dob"}>DOB</th>
+                        <th style={{width: "10%"}} key={"class"}>Class</th>
+                        <th style={{width: "20%"}} key={"schoolName"}>School</th>
+                        <th style={{width: "15%"}} key={"dateTest"}>Date</th>
+                        <th key={"vaRe"}>vaRe</th>
+                        <th key={"vaLe"}>vaLe</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {tbodyData.map((row, index) => {
-                        return <tr key={index} onClick={() => {
-                            localStorage.setItem(LS_STUDENT, JSON.stringify(row));
-                            navigate('/studentForm');
-                        }}>
-                            {theadData.map((key, index) => {
-                                switch(key) {
-                                    case "fullName":   return  <td style={{width: "20%"}} key={index}>{row[key]}</td>;
-                                    case "dob": return <td style={{width: "10%"}} key={index}>{row[key]}</td>;
-                                    case "class":   return  <td style={{width: "10%"}} key={index}>{row[key]}</td>;
-                                    case "idSchool":   return <td style={{width: "20%"}} key={index}>{getSchoolNameFromLS(row)}</td>
-                                    case "localIdSchool":   return <td style={{width: "20%"}} key={index}>{getSchoolNameFromLS(row)}</td>
-                                    default: return}
-                            })}
-                            {UnderTableResultConstruction(row)}
-                        </tr>;
+                    {tbodyData.map((item, index) => {
+                        return (
+                            <tr key={index} onClick={() => {
+                                localStorage.setItem(LS_STUDENT, JSON.stringify(item));
+                                navigate('/studentForm');
+                            }}>
+                                {Object.values(item).map((value, index) => {
+                                    switch (index) {
+                                        case 0:
+                                        case 1:
+                                            return;
+                                        default:
+                                            return <td key={index}>{value}</td>
+                                    }
+                                })}
+                            </tr>
+                        );
                     })}
                     </tbody>
                 </Table>
             </div>
-
         );
     }
 
-    return(
+    /**
+     * Show two tables of students with 3 search fields if there is data
+     * If not (in both), indicates "No student"
+     */
+    return (
         <>
-            <label>Search : </label>
-            <input type="text" className="m-3" id="inputSearch" placeholder="Search..."
-                   onChange={(e) => {SelectColumnToFilter(e.target.value)}}>
-            </input>
-            <label>
-                <input type="radio" checked={searchRadio === 'school'} className="m-1" value="school" name="search" onChange={(e)=>setSearchRadio(e.target.value)}/>
-                School
-            </label>
-            <label>
-                <input type="radio" className="m-1" value="class" name="search" onChange={(e)=>setSearchRadio(e.target.value)} />
-                Class
-            </label>
-            <label>
-                <input type="radio" className="m-1" value="fullName" name="search" onChange={(e)=>setSearchRadio(e.target.value)}/>
-                FullName
-            </label>
-            <StudentsFromFirebase/>
-            <NewStudents/>
+            <h1>Students</h1>
+            {students.length === 0 && newStudents.length === 0 ?
+                <p>No student</p>
+                :
+                <>
+                    <label>
+                        School:
+                        <input type="text" className="m-3" placeholder="Search..."
+                               onChange={(e) => {
+                                   setFilterSchool(e.target.value)
+                               }}></input>
+                    </label>
+                    <label>
+                        Class :
+                        <input type="text" className="m-3" placeholder="Search..."
+                               onChange={(e) => {
+                                   setFilterClass(e.target.value)
+                               }}>
+                        </input>
+                    </label>
+                    <label>
+                        Fullname :
+                        <input type="text" className="m-3" placeholder="Search..."
+                               onChange={(e) => {
+                                   setFilterFullName(e.target.value)
+                               }}>
+                        </input>
+                    </label>
+                    <StudentsFromFirebase/>
+                    <NewStudents/>
+                </>
+            }
         </>
     )
 }
