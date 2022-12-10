@@ -29,6 +29,7 @@ function StudentsList() {
         const result = getLastResultFromLS(student);
         return ({
             'id': student.id,
+            'idSchool': student.idSchool,
             'fullName': student.fullName,
             'dob': student.dob,
             'class': student.class,
@@ -42,6 +43,7 @@ function StudentsList() {
         const result = getLastResultFromLS(student);
         return ({
             'localId': student.localId,
+            'idSchool': student.idSchool,
             'fullName': student.fullName,
             'dob': student.dob,
             'class': student.class,
@@ -126,6 +128,7 @@ function StudentsList() {
                                 {Object.values(item).map((value, index) => {
                                     switch (index) {
                                         case 0:
+                                        case 1:
                                             return;
                                         default:
                                             return <td key={index}>{value}</td>

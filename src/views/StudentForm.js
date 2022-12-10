@@ -100,7 +100,7 @@ function StudentForm() {
                     <div className="form-group">
                         <label htmlFor="school">School</label>
                         <select disabled={student.id !== undefined || student.localId !== undefined}
-                                className="form-control" id="school" onChange={handleChangeSchool}>
+                                className="form-control" id="school" onChange={handleChangeSchool} defaultValue={student.idSchool}>
                             {schools.map((s) => (
                                 <option key={s.id} value={s.id}>{s.name}</option>
                             ))}
