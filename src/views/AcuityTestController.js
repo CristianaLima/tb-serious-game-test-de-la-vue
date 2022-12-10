@@ -119,7 +119,16 @@ function AcuityTestController() {
 
     return (
         <>
-            {tour === MAXREP ? <div><p>Test finish</p></div> :
+            {tour === MAXREP ?
+                <div  style={{
+                    height: windowDimensions.height,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                }}>
+                    <h1>Visual acuity test completed</h1>
+                </div>
+                :
                 <div className={"btns-background"}
                      style={{
                          width: windowDimensions.height, height: windowDimensions.height,
