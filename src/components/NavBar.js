@@ -83,7 +83,7 @@ function NavBar() {
         <>
             <Navbar color="light" light expand="md">
                 <NavbarBrand href="/">
-                    Visual Acuity (VA) Screening App
+                    Visual Acuity Screening Tool
                 </NavbarBrand>
                 <NavbarToggler onClick={() => setIsOpen(!collapse)}/>
                 <Collapse isOpen={!collapse} navbar className="float-end text-end">
