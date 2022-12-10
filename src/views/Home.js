@@ -10,6 +10,7 @@ import {
     LS_RESULTS,
     LS_SCHOOLS,
     LS_STUDENTS,
+    LS_LANGUAGE,
 } from "./App";
 import {useNavigate} from "react-router-dom";
 import {Button} from "reactstrap";
@@ -67,6 +68,10 @@ function Home() {
      * Without this, the application cannot work.
      */
     useEffect(() => {
+        if (localStorage.getItem(LS_LANGUAGE) === null){
+            console.log(localStorage.getItem(LS_LANGUAGE))
+            localStorage.setItem(LS_LANGUAGE, JSON.stringify("en"));
+        }
         if (online === true) {
             fetch('https://www.google.com/', {
                 mode: 'no-cors',

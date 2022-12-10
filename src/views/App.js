@@ -14,6 +14,7 @@ import AcuityTestScreen from "./AcuityTestScreen";
  * - session storage (SS) : Accessible in the tab only
  * - MAXREP is used to define the number of responses the patient must give to finish the test
  */
+export const LS_LANGUAGE = "language";
 export const LS_SCHOOLS = "schools";
 export const LS_NEW_SCHOOLS = "newSchools";
 export const LS_STUDENTS = "students";

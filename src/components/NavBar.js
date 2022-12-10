@@ -22,6 +22,7 @@ import {
 } from "reactstrap";
 import {synchronise} from "../config/SynchroFirebase";
 import moment from "moment";
+import {LS_LANGUAGE} from "../views/App";
 
 export default NavBar;
 
@@ -40,7 +41,9 @@ export default NavBar;
  * collapse : allows to see the menu in a responsive way
  */
 function NavBar() {
-    const [language, setLanguage] = useState("en");
+    const [language, setLanguage] = useState(() => {
+        return JSON.parse(localStorage.getItem(LS_LANGUAGE));
+    });
     const [modalValidation, setModalValidation] = useState(false);
     const toggleModalValidation = () => setModalValidation(!modalValidation);
     const [modalError, setModalError] = useState(false);
@@ -48,6 +51,20 @@ function NavBar() {
     const [toast, setToast] = useState(false);
     const toggleToast = () => setToast(!toast);
     const [collapse, setIsOpen] = useState(true);
+
+    /**
+     * Initialise the language if it does not exist in the local storage
+     */
+    if (language === null) {
+        localStorage.setItem(LS_LANGUAGE, JSON.stringify("en"));
+    }
+
+    /**
+     * Stock language in local storage when changed
+     */
+    useEffect(() => {
+        localStorage.setItem(LS_LANGUAGE, JSON.stringify(language));
+    }, [language])
 
     /**
      * Defines the display time of the toast
