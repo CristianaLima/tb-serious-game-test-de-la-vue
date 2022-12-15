@@ -53,17 +53,14 @@ function NavBar() {
     const [collapse, setIsOpen] = useState(true);
 
     /**
-     * Initialise the language if it does not exist in the local storage
-     */
-    if (language === null) {
-        localStorage.setItem(LS_LANGUAGE, JSON.stringify("en"));
-    }
-
-    /**
      * Stock language in local storage when changed
      */
     useEffect(() => {
-        localStorage.setItem(LS_LANGUAGE, JSON.stringify(language));
+        if (language === null) {
+            localStorage.setItem(LS_LANGUAGE, JSON.stringify("en"));
+        } else{
+            localStorage.setItem(LS_LANGUAGE, JSON.stringify(language));
+        }
     }, [language])
 
     /**

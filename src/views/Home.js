@@ -94,7 +94,16 @@ function Home() {
      */
     return (
         <>
-            {online ?
+            {localStorage.getItem(LS_RESULTS) === null || localStorage.getItem(LS_STUDENTS) === null || localStorage.getItem(LS_SCHOOLS) === null ?
+                <div className="Error">
+                    <div className="px-3 m-auto w-75 my-2 text-center">
+                        <h3>No data loaded</h3>
+                        <Button color="primary" onClick={() => window.location.reload()}>
+                            Retry
+                        </Button>
+                    </div>
+                </div>
+                :
                 <div className="Home">
                     <NavBar/>
                     <div className="px-3 m-auto w-75 my-2 text-center">
@@ -104,15 +113,6 @@ function Home() {
                         </Button>
                         <Button className="m-5" size="lg" color="success" onClick={() => navigate('/startGame')}>
                             Start game
-                        </Button>
-                    </div>
-                </div>
-                :
-                <div className="Error">
-                    <div className="px-3 m-auto w-75 my-2 text-center">
-                        <h3>No data loaded</h3>
-                        <Button color="primary" onClick={() => window.location.reload()}>
-                            Retry
                         </Button>
                     </div>
                 </div>
