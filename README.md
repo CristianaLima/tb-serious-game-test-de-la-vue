@@ -1,43 +1,40 @@
 
 
-# Visual Acutty Screening Tools
-
-## Getting Started with Create React App
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Visual Acuity Screening Tool
 
 ## Getting Started
-Before using the Visual Acutty Screening Tools web site, please take some time to read this readme.
-<br>This documentation gives you information about the web site. It contains general information, the list of features and where to find other information.
+Before using the Visual Acuity Screening Tool, please take some time to read this readme.
+<br>It contains general information and the links to the others documents for more details.
 
 ### Subject / introduction
-This project was created as a school project for the module 646-2 - 2022 - FIG / HES-SO Valais/Wallis by our group of students - class 607_3 :
+This project was created as a school project for the module 646-2 - 2022 - FIG / HES-SO Valais/Wallis by our group of students - class 607_3.
 
-Development team
+The application was created based on mockup provided by the product owner and Agile methodology was applied for the development of this application.
+
+Visual Acuity Screening Tool is an application designed to perform vison test digitally.<br>
+There is a main screen where a stimulus (a Landolt C) appears in a defined angle and position, and a second screen used as a controller to select the desired answer with four buttons.<br>
+The results must be stored in a database and the application must have the possibility to run offline.
+
+
+Development team :
 - [Gwenaëlle Gustin](https://gitlab.com/gwenaelle.gustin)
 - [Océane Tapparel](https://gitlab.com/oceane.tapparel)
 - [Matthieu Hagenbuch](https://gitlab.com/matthieu.hagenbuch)
 - [Quentin Flament](https://gitlab.com/Qflament)
 
-### Functionalities
+Professors :
+- Sébastien Gard
+- Alexandre Cotting
 
-#### List of functionalities :
+Product Owner :
+- Katia Steinfield
 
-
-
-#### General information :
 
 ### Technical guide
-All technical information can be found in the technical guide  :
-[Technical guide](chemin)
+All technical information can be found in the [Technical guide](public/ressources/docs/VAST_TechnicalGuide.docx).
 
 ### User guide
-All the information about how to use the application can be found in the user guide :
-[User guide](chemin)
+All the information about how to use the application can be found in the [User guide](public/ressources/docs/VAST_UserGuide.docx).
 
-### Data storage
-The storage of data was done with [Firebase](https://firebase.google.com/).
-### Data modeling
-The modeling of our Data base was modeling like the following link: [Data Modeling](./public/ressources/docs/DataModel.png)
 ### Deployment
-
-This section has moved here: [https://magical-klepon-7470b6.netlify.app/](https://magical-klepon-7470b6.netlify.app/)
+The app is available here: [https://magical-klepon-7470b6.netlify.app/](https://magical-klepon-7470b6.netlify.app/)
