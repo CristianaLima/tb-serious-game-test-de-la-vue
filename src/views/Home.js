@@ -94,7 +94,7 @@ function Home() {
      */
     return (
         <>
-            {online ?
+            {localStorage.getItem(LS_RESULTS) === null || localStorage.getItem(LS_STUDENTS) === null || localStorage.getItem(LS_SCHOOLS) === null ?
                 <div className="Home">
                     <NavBar/>
                     <div className="px-3 m-auto w-75 my-2 text-center">
