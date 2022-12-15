@@ -33,10 +33,10 @@ Product Owner :
 
 
 ### Technical guide
-All technical information can be found in the [Technical guide](public/ressources/docs/VAST_TechnicalGuide.docx).
+All technical information can be found in the [Technical guide](public/ressources/docs/VAST_TechnicalGuide.pdf).
 
 ### User guide
-All the information about how to use the application can be found in the [User guide](public/ressources/docs/VAST_UserGuide.docx).
+All the information about how to use the application can be found in the [User guide](public/ressources/docs/VAST_UserGuide.pdf).
 
 ### Deployment
 The app is available here for now: [https://magical-klepon-7470b6.netlify.app/](https://magical-klepon-7470b6.netlify.app/)<br>
