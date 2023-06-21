@@ -78,7 +78,7 @@ function Home() {
             })
                 .then(() => {
                     //TODO: adapt when login implemented
-                    getTherapistById("X6ITtB97ZhCqf4Uw3yhH").then(t => localStorage.setItem(LS_CURRENT_THERAPIST, JSON.stringify(t)));
+                    getTherapistById("Q37DGWV9sr38tqyWJMVX").then(t => localStorage.setItem(LS_CURRENT_THERAPIST, JSON.stringify(t)));
                     stockDataInLocalStorage().then(() => console.log("Data load"));
                 }).catch(() => {
                 if (localStorage.getItem(LS_RESULTS) === null || localStorage.getItem(LS_STUDENTS) === null || localStorage.getItem(LS_SCHOOLS) === null) {
