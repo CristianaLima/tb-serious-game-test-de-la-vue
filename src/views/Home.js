@@ -14,6 +14,7 @@ import {
 } from "./App";
 import {useNavigate} from "react-router-dom";
 import {Button} from "reactstrap";
+import Script from "../script/Script";
 
 export default Home;
 
@@ -28,6 +29,7 @@ export default Home;
  */
 function Home() {
     const navigate = useNavigate();
+
     // Load local storage if exist or initialise it
     const [newSchools] = useState(() => {
         return JSON.parse(localStorage.getItem(LS_NEW_SCHOOLS));
@@ -53,6 +55,7 @@ function Home() {
     if (newTests === null) {
         localStorage.setItem(LS_NEW_RESULTS, JSON.stringify([]));
     }
+
 
     /**
      * Called at page load, this useEffect retrieves data from the database if there is an internet connection.
@@ -114,6 +117,7 @@ function Home() {
                         <Button className="m-5" size="lg" color="success" onClick={() => navigate('/startGame')}>
                             Start game
                         </Button>
+                        {/*<Script></Script>*/}
                     </div>
                 </div>
             }

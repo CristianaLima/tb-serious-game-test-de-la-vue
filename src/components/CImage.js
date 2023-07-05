@@ -94,12 +94,15 @@ function CImage() {
                 break;
             default : {
                 const stim = jsqp.getStimParams()
+
                 if (response.angle.toString() === angleArray[response.tour - 1].toString()) {
                     jsqp.update(stim, 1); // true response
                 } else {
                     jsqp.update(stim, 0); // false response
                 }
-                const stimParams = jsqp.getStimParams(); // init -18, --> -40 if correct and --> 0 if false
+                const stimParams = jsqp.getStimParams();
+
+                localStorage.setItem("stimafter", JSON.stringify(stimParams));// init -18, --> -40 if correct and --> 0 if false
 
                 // Algo jsQuestPLus reaction
                 setVaEyes(vaEyes => [...vaEyes, stimParams / (40 * 1.3) + 1]);
