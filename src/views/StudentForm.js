@@ -57,8 +57,8 @@ function StudentForm() {
             addStudentToArray({...student, localId: Math.round(Date.now() / 1000).toString()});
         }
         sessionStorage.setItem(SS_WEAR_GLASSES, wearGlasses);
-        window.open('/acuityTestScreen', '_self');
-        window.open('/acuityTestController', '_blank');
+        window.open('/chooseCharacScreen', '_self');
+        window.open('/chooseCharacController', '_blank');
     }
 
     /**

@@ -7,6 +7,8 @@ import StudentForm from "./StudentForm";
 import StartGame from "./StartGame";
 import ViewResults from "./ViewResults";
 import AcuityTestScreen from "./AcuityTestScreen";
+import ChooseCharacScreen from "./ChooseCharacScreen";
+import ChooseCharacController from "./ChooseCharacController";
 
 /**
  * Constants string for key value in
@@ -25,6 +27,8 @@ export const LS_STUDENT = "student";
 export const LS_CURRENT_THERAPIST = "currentTherapist";
 export const LS_C_SELECTED = "Cselected";
 export const SS_WEAR_GLASSES = "wearGlasses";
+export const LS_CHARACTER_SELECTED = "CharacterSelected";
+export const LS_CHARACTER_CHOICE = "CharacterChoice";
 export const MAXREP = 8;
 
 export default App;
@@ -42,6 +46,8 @@ function App() {
                 <Route path="/studentForm" element={<StudentForm/>}/>
                 <Route path="/acuityTestController" element={<AcuityTestController/>}/>
                 <Route path="/acuityTestScreen" element={<AcuityTestScreen/>}/>
+                <Route path="/chooseCharacScreen" element={<ChooseCharacScreen/>}/>
+                <Route path="/chooseCharacController" element={<ChooseCharacController/>}/>
             </Routes>
         </div>
     );
