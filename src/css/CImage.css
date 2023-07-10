@@ -1,0 +1,20 @@
+img.carteImg {
+    position: absolute;
+    top: 81%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+img.carteImgValues {
+     position: absolute;
+     top: 58.5%;
+     left: 50%;
+     transform: translate(-50%, -50%);
+ }
+
+div.C{
+    position: relative;
+    height: 70%;
+}
+div.Screen{
+    display: flex;
+}

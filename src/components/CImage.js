@@ -4,6 +4,8 @@ import c from "../assets/c_picture.png";
 import {useNavigate} from "react-router-dom";
 import jsQuestPlus, {func_resp0, func_resp1} from "../algo/jsQuestPlus";
 import {Button, FormGroup, Input, Label} from "reactstrap";
+import "../css/CImage.css";
+
 
 export default CImage;
 
@@ -171,7 +173,7 @@ function CImage() {
      */
     function ShowValuesForDev() {
         return (
-            <div className="border" style={{width: '500px', margin: 'auto'}}>
+            <>
                 <h5>All results :</h5>
                 <table align={'center'}>
                     <tbody>
@@ -221,7 +223,7 @@ function CImage() {
                     </tr>
                     </tbody>
                 </table>
-            </div>
+            </>
         );
     }
 
@@ -231,6 +233,7 @@ function CImage() {
      */
     return (
         <>
+
             <FormGroup switch style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
                 <Input
                     type="switch"
@@ -238,20 +241,49 @@ function CImage() {
                     onChange={() => setShowValueAlgo(!showValueAlgo)}/>
                 <Label check style={{marginLeft:'5px'}}>{ showValueAlgo ? 'Hide value of algo ' : 'Show value of algo ' }</Label>
             </FormGroup>
-            {testFinish === false ?
-                <>
-                    <img
-                        id="image"
-                        className="carteImg"
-                        alt="C landolt"
-                        src={c}
-                        style={{
-                            width: `${size}px`,
-                            transform: `rotate(${angle}deg)`,
-                            position: 'absolute', left: '50%', top: '50%',
-                        }}
-                    />
-                </>
+
+            {showValueAlgo === true ? <>
+                <div className="Screen">
+                    <ShowValuesForDev/>
+                </div>
+                {testFinish === false ?
+                    <div className="C">
+                        <img
+                            id="image"
+                            className="carteImgValues"
+                            alt="C landolt"
+                            src={c}
+                            style={{
+                                width: `${size}px`,
+                                transform: `rotate(${angle}deg)`,
+                            }}
+                        />
+                    </div>
+                    : <>
+                        <Button className="m-5" size="lg" color="danger" onClick={() => navigate('/')}>
+                            Back to home
+                        </Button>
+                        <Button className="m-5" size="lg" color="primary" onClick={() => navigate('/viewResults')}>
+                            View results
+                        </Button>
+                        <Button className="m-5" size="lg" color="success" onClick={() => navigate('/startGame')}>
+                            Start game
+                        </Button>
+                    </>}
+            </> : <>
+                {testFinish === false ?
+                    <div className="C">
+                        <img
+                            id="image"
+                            className="carteImg"
+                            alt="C landolt"
+                            src={c}
+                            style={{
+                                width: `${size}px`,
+                                transform: `rotate(${angle}deg)`,
+                            }}
+                        />
+                    </div>
                 : <>
                     <Button className="m-5" size="lg" color="danger" onClick={() => navigate('/')}>
                         Back to home
@@ -263,7 +295,9 @@ function CImage() {
                         Start game
                     </Button>
                 </>}
-            {showValueAlgo === true ? <ShowValuesForDev/> : <></>}
+            </>}
+
         </>
+
     );
 }

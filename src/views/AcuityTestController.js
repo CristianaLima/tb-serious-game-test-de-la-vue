@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {Button} from "reactstrap";
-import c from "../assets/c_picture.png";
 import {LS_C_SELECTED, MAXREP} from "./App";
+import "../css/ChooseCharac.css";
+import EtoileJaune from "../assets/EtoileCJaune.png";
+import EtoileVert from "../assets/EtoileCVert.png";
 
 export default AcuityTestController;
 
@@ -130,73 +131,73 @@ function AcuityTestController() {
                 </div>
                 :
                 <div className={"btns-background"}
-                     style={{
-                         width: windowDimensions.height, height: windowDimensions.height,
-                         position: 'center', margin: 'auto', backgroundColor: '#282c34',
-                         display: "flex", flex: 1, flexWrap: "wrap",
-                         justifyContent: "space-around", alignItems: "center"
-                     }}
+                     style={{height: windowDimensions.height}}
                      onClick={e => handleMouseClickLocal(e)}>
-                    <Button onClick={() => {
+                    <button className="btn-left" onClick={() => {
                         C_selected("0")
                     }} disabled={lockedDisplay}
                             style={{
                                 margin: windowDimensions.height / 16,
-                                height: windowDimensions.height / 4,
-                                width: windowDimensions.height / 4,
-                                backgroundColor: CClicked === '0' ? "green" : "#6C757D"
+                                height: windowDimensions.height / 2.5,
+                                width: windowDimensions.height / 2.5,
+                                padding:0,
+                                // backgroundColor: CClicked === '0' ? "green" : "#6C757D"
                             }}>
                         <img style={{transform: "rotate(0deg)"}}
-                             src={c}
+                             src={CClicked === '0' ? EtoileVert : EtoileJaune}
                              className="img-thumbnail"
                              alt="c 0°"
                         />
-                    </Button>
-                    <Button onClick={() => {
+                    </button>
+                    <button className="btn-right" onClick={() => {
                         C_selected("90")
                     }} disabled={lockedDisplay}
                             style={{
                                 margin: windowDimensions.height / 16,
-                                height: windowDimensions.height / 4,
-                                width: windowDimensions.height / 4,
-                                backgroundColor: CClicked === '90' ? "green" : "#6C757D"
+                                height: windowDimensions.height / 2.5,
+                                width: windowDimensions.height / 2.5,
+                                padding:0,
+                                // backgroundImage: "url(${Etoile})",
+                                // backgroundColor: CClicked === '90' ? "green" : "green"
                             }}>
                         <img style={{transform: "rotate(90deg)"}}
-                             src={c}
+                             src={CClicked === '90' ? EtoileVert : EtoileJaune}
                              className="img-thumbnail"
                              alt="c 90°"
                         />
-                    </Button>
-                    <Button onClick={() => {
+                    </button>
+                    <button className="btn-left" onClick={() => {
                         C_selected("180")
                     }} disabled={lockedDisplay}
                             style={{
                                 margin: windowDimensions.height / 16,
-                                height: windowDimensions.height / 4,
-                                width: windowDimensions.height / 4,
-                                backgroundColor: CClicked === '180' ? "green" : "#6C757D"
+                                height: windowDimensions.height / 2.5,
+                                width: windowDimensions.height / 2.5,
+                                padding:0,
+                                // backgroundColor: CClicked === '180' ? "green" : "#6C757D"
                             }}>
                         <img style={{transform: "rotate(180deg)"}}
-                             src={c}
+                             src={CClicked === '180' ? EtoileVert : EtoileJaune}
                              className="img-thumbnail"
                              alt="c 180°"
                         />
-                    </Button>
-                    <Button onClick={() => {
+                    </button>
+                    <button className="btn-right" onClick={() => {
                         C_selected("270")
                     }} disabled={lockedDisplay}
                             style={{
                                 margin: windowDimensions.height / 16,
-                                height: windowDimensions.height / 4,
-                                width: windowDimensions.height / 4,
-                                backgroundColor: CClicked === '270' ? "green" : "#6C757D"
+                                height: windowDimensions.height / 2.5,
+                                width: windowDimensions.height / 2.5,
+                                padding:0,
+                                // backgroundColor: CClicked === '270' ? "green" : "#6C757D"
                             }}>
                         <img style={{transform: "rotate(270deg)"}}
-                             src={c}
+                             src={CClicked === '270' ? EtoileVert : EtoileJaune}
                              className="img-thumbnail"
                              alt="c 270°"
                         />
-                    </Button>
+                    </button>
                 </div>
             }
         </>

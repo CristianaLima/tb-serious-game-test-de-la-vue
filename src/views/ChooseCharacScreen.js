@@ -18,7 +18,7 @@ function ChooseCharacScreen() {
             characSelect=JSON.parse(localStorage.getItem(LS_CHARACTER_SELECTED));
             testCharacChoice = JSON.parse(localStorage.getItem(LS_CHARACTER_CHOICE));
             if (testCharacChoice!=null){
-                window.open('/acuityTestScreen', '_self');
+                window.open('/introScreen', '_self');
             }
             switch (characSelect){
                 case "lapin":

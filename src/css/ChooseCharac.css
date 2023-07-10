@@ -1,4 +1,22 @@
 img.img-thumbnail{
-    height: 90%;
+    height: 100%;
     width: 100%;
+}
+div.btns-background{
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 50% 50%;
+    position: relative;
+    margin: auto;
+    background-color: #002060;
+    width: auto;
+}
+
+button.btn-left{
+    position: relative;
+    left: 30%;
+}
+button.btn-right{
+    position: relative;
+    left: 5%;
 }

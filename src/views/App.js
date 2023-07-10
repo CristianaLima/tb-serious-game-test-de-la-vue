@@ -9,6 +9,8 @@ import ViewResults from "./ViewResults";
 import AcuityTestScreen from "./AcuityTestScreen";
 import ChooseCharacScreen from "./ChooseCharacScreen";
 import ChooseCharacController from "./ChooseCharacController";
+import IntroController from "./IntroController";
+import IntroScreen from "./IntroScreen";
 
 /**
  * Constants string for key value in
@@ -48,6 +50,8 @@ function App() {
                 <Route path="/acuityTestScreen" element={<AcuityTestScreen/>}/>
                 <Route path="/chooseCharacScreen" element={<ChooseCharacScreen/>}/>
                 <Route path="/chooseCharacController" element={<ChooseCharacController/>}/>
+                <Route path="/introController" element={<IntroController/>}/>
+                <Route path="/introScreen" element={<IntroScreen/>}/>
             </Routes>
         </div>
     );

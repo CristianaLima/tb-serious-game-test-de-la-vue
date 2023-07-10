@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import NavBar from "../components/NavBar";
 import CImage from "../components/CImage";
 import {LS_STUDENT} from "./App";
+import "../css/AcuityTestScreen.css";
 
 export default AcuityTestScreen;
 
@@ -14,10 +15,20 @@ export default AcuityTestScreen;
  * student : student displayed at the top of the page
  */
 function AcuityTestScreen() {
+    const [windowDimensions] = useState(getWindowDimensions());
     const [student, setStudent] = useState({
         fullName: "",
         class: ""
     });
+
+
+    function getWindowDimensions() {
+        const {innerWidth: width, innerHeight: height} = window;
+        return {
+            width,
+            height
+        };
+    }
 
     /**
      * Set the student displayed with info
@@ -27,10 +38,12 @@ function AcuityTestScreen() {
     }, []);
 
     return (
-        <>
+        <div >
             <NavBar/>
-            {student == null ? <></> : <div>Fullname: {student.fullName} - Class: {student.class} </div>}
-            <CImage/>
-        </>
+            <div className="beforeNav" style={{height:windowDimensions.height-57}}>
+                {student == null ? <></> : <div className="Student">Fullname: {student.fullName} - Class: {student.class} </div>}
+                <CImage/>
+            </div>
+        </div>
     )
 }

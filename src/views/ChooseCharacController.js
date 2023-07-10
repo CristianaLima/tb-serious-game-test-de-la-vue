@@ -1,5 +1,4 @@
 import {Button} from "reactstrap";
-//import c from "../assets/c_picture.png";
 import teteLapin from "../assets/TeteLapin.png";
 import teteOurs from "../assets/TeteOurs.png";
 import teteTigre from "../assets/TeteTigre.png";
@@ -47,7 +46,7 @@ function ChooseCharacController(){
     function startNewRound(e) {
         localStorage.setItem(LS_CHARACTER_CHOICE, JSON.stringify(e));
         blockClick();
-        window.open('/acuityTestController', '_self');
+        window.open('/introController', '_self');
     }
 
     function blockClick() {
@@ -70,19 +69,17 @@ function ChooseCharacController(){
         <>
             <div className={"btns-background"}
                  style={{
-                     width: windowDimensions.height, height: windowDimensions.height,
-                     position: 'center', margin: 'auto', backgroundColor: "#0d2c6c",
-                     display: "flex", flex: 1, flexWrap: "wrap",
-                     justifyContent: "space-around", alignItems: "center"
+                     height: windowDimensions.height
                  }}
                  onClick={e => handleMouseClickLocal(e)}>
-                <Button onClick={() => {
+                <Button className="btn-left" onClick={() => {
                     C_selected("lapin")
                 }} disabled={lockedDisplay}
                         style={{
+                            marginLeft: windowDimensions.width/4,
                             margin: windowDimensions.height / 16,
-                            height: windowDimensions.height / 4,
-                            width: windowDimensions.height / 4,
+                            height: windowDimensions.height / 3,
+                            width: windowDimensions.height / 3,
                             backgroundColor: CharcClicked === "lapin" ? "green" : "#061436"
                         }}>
                     <img
@@ -91,13 +88,14 @@ function ChooseCharacController(){
                          alt="Tete de lapin"
                     />
                 </Button>
-                <Button onClick={() => {
+                <Button className="btn-right" onClick={() => {
                     C_selected("ours")
                 }} disabled={lockedDisplay}
                         style={{
+                            marginLeft: windowDimensions.width/5,
                             margin: windowDimensions.height / 16,
-                            height: windowDimensions.height / 4,
-                            width: windowDimensions.height / 4,
+                            height: windowDimensions.height / 3,
+                            width: windowDimensions.height / 3,
                             backgroundColor: CharcClicked === "ours" ? "green" : "#061436"
                         }}>
                     <img
@@ -106,13 +104,14 @@ function ChooseCharacController(){
                          alt="Tete d'ours"
                     />
                 </Button>
-                <Button onClick={() => {
+                <Button className="btn-left" onClick={() => {
                     C_selected("lezard")
                 }} disabled={lockedDisplay}
                         style={{
+                            marginLeft: windowDimensions.width/4,
                             margin: windowDimensions.height / 16,
-                            height: windowDimensions.height / 4,
-                            width: windowDimensions.height / 4,
+                            height: windowDimensions.height / 3,
+                            width: windowDimensions.height / 3,
                             backgroundColor: CharcClicked === "lezard" ? "green" : "#061436"
                         }}>
                     <img
@@ -121,13 +120,14 @@ function ChooseCharacController(){
                          alt="Tete de lezard"
                     />
                 </Button>
-                <Button onClick={() => {
+                <Button className="btn-right" onClick={() => {
                     C_selected("tigre")
                 }} disabled={lockedDisplay}
                         style={{
+                            marginLeft: windowDimensions.width/5,
                             margin: windowDimensions.height / 16,
-                            height: windowDimensions.height / 4,
-                            width: windowDimensions.height / 4,
+                            height: windowDimensions.height / 3,
+                            width: windowDimensions.height / 3,
                             backgroundColor: CharcClicked === "tigre" ? "green" : "#061436"
                         }}>
                     <img src={teteTigre}
